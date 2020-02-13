@@ -41,6 +41,7 @@ public class Main extends PApplet {
         background(0);
         m1.draw();
         m2.draw();
+        spring.draw();
     }
 
     static public void main(String[] passedArgs) {

@@ -36,4 +36,9 @@ public class Spring {
         return forceDir.scale(forceConstant * (springLength - restLength));
     }
 
+    public void draw() {
+        parent.stroke(255);
+        parent.line(m1.position.x, m1.position.y, m1.position.z, m2.position.x, m2.position.y, m2.position.z);
+    }
+
 }
