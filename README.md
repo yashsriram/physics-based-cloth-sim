@@ -12,3 +12,7 @@
 # Compilation (on windows)
 - Use ant for building. Install ant.
 - Open a terminal in current directory and run `ant compile && java -cp "bin/;jars/*" Main`
+
+# Libraries used
+- Queasy cam
+- Cam written by Liam Tyler
