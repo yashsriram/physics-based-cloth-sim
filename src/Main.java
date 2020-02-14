@@ -32,9 +32,9 @@ public class Main extends PApplet {
     }
 
     public void draw() {
-        surface.setTitle("Processing - FPS: " + frameRate);
 //        liamCam.Update(1.0f / frameRate);
 
+        long start = millis();
         try {
 //            seriesSpringMassSystem.update(0.05f);
             for (int i = 0; i < 200; ++i) {
@@ -43,10 +43,13 @@ public class Main extends PApplet {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        long update = millis();
 
         background(0);
         gridSpringMassSystem.draw();
 //        seriesSpringMassSystem.draw();
+        long draw = millis();
+        surface.setTitle("Processing - FPS: " + frameRate + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms");
     }
 
     public void keyPressed() {

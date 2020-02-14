@@ -37,7 +37,8 @@ public class SeriesSpringMassSystem {
 
     public void update(float dt) throws Exception {
         for (SpringMass s : springMasses) {
-            s.update(dt);
+            s.parallelUpdate();
+            s.integrate(dt);
         }
     }
 

@@ -36,7 +36,7 @@ public class SpringMass {
         this.isFixed = isFixed;
     }
 
-    public void update(float dt) throws Exception {
+    public void parallelUpdate() throws Exception {
         if (isFixed) {
             return;
         }
@@ -44,10 +44,12 @@ public class SpringMass {
         for (Spring spring : springs) {
             totalSpringForce = totalSpringForce.plus(spring.forceOn(this));
         }
-        Vec3 acceleration = totalSpringForce.scale(1 / mass);
+        acceleration = totalSpringForce.scale(1 / mass);
         acceleration = acceleration.plus(gravity);
         acceleration = acceleration.plus(velocity.scale(-1 * airDragConstant));
+    }
 
+    public void integrate(float dt) {
         position = position.plus(velocity.scale(dt));
         velocity = velocity.plus(acceleration.scale(dt));
     }

@@ -70,7 +70,8 @@ public class GridSpringMassSystem {
 
     public void update(float dt) throws Exception {
         for (Map.Entry<Coordinates, SpringMass> s : springMasses.entrySet()) {
-            s.getValue().update(dt);
+            s.getValue().parallelUpdate();
+            s.getValue().integrate(dt);
         }
     }
 
