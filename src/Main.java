@@ -1,4 +1,3 @@
-import camera.LiamCam;
 import camera.QueasyCam;
 import physical.GridSpringMassSystem;
 import processing.core.PApplet;
