@@ -1,4 +1,5 @@
 import linalg.Vec3;
+import physical.SeriesSpringMassSystem;
 import physical.Spring;
 import physical.SpringMass;
 import processing.core.PApplet;
@@ -10,13 +11,7 @@ public class Main extends PApplet {
 
     private QueasyCam cam;
 
-    private Spring s1;
-    private Spring s2;
-    private Spring s3;
-    private SpringMass m1;
-    private SpringMass m2;
-    private SpringMass m3;
-    private SpringMass m4;
+    private SeriesSpringMassSystem seriesSpringMassSystem;
 
     public void settings() {
         size(WIDTH, HEIGHT, P3D);
@@ -26,36 +21,25 @@ public class Main extends PApplet {
         noStroke();
         surface.setTitle("Processing");
         cam = new QueasyCam(this);
-        cam.sensitivity = 2f;
+        cam.sensitivity = 1f;
         cam.speed = 2f;
 
-        m1 = new SpringMass(this, 5, Vec3.of(5, -100, -100), Vec3.zero(), Vec3.zero());
-        m2 = new SpringMass(this, 5, Vec3.of(5, -50, -50), Vec3.zero(), Vec3.zero());
-        m3 = new SpringMass(this, 5, Vec3.of(5, -100, 0), Vec3.zero(), Vec3.zero());
-        m4 = new SpringMass(this, 5, Vec3.of(5, -100, 50), Vec3.zero(), Vec3.zero());
-        s1 = new Spring(this, 40, 2, .2f, m1, m2);
-        s2 = new Spring(this, 40, 2, .2f, m2, m3);
-        s3 = new Spring(this, 40, 2, .2f, m3, m4);
+        seriesSpringMassSystem = new SeriesSpringMassSystem(this);
+        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(5, -100, -100), Vec3.zero(), Vec3.zero(), true));
+        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(5, -50, -50), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(5, -100, 0), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(5, -100, 50), Vec3.zero(), Vec3.zero(), false));
     }
 
     public void draw() {
         try {
-//            m1.update(0.05f);
-            m2.update(0.05f);
-            m3.update(0.05f);
-            m4.update(0.05f);
+            seriesSpringMassSystem.update(0.05f);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         background(0);
-        m1.draw();
-        m2.draw();
-        m3.draw();
-        m4.draw();
-        s1.draw();
-        s2.draw();
-        s3.draw();
+        seriesSpringMassSystem.draw();
     }
 
     static public void main(String[] passedArgs) {
