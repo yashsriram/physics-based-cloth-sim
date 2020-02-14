@@ -37,8 +37,8 @@ public class Main extends PApplet {
         long start = millis();
         try {
 //            seriesSpringMassSystem.update(0.05f);
-            for (int i = 0; i < 200; ++i) {
-                gridSpringMassSystem.update(0.001f);
+            for (int i = 0; i < 140; ++i) {
+                gridSpringMassSystem.update(0.002f);
             }
         } catch (Exception e) {
             e.printStackTrace();
