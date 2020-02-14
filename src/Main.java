@@ -6,7 +6,7 @@ import queasycam.QueasyCam;
 
 public class Main extends PApplet {
     public static final int WIDTH = 600;
-    public static final int HEIGHT = 800;
+    public static final int HEIGHT = 600;
 
     private QueasyCam cam;
 
@@ -29,13 +29,13 @@ public class Main extends PApplet {
         cam.sensitivity = 2f;
         cam.speed = 2f;
 
-        m1 = new SpringMass(this, 5, Vec3.of(5, -100, 0), Vec3.zero(), Vec3.zero());
-        m2 = new SpringMass(this, 5, Vec3.of(5, -50, 0), Vec3.zero(), Vec3.zero());
-        m3 = new SpringMass(this, 5, Vec3.of(5, 0, 0), Vec3.zero(), Vec3.zero());
-        m4 = new SpringMass(this, 5, Vec3.of(5, 50, 0), Vec3.zero(), Vec3.zero());
-        s1 = new Spring(this, 40, 2, .5f, m1, m2);
-        s2 = new Spring(this, 40, 2, .5f, m2, m3);
-        s3 = new Spring(this, 40, 2, .5f, m3, m4);
+        m1 = new SpringMass(this, 5, Vec3.of(5, -100, -100), Vec3.zero(), Vec3.zero());
+        m2 = new SpringMass(this, 5, Vec3.of(5, -50, -50), Vec3.zero(), Vec3.zero());
+        m3 = new SpringMass(this, 5, Vec3.of(5, -100, 0), Vec3.zero(), Vec3.zero());
+        m4 = new SpringMass(this, 5, Vec3.of(5, -100, 50), Vec3.zero(), Vec3.zero());
+        s1 = new Spring(this, 40, 2, .2f, m1, m2);
+        s2 = new Spring(this, 40, 2, .2f, m2, m3);
+        s3 = new Spring(this, 40, 2, .2f, m3, m4);
     }
 
     public void draw() {
