@@ -21,18 +21,23 @@ public class SpringMass {
     Vec3 position;
     Vec3 velocity;
     Vec3 acceleration;
+    boolean isFixed;
     List<Spring> springs = new ArrayList<>();
 
-    public SpringMass(PApplet parent, float mass, Vec3 position, Vec3 velocity, Vec3 acceleration) {
+    public SpringMass(PApplet parent, float mass, Vec3 position, Vec3 velocity, Vec3 acceleration, boolean isFixed) {
         this.parent = parent;
         this.id = nextId();
         this.mass = mass;
         this.position = position;
         this.velocity = velocity;
         this.acceleration = acceleration;
+        this.isFixed = isFixed;
     }
 
     public void update(float dt) throws Exception {
+        if (isFixed) {
+            return;
+        }
         Vec3 totalSpringForce = Vec3.zero();
         for (Spring spring : springs) {
             totalSpringForce = totalSpringForce.plus(spring.forceOn(this));
