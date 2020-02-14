@@ -11,9 +11,7 @@ public class Spring {
     private SpringMass m1;
     private SpringMass m2;
 
-    public Spring(PApplet parent, float restLength,
-    			  float forceConstant, float dampConstant,
-    			  SpringMass m1, SpringMass m2) {
+    public Spring(PApplet parent, float restLength, float forceConstant, float dampConstant, SpringMass m1, SpringMass m2) {
         this.parent = parent;
         this.restLength = restLength;
         this.forceConstant = forceConstant;
