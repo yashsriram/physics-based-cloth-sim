@@ -24,19 +24,26 @@ public class Spring {
 
     public Vec3 forceOn(SpringMass m) throws Exception {
         Vec3 lengthVector = Vec3.zero();
+        SpringMass mOther = m;
         if (m.id == m1.id) {
             // m1 requested force
             lengthVector = m2.position.minus(m1.position);
+            mOther = m2;
         } else if (m.id == m2.id) {
             // m2 requested force
             lengthVector = m1.position.minus(m2.position);
+            mOther = m1;
         } else {
             throw new Exception("Force requested on unrelated spring mass");
         }
         float springLength = lengthVector.abs();
         Vec3 forceDir = lengthVector.unit();
-        Vec3 springForce = forceDir.scale(forceConstant * (springLength - restLength));
-        Vec3 dampForce = m.velocity.scale(-1 * dampConstant);
+        Vec3 springForce = Vec3.zero();
+        float extension = springLength - restLength;
+        if (extension > 0) {
+            springForce = forceDir.scale(forceConstant * (extension));
+        }
+        Vec3 dampForce = forceDir.scale(-1 * dampConstant * (m.velocity.dot(forceDir) - mOther.velocity.dot(forceDir)));
         return springForce.plus(dampForce);
     }
 

@@ -6,10 +6,10 @@ public class Main extends PApplet {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
 
-//    private LiamCam liamCam;
+    //    private LiamCam liamCam;
     private QueasyCam queasyCam;
 
-//    private SeriesSpringMassSystem seriesSpringMassSystem;
+    //    private SeriesSpringMassSystem seriesSpringMassSystem;
     private GridSpringMassSystem gridSpringMassSystem;
 
     public void settings() {
@@ -28,7 +28,7 @@ public class Main extends PApplet {
 //        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(7, -60, -200), Vec3.zero(), Vec3.zero(), false));
 //        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(8, -50, -200), Vec3.zero(), Vec3.zero(), false));
 
-        gridSpringMassSystem = new GridSpringMassSystem(this, 30, 30, 3, 5, 50, 4f);
+        gridSpringMassSystem = new GridSpringMassSystem(this, 30, 30, 10, 5, 500, 1000f);
     }
 
     public void draw() {
@@ -37,7 +37,9 @@ public class Main extends PApplet {
 
         try {
 //            seriesSpringMassSystem.update(0.05f);
-            gridSpringMassSystem.update(0.05f);
+            for (int i = 0; i < 200; ++i) {
+                gridSpringMassSystem.update(0.001f);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

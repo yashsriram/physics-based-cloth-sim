@@ -25,36 +25,36 @@ public class Checkin extends PApplet {
         surface.setTitle("Processing");
         liamCam = new LiamCam(this);
 
-        seriesSpringMassSystem1 = new SeriesSpringMassSystem(this, 20, 5, 1f);
-        seriesSpringMassSystem2 = new SeriesSpringMassSystem(this, 20, 5, 1f);
-        seriesSpringMassSystem3 = new SeriesSpringMassSystem(this, 20, 5, 1f);
-        seriesSpringMassSystem4 = new SeriesSpringMassSystem(this, 20, 5, 1f);
-        seriesSpringMassSystem5 = new SeriesSpringMassSystem(this, 20, 5, 1f);
+        seriesSpringMassSystem1 = new SeriesSpringMassSystem(this, 20, 5, 5f);
+        seriesSpringMassSystem2 = new SeriesSpringMassSystem(this, 20, 5, 5f);
+        seriesSpringMassSystem3 = new SeriesSpringMassSystem(this, 20, 5, 5f);
+        seriesSpringMassSystem4 = new SeriesSpringMassSystem(this, 20, 5, 5f);
+        seriesSpringMassSystem5 = new SeriesSpringMassSystem(this, 20, 5, 5f);
 
-        seriesSpringMassSystem1.addMass(new SpringMass(this, 5, Vec3.of(-40, -80, -200), Vec3.zero(), Vec3.zero(), true));
-        seriesSpringMassSystem1.addMass(new SpringMass(this, 5, Vec3.of(-41, -50, -200), Vec3.zero(), Vec3.zero(), false));
-        seriesSpringMassSystem1.addMass(new SpringMass(this, 5, Vec3.of(-42, -15, -200), Vec3.zero(), Vec3.zero(), false));
-        seriesSpringMassSystem1.addMass(new SpringMass(this, 5, Vec3.of(-43, 20, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem1.addMass(new SpringMass(this, 10, Vec3.of(-40, -80, -200), Vec3.zero(), Vec3.zero(), true));
+        seriesSpringMassSystem1.addMass(new SpringMass(this, 10, Vec3.of(-41, -50, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem1.addMass(new SpringMass(this, 10, Vec3.of(-42, -15, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem1.addMass(new SpringMass(this, 10, Vec3.of(-43, 20, -200), Vec3.zero(), Vec3.zero(), false));
 
-        seriesSpringMassSystem2.addMass(new SpringMass(this, 5, Vec3.of(0, -80, -200), Vec3.zero(), Vec3.zero(), true));
-        seriesSpringMassSystem2.addMass(new SpringMass(this, 5, Vec3.of(1, -60, -200), Vec3.zero(), Vec3.zero(), false));
-        seriesSpringMassSystem2.addMass(new SpringMass(this, 5, Vec3.of(2, -20, -200), Vec3.zero(), Vec3.zero(), false));
-        seriesSpringMassSystem2.addMass(new SpringMass(this, 5, Vec3.of(3, -40, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem2.addMass(new SpringMass(this, 10, Vec3.of(0, -80, -200), Vec3.zero(), Vec3.zero(), true));
+        seriesSpringMassSystem2.addMass(new SpringMass(this, 10, Vec3.of(1, -60, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem2.addMass(new SpringMass(this, 10, Vec3.of(2, -20, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem2.addMass(new SpringMass(this, 10, Vec3.of(3, -40, -200), Vec3.zero(), Vec3.zero(), false));
 
-        seriesSpringMassSystem3.addMass(new SpringMass(this, 5, Vec3.of(40, -80, -200), Vec3.zero(), Vec3.zero(), true));
-        seriesSpringMassSystem3.addMass(new SpringMass(this, 5, Vec3.of(41, -50, -200), Vec3.zero(), Vec3.zero(), false));
-        seriesSpringMassSystem3.addMass(new SpringMass(this, 5, Vec3.of(42, -10, -200), Vec3.zero(), Vec3.zero(), false));
-        seriesSpringMassSystem3.addMass(new SpringMass(this, 5, Vec3.of(43, 10, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem3.addMass(new SpringMass(this, 10, Vec3.of(40, -80, -200), Vec3.zero(), Vec3.zero(), true));
+        seriesSpringMassSystem3.addMass(new SpringMass(this, 10, Vec3.of(41, -50, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem3.addMass(new SpringMass(this, 10, Vec3.of(42, -10, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem3.addMass(new SpringMass(this, 10, Vec3.of(43, 10, -200), Vec3.zero(), Vec3.zero(), false));
 
-        seriesSpringMassSystem4.addMass(new SpringMass(this, 5, Vec3.of(80, -80, -200), Vec3.zero(), Vec3.zero(), true));
-        seriesSpringMassSystem4.addMass(new SpringMass(this, 5, Vec3.of(81, -50, -200), Vec3.zero(), Vec3.zero(), false));
-        seriesSpringMassSystem4.addMass(new SpringMass(this, 5, Vec3.of(82, -10, -200), Vec3.zero(), Vec3.zero(), false));
-        seriesSpringMassSystem4.addMass(new SpringMass(this, 5, Vec3.of(83, -10, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem4.addMass(new SpringMass(this, 10, Vec3.of(80, -80, -200), Vec3.zero(), Vec3.zero(), true));
+        seriesSpringMassSystem4.addMass(new SpringMass(this, 10, Vec3.of(81, -50, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem4.addMass(new SpringMass(this, 10, Vec3.of(82, -10, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem4.addMass(new SpringMass(this, 10, Vec3.of(83, -10, -200), Vec3.zero(), Vec3.zero(), false));
 
-        seriesSpringMassSystem5.addMass(new SpringMass(this, 5, Vec3.of(-80, -80, -200), Vec3.zero(), Vec3.zero(), true));
-        seriesSpringMassSystem5.addMass(new SpringMass(this, 5, Vec3.of(-81, -20, -200), Vec3.zero(), Vec3.zero(), false));
-        seriesSpringMassSystem5.addMass(new SpringMass(this, 5, Vec3.of(-82, -10, -200), Vec3.zero(), Vec3.zero(), false));
-        seriesSpringMassSystem5.addMass(new SpringMass(this, 5, Vec3.of(-83, 10, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem5.addMass(new SpringMass(this, 10, Vec3.of(-80, -80, -200), Vec3.zero(), Vec3.zero(), true));
+        seriesSpringMassSystem5.addMass(new SpringMass(this, 10, Vec3.of(-81, -20, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem5.addMass(new SpringMass(this, 10, Vec3.of(-82, -10, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem5.addMass(new SpringMass(this, 10, Vec3.of(-83, 10, -200), Vec3.zero(), Vec3.zero(), false));
     }
 
     public void draw() {

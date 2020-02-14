@@ -9,6 +9,7 @@ import java.util.List;
 public class SpringMass {
     private static int nextId = 1;
     private static final Vec3 gravity = Vec3.of(0, 5, 0);
+    private static final float airDragConstant = 0.1f;
 
     private static int nextId() {
         int id = nextId;
@@ -45,6 +46,7 @@ public class SpringMass {
         }
         Vec3 acceleration = totalSpringForce.scale(1 / mass);
         acceleration = acceleration.plus(gravity);
+        acceleration = acceleration.plus(velocity.scale(-1 * airDragConstant));
 
         position = position.plus(velocity.scale(dt));
         velocity = velocity.plus(acceleration.scale(dt));
@@ -55,6 +57,9 @@ public class SpringMass {
             parent.pushMatrix();
             parent.stroke(0, 255, 0);
             parent.point(position.x, position.y, position.z);
+//            parent.translate(position.x, position.y, position.z);
+//            parent.fill(255, 100, 0);
+//            parent.sphere(2);
             parent.popMatrix();
         } else {
             parent.pushMatrix();
