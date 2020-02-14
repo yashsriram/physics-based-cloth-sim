@@ -7,7 +7,8 @@ public class Main extends PApplet {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
 
-    private LiamCam liamCam;
+//    private LiamCam liamCam;
+    private QueasyCam queasyCam;
 
 //    private SeriesSpringMassSystem seriesSpringMassSystem;
     private GridSpringMassSystem gridSpringMassSystem;
@@ -19,7 +20,8 @@ public class Main extends PApplet {
     public void setup() {
         noStroke();
         surface.setTitle("Processing");
-        liamCam = new LiamCam(this);
+//        liamCam = new LiamCam(this);
+        queasyCam = new QueasyCam(this);
 
 //        seriesSpringMassSystem = new SeriesSpringMassSystem(this, 20, 50, 5f);
 //        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(5, -80, -200), Vec3.zero(), Vec3.zero(), true));
@@ -27,11 +29,12 @@ public class Main extends PApplet {
 //        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(7, -60, -200), Vec3.zero(), Vec3.zero(), false));
 //        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(8, -50, -200), Vec3.zero(), Vec3.zero(), false));
 
-        gridSpringMassSystem = new GridSpringMassSystem(this, 6, 5, 5, 10, 50, 4f);
+        gridSpringMassSystem = new GridSpringMassSystem(this, 30, 30, 5, 10, 50, 4f);
     }
 
     public void draw() {
-        liamCam.Update(1.0f / frameRate);
+        surface.setTitle("Processing - FPS: " + frameRate);
+//        liamCam.Update(1.0f / frameRate);
 
         try {
 //            seriesSpringMassSystem.update(0.05f);
@@ -46,11 +49,11 @@ public class Main extends PApplet {
     }
 
     public void keyPressed() {
-        liamCam.HandleKeyPressed();
+//        liamCam.HandleKeyPressed();
     }
 
     public void keyReleased() {
-        liamCam.HandleKeyReleased();
+//        liamCam.HandleKeyReleased();
     }
 
     static public void main(String[] passedArgs) {

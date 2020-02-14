@@ -53,9 +53,8 @@ public class SpringMass {
     public void draw() {
         if (!this.isFixed) {
             parent.pushMatrix();
-            parent.translate(position.x, position.y, position.z);
-            parent.fill(255);
-            parent.sphere(2);
+            parent.stroke(0, 255, 0);
+            parent.point(position.x, position.y, position.z);
             parent.popMatrix();
         } else {
             parent.pushMatrix();

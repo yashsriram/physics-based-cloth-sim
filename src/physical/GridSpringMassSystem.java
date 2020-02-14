@@ -33,7 +33,7 @@ public class GridSpringMassSystem {
 
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
-                boolean isFixed = (i == 0 && j == 0 || i == 0 && j == n - 1);
+                boolean isFixed = (i == 0 && (j == n - 1 || j % 5 == 0));
                 SpringMass currentSpringMass = new SpringMass(parent, mass, Vec3.of(j * restLength * 1.5f - 50, i * restLength * 1.5f - 50, -200), Vec3.zero(), Vec3.zero(), isFixed);
                 springMasses.put(new Pair<>(i, j), currentSpringMass);
                 SpringMass prevColSpringMass = springMasses.get(new Pair<>(i, j - 1));
