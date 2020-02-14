@@ -1,4 +1,4 @@
-import camera.Camera;
+import camera.LiamCam;
 import linalg.Vec3;
 import physical.SeriesSpringMassSystem;
 import physical.SpringMass;
@@ -8,7 +8,7 @@ public class Main extends PApplet {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
 
-    private Camera camera;
+    private LiamCam liamCam;
 
     private SeriesSpringMassSystem seriesSpringMassSystem;
 
@@ -19,7 +19,7 @@ public class Main extends PApplet {
     public void setup() {
         noStroke();
         surface.setTitle("Processing");
-        camera = new Camera(this);
+        liamCam = new LiamCam(this);
 
         seriesSpringMassSystem = new SeriesSpringMassSystem(this);
         seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(5, -80, -200), Vec3.zero(), Vec3.zero(), true));
@@ -29,7 +29,7 @@ public class Main extends PApplet {
     }
 
     public void draw() {
-        camera.Update(1.0f / frameRate);
+        liamCam.Update(1.0f / frameRate);
 
         try {
             seriesSpringMassSystem.update(0.05f);
@@ -42,11 +42,11 @@ public class Main extends PApplet {
     }
 
     public void keyPressed() {
-        camera.HandleKeyPressed();
+        liamCam.HandleKeyPressed();
     }
 
     public void keyReleased() {
-        camera.HandleKeyReleased();
+        liamCam.HandleKeyReleased();
     }
 
     static public void main(String[] passedArgs) {

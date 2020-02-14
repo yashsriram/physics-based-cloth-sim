@@ -25,7 +25,7 @@
  * @version     1.5 (5)
  */
 
-package queasycam;
+package camera;
 
 import java.awt.MouseInfo;
 import java.awt.Point;

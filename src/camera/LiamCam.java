@@ -3,7 +3,7 @@ package camera;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class Camera {
+public class LiamCam {
 
     // only necessary to change if you want different start position, orientation, or speeds
     PVector position;
@@ -23,7 +23,7 @@ public class Camera {
     PVector negativeTurn;
     PVector positiveTurn;
 
-    public Camera(PApplet parent) {
+    public LiamCam(PApplet parent) {
         this.parent = parent;
         position = new PVector(0, 0, 0); // initial position
         theta = 0; // rotation around Y axis. Starts with forward direction as ( 0, 0, -1 )

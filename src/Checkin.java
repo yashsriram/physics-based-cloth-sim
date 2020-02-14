@@ -1,4 +1,4 @@
-import camera.Camera;
+import camera.LiamCam;
 import linalg.Vec3;
 import physical.SeriesSpringMassSystem;
 import physical.SpringMass;
@@ -8,7 +8,7 @@ public class Checkin extends PApplet {
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 800;
 
-    private Camera camera;
+    private LiamCam liamCam;
 
     private SeriesSpringMassSystem seriesSpringMassSystem1;
     private SeriesSpringMassSystem seriesSpringMassSystem2;
@@ -23,7 +23,7 @@ public class Checkin extends PApplet {
     public void setup() {
         noStroke();
         surface.setTitle("Processing");
-        camera = new Camera(this);
+        liamCam = new LiamCam(this);
 
         seriesSpringMassSystem1 = new SeriesSpringMassSystem(this);
         seriesSpringMassSystem2 = new SeriesSpringMassSystem(this);
@@ -58,7 +58,7 @@ public class Checkin extends PApplet {
     }
 
     public void draw() {
-        camera.Update(1.0f / frameRate);
+        liamCam.Update(1.0f / frameRate);
 
         try {
             seriesSpringMassSystem1.update(0.05f);
@@ -79,11 +79,11 @@ public class Checkin extends PApplet {
     }
 
     public void keyPressed() {
-        camera.HandleKeyPressed();
+        liamCam.HandleKeyPressed();
     }
 
     public void keyReleased() {
-        camera.HandleKeyReleased();
+        liamCam.HandleKeyReleased();
     }
 
     static public void main(String[] passedArgs) {
