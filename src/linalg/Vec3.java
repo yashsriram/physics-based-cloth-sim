@@ -3,8 +3,8 @@ package linalg;
 public class Vec3 {
     public float x, y, z;
 
-    public static Vec3 uniformRandomInUnitSphere() {
-        return new Vec3((float) Math.random() * 2 - 1, (float) Math.random() * 2 - 1, (float) Math.random() * 2 - 1).unit();
+    public static Vec3 sphereRandom(float radius) {
+        return new Vec3((float) Math.random() * 2 - 1, (float) Math.random() * 2 - 1, (float) Math.random() * 2 - 1).unit().scale(radius);
     }
 
     public static Vec3 zero() {
