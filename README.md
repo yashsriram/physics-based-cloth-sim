@@ -10,4 +10,5 @@
 - Use `java -cp "build/:jars/*" Main` to run
 
 # Compilation (on windows)
-- Change paths appropriately
+- Use ant for building. Install ant.
+- Open a terminal in current directory and run `ant compile && java -cp "bin/;jars/*" Main`
