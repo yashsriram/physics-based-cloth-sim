@@ -1,3 +1,4 @@
+import camera.Camera;
 import linalg.Vec3;
 import physical.SeriesSpringMassSystem;
 import physical.Spring;
@@ -9,7 +10,8 @@ public class Main extends PApplet {
     public static final int WIDTH = 600;
     public static final int HEIGHT = 600;
 
-    private QueasyCam cam;
+    //    private QueasyCam cam;
+    private Camera camera;
 
     private SeriesSpringMassSystem seriesSpringMassSystem;
 
@@ -20,9 +22,11 @@ public class Main extends PApplet {
     public void setup() {
         noStroke();
         surface.setTitle("Processing");
-        cam = new QueasyCam(this);
-        cam.sensitivity = 1f;
-        cam.speed = 2f;
+        camera = new Camera(this);
+
+//        cam = new QueasyCam(this);
+//        cam.sensitivity = 1f;
+//        cam.speed = 2f;
 
         seriesSpringMassSystem = new SeriesSpringMassSystem(this);
         seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(5, -100, -100), Vec3.zero(), Vec3.zero(), true));
@@ -32,6 +36,8 @@ public class Main extends PApplet {
     }
 
     public void draw() {
+        camera.Update(1.0f / frameRate);
+
         try {
             seriesSpringMassSystem.update(0.05f);
         } catch (Exception e) {
@@ -40,6 +46,14 @@ public class Main extends PApplet {
 
         background(0);
         seriesSpringMassSystem.draw();
+    }
+
+    public void keyPressed() {
+        camera.HandleKeyPressed();
+    }
+
+    public void keyReleased() {
+        camera.HandleKeyReleased();
     }
 
     static public void main(String[] passedArgs) {
