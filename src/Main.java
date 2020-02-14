@@ -10,9 +10,13 @@ public class Main extends PApplet {
 
     private QueasyCam cam;
 
-    private Spring spring;
+    private Spring s1;
+    private Spring s2;
+    private Spring s3;
     private SpringMass m1;
     private SpringMass m2;
+    private SpringMass m3;
+    private SpringMass m4;
 
     public void settings() {
         size(WIDTH, HEIGHT, P3D);
@@ -25,15 +29,21 @@ public class Main extends PApplet {
         cam.sensitivity = 2f;
         cam.speed = 2f;
 
-        m1 = new SpringMass(this, 5, Vec3.of(5, 0, -25), Vec3.zero(), Vec3.zero());
-        m2 = new SpringMass(this, 5, Vec3.of(5, 0, 25), Vec3.zero(), Vec3.zero());
-        spring = new Spring(this, 40, 2, m1, m2);
+        m1 = new SpringMass(this, 5, Vec3.of(5, -50, 0), Vec3.zero(), Vec3.zero());
+        m2 = new SpringMass(this, 5, Vec3.of(5, 0, 0), Vec3.zero(), Vec3.zero());
+        m3 = new SpringMass(this, 5, Vec3.of(5, 50, 0), Vec3.zero(), Vec3.zero());
+        m4 = new SpringMass(this, 5, Vec3.of(5, 100, 0), Vec3.zero(), Vec3.zero());
+        s1 = new Spring(this, 40, 2, m1, m2);
+        s2 = new Spring(this, 40, 2, m2, m3);
+        s3 = new Spring(this, 40, 2, m3, m4);
     }
 
     public void draw() {
         try {
             m1.update(0.05f);
             m2.update(0.05f);
+            m3.update(0.05f);
+            m4.update(0.05f);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -41,7 +51,11 @@ public class Main extends PApplet {
         background(0);
         m1.draw();
         m2.draw();
-        spring.draw();
+        m3.draw();
+        m4.draw();
+        s1.draw();
+        s2.draw();
+        s3.draw();
     }
 
     static public void main(String[] passedArgs) {
