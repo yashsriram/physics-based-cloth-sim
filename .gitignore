@@ -3,4 +3,4 @@ demo/
 out/
 .idea/
 *iml
-bin/
+bin/*
