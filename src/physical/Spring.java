@@ -7,13 +7,15 @@ public class Spring {
     private PApplet parent;
     private float restLength;
     private float forceConstant;
+    private float dampConstant;
     private SpringMass m1;
     private SpringMass m2;
 
-    public Spring(PApplet parent, float restLength, float forceConstant, SpringMass m1, SpringMass m2) {
+    public Spring(PApplet parent, float restLength, float forceConstant, float dampConstant, SpringMass m1, SpringMass m2) {
         this.parent = parent;
         this.restLength = restLength;
         this.forceConstant = forceConstant;
+        this.dampConstant = dampConstant;
         this.m1 = m1;
         this.m2 = m2;
         m1.springs.add(this);
@@ -33,7 +35,9 @@ public class Spring {
         }
         float springLength = lengthVector.abs();
         Vec3 forceDir = lengthVector.unit();
-        return forceDir.scale(forceConstant * (springLength - restLength));
+        Vec3 springForce = forceDir.scale(forceConstant * (springLength - restLength));
+        Vec3 dampForce = m.velocity.scale(-1 * dampConstant);
+        return springForce.plus(dampForce);
     }
 
     public void draw() {

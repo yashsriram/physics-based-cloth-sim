@@ -33,11 +33,13 @@ public class SpringMass {
     }
 
     public void update(float dt) throws Exception {
-        Vec3 totalForce = Vec3.zero();
+        Vec3 totalSpringForce = Vec3.zero();
         for (Spring spring : springs) {
-            totalForce = totalForce.plus(spring.forceOn(this));
+            totalSpringForce = totalSpringForce.plus(spring.forceOn(this));
         }
-        Vec3 acceleration = totalForce.scale(1 / mass);
+        Vec3 acceleration = totalSpringForce.scale(1 / mass);
+        acceleration = acceleration.plus(Vec3.of(0, 5, 0));
+
         position = position.plus(velocity.scale(dt));
         velocity = velocity.plus(acceleration.scale(dt));
     }
