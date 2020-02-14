@@ -24,7 +24,8 @@ public class SpringMass {
     boolean isFixed;
     List<Spring> springs = new ArrayList<>();
 
-    public SpringMass(PApplet parent, float mass, Vec3 position, Vec3 velocity, Vec3 acceleration, boolean isFixed) {
+    public SpringMass(PApplet parent, float mass,
+    		Vec3 position, Vec3 velocity, Vec3 acceleration, boolean isFixed) {
         this.parent = parent;
         this.id = nextId();
         this.mass = mass;
@@ -50,10 +51,18 @@ public class SpringMass {
     }
 
     public void draw() {
-        parent.pushMatrix();
-        parent.translate(position.x, position.y, position.z);
-        parent.fill(255);
-        parent.sphere(2);
-        parent.popMatrix();
+    	if(!this.isFixed) {
+	        parent.pushMatrix();
+	        parent.translate(position.x, position.y, position.z);
+	        parent.fill(255);
+	        parent.sphere(2);
+	        parent.popMatrix();
+    	}else {
+    		parent.pushMatrix();
+	        parent.translate(position.x, position.y, position.z);
+	        parent.fill(255, 100, 0);
+	        parent.box(3);
+	        parent.popMatrix();
+    	}
     }
 }

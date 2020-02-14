@@ -16,7 +16,7 @@ public class SeriesSpringMassSystem {
 
     public void addMass(SpringMass springMass) {
         if (springMasses.size() > 0) {
-            springs.add(new Spring(parent, 40, 2, .2f, springMasses.get(springMasses.size() - 1), springMass));
+            springs.add(new Spring(parent, 20, 5, .2f, springMasses.get(springMasses.size() - 1), springMass));
         }
         springMasses.add(springMass);
     }

@@ -1,16 +1,13 @@
 import camera.Camera;
 import linalg.Vec3;
 import physical.SeriesSpringMassSystem;
-import physical.Spring;
 import physical.SpringMass;
 import processing.core.PApplet;
-import queasycam.QueasyCam;
 
 public class Main extends PApplet {
-    public static final int WIDTH = 600;
-    public static final int HEIGHT = 600;
+    public static final int WIDTH = 800;
+    public static final int HEIGHT = 800;
 
-    //    private QueasyCam cam;
     private Camera camera;
 
     private SeriesSpringMassSystem seriesSpringMassSystem;
@@ -24,15 +21,11 @@ public class Main extends PApplet {
         surface.setTitle("Processing");
         camera = new Camera(this);
 
-//        cam = new QueasyCam(this);
-//        cam.sensitivity = 1f;
-//        cam.speed = 2f;
-
         seriesSpringMassSystem = new SeriesSpringMassSystem(this);
-        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(5, -100, -100), Vec3.zero(), Vec3.zero(), true));
-        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(5, -50, -50), Vec3.zero(), Vec3.zero(), false));
-        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(5, -100, 0), Vec3.zero(), Vec3.zero(), false));
-        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(5, -100, 50), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(5, -80, -200), Vec3.zero(), Vec3.zero(), true));
+        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(6, -50, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(7, -10, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(8, 20, -200), Vec3.zero(), Vec3.zero(), false));
     }
 
     public void draw() {
