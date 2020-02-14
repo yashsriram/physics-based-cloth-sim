@@ -8,6 +8,7 @@ import java.util.List;
 
 public class SpringMass {
     private static int nextId = 1;
+    private static final Vec3 gravity = Vec3.of(0, 5, 0);
 
     private static int nextId() {
         int id = nextId;
@@ -43,7 +44,7 @@ public class SpringMass {
             totalSpringForce = totalSpringForce.plus(spring.forceOn(this));
         }
         Vec3 acceleration = totalSpringForce.scale(1 / mass);
-        acceleration = acceleration.plus(Vec3.of(0, 5, 0));
+        acceleration = acceleration.plus(gravity);
 
         position = position.plus(velocity.scale(dt));
         velocity = velocity.plus(acceleration.scale(dt));
