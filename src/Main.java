@@ -29,7 +29,7 @@ public class Main extends PApplet {
 //        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(7, -60, -200), Vec3.zero(), Vec3.zero(), false));
 //        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(8, -50, -200), Vec3.zero(), Vec3.zero(), false));
 
-        gridSpringMassSystem = new GridSpringMassSystem(this, 30, 30, 5, 10, 50, 4f);
+        gridSpringMassSystem = new GridSpringMassSystem(this, 30, 30, 3, 5, 50, 4f);
     }
 
     public void draw() {
