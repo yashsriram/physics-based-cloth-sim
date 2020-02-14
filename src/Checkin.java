@@ -25,11 +25,11 @@ public class Checkin extends PApplet {
         surface.setTitle("Processing");
         liamCam = new LiamCam(this);
 
-        seriesSpringMassSystem1 = new SeriesSpringMassSystem(this);
-        seriesSpringMassSystem2 = new SeriesSpringMassSystem(this);
-        seriesSpringMassSystem3 = new SeriesSpringMassSystem(this);
-        seriesSpringMassSystem4 = new SeriesSpringMassSystem(this);
-        seriesSpringMassSystem5 = new SeriesSpringMassSystem(this);
+        seriesSpringMassSystem1 = new SeriesSpringMassSystem(this, 20, 5, 0.2f);
+        seriesSpringMassSystem2 = new SeriesSpringMassSystem(this, 20, 5, 0.2f);
+        seriesSpringMassSystem3 = new SeriesSpringMassSystem(this, 20, 5, 0.2f);
+        seriesSpringMassSystem4 = new SeriesSpringMassSystem(this, 20, 5, 0.2f);
+        seriesSpringMassSystem5 = new SeriesSpringMassSystem(this, 20, 5, 0.2f);
 
         seriesSpringMassSystem1.addMass(new SpringMass(this, 5, Vec3.of(-40, -80, -200), Vec3.zero(), Vec3.zero(), true));
         seriesSpringMassSystem1.addMass(new SpringMass(this, 5, Vec3.of(-41, -50, -200), Vec3.zero(), Vec3.zero(), false));

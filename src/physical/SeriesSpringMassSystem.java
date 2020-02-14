@@ -9,14 +9,20 @@ public class SeriesSpringMassSystem {
     final PApplet parent;
     final List<Spring> springs = new ArrayList<>();
     final List<SpringMass> springMasses = new ArrayList<>();
+    final float restLength;
+    final float forceConstant;
+    final float dampConstant;
 
-    public SeriesSpringMassSystem(PApplet parent) {
+    public SeriesSpringMassSystem(PApplet parent, float restLength, float forceConstant, float dampConstant) {
         this.parent = parent;
+        this.restLength = restLength;
+        this.forceConstant = forceConstant;
+        this.dampConstant = dampConstant;
     }
 
     public void addMass(SpringMass springMass) {
         if (springMasses.size() > 0) {
-            springs.add(new Spring(parent, 20, 5, .2f, springMasses.get(springMasses.size() - 1), springMass));
+            springs.add(new Spring(parent, restLength, forceConstant, dampConstant, springMasses.get(springMasses.size() - 1), springMass));
         }
         springMasses.add(springMass);
     }

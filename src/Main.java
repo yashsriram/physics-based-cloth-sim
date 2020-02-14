@@ -21,11 +21,11 @@ public class Main extends PApplet {
         surface.setTitle("Processing");
         liamCam = new LiamCam(this);
 
-        seriesSpringMassSystem = new SeriesSpringMassSystem(this);
+        seriesSpringMassSystem = new SeriesSpringMassSystem(this, 20, 50, 5f);
         seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(5, -80, -200), Vec3.zero(), Vec3.zero(), true));
-        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(6, -50, -200), Vec3.zero(), Vec3.zero(), false));
-        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(7, -10, -200), Vec3.zero(), Vec3.zero(), false));
-        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(8, 20, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(6, -70, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(7, -60, -200), Vec3.zero(), Vec3.zero(), false));
+        seriesSpringMassSystem.addMass(new SpringMass(this, 5, Vec3.of(8, -50, -200), Vec3.zero(), Vec3.zero(), false));
     }
 
     public void draw() {
