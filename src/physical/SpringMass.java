@@ -63,11 +63,11 @@ public class SpringMass {
         // mass ball interaction
         Vec3 ballToMass = position.minus(ball.position);
         Vec3 ballToMassUnit = ballToMass.unit();
-        if (ballToMass.abs() <= ball.radius) {
+        if (ballToMass.abs() <= ball.radius + 1) {
             // net force along normal should be 0
             acceleration = acceleration.minus(ballToMassUnit.scale(ballToMassUnit.dot(acceleration)));
             // mass should not be inside ball and velocity along the normal should be 0
-            position = ball.position.plus(ballToMassUnit.scale(ball.radius + 3));
+            position = ball.position.plus(ballToMassUnit.scale(ball.radius + 1));
             velocity = velocity.minus(ballToMassUnit.scale(ballToMassUnit.dot(velocity)));
         }
     }

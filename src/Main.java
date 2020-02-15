@@ -39,6 +39,18 @@ public class Main extends PApplet {
                 case '5':
                     ball.update(Vec3.of(0, 0, 10), 0.05f);
                     break;
+                case '4':
+                    ball.update(Vec3.of(-10, 0, 0), 0.05f);
+                    break;
+                case '6':
+                    ball.update(Vec3.of(10, 0, 0), 0.05f);
+                    break;
+                case '7':
+                    ball.update(Vec3.of(0, 10, 0), 0.05f);
+                    break;
+                case '9':
+                    ball.update(Vec3.of(0, -10, 0), 0.05f);
+                    break;
             }
         }
         // cloth update
