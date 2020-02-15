@@ -40,7 +40,7 @@ public class Main extends PApplet {
         background(0);
         gridSpringMassSystem.draw();
         long draw = millis();
-        surface.setTitle("Processing - FPS: " + frameRate + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms");
+        surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms");
     }
 
     public void keyPressed() {

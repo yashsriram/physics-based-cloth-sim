@@ -36,7 +36,7 @@ public class SpringMass {
         this.isFixed = isFixed;
     }
 
-    public void parallelUpdate() throws Exception {
+    public void parallelizableUpdate() throws Exception {
         if (isFixed) {
             return;
         }
@@ -49,7 +49,7 @@ public class SpringMass {
         acceleration = acceleration.plus(velocity.scale(-1 * airDragConstant));
     }
 
-    public void integrate(float dt) {
+    public void parallelizableIntegrate(float dt) {
         position = position.plus(velocity.scale(dt));
         velocity = velocity.plus(acceleration.scale(dt));
     }
