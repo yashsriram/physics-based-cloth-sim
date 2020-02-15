@@ -9,10 +9,9 @@ import java.util.List;
 
 public class SpringMass {
     private static int nextId = 1;
-    private static int px = -1;
-    private static int py = -1;
     private static final Vec3 gravity = Vec3.of(0, 5, 0);
     private static final float airDragConstant = 0.1f;
+    private static final float ballFrictionConstant = 0.7f;
 
     private static int nextId() {
         int id = nextId;
@@ -84,6 +83,7 @@ public class SpringMass {
         if (ballToMass.abs() <= ball.radius + 1) {
             // net force along normal should be 0
             acceleration = acceleration.minus(ballToMassUnit.scale(ballToMassUnit.dot(acceleration)));
+            acceleration = acceleration.scale(ballFrictionConstant);
             // mass should not be inside ball and velocity along the normal should be 0
             position = ball.position.plus(ballToMassUnit.scale(ball.radius + 1));
             velocity = velocity.minus(ballToMassUnit.scale(ballToMassUnit.dot(velocity)));
