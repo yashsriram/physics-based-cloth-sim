@@ -23,8 +23,8 @@ public class Main extends PApplet {
 //        liamCam = new LiamCam(this);
         queasyCam = new QueasyCam(this);
 
-        gridSpringMassSystem = new GridSpringMassSystem(this, 30, 30, 10, 5, 500, 1000f);
-        ball = new Ball(this, 10, Vec3.of(20, 20, 20), Vec3.of(255, 0, 0));
+        gridSpringMassSystem = new GridSpringMassSystem(this, 30, 30, 10, 2, 500, 1000f);
+        ball = new Ball(this, 10, Vec3.of(0, 20, -80), Vec3.of(0, 128, 0));
     }
 
     public void draw() {
@@ -34,17 +34,17 @@ public class Main extends PApplet {
         if (keyPressed) {
             switch (key) {
                 case '8':
-                    ball.update(Vec3.of(0, 0, -100), 0.05f);
+                    ball.update(Vec3.of(0, 0, -10), 0.05f);
                     break;
                 case '5':
-                    ball.update(Vec3.of(0, 0, 100), 0.05f);
+                    ball.update(Vec3.of(0, 0, 10), 0.05f);
                     break;
             }
         }
         // cloth update
         try {
             for (int i = 0; i < 140; ++i) {
-                gridSpringMassSystem.update(0.002f);
+                gridSpringMassSystem.update(ball, 0.002f);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -54,7 +54,7 @@ public class GridSpringMassSystem {
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
                 boolean isFixed = (i == 0 && (j == n - 1 || j % 5 == 0));
-                SpringMass currentSpringMass = new SpringMass(parent, mass, Vec3.of(j * restLength * 1.5f - 50, i * restLength * 1.5f - 50, -200), Vec3.zero(), Vec3.zero(), isFixed);
+                SpringMass currentSpringMass = new SpringMass(parent, mass, Vec3.of(j * restLength * 1.5f - 50, i * restLength * 1.5f - 50, -100), Vec3.zero(), Vec3.zero(), isFixed);
                 springMasses.put(new Coordinates(i, j), currentSpringMass);
                 SpringMass prevColSpringMass = springMasses.get(new Coordinates(i, j - 1));
                 SpringMass prevRowSpringMass = springMasses.get(new Coordinates(i - 1, j));
@@ -68,12 +68,10 @@ public class GridSpringMassSystem {
         }
     }
 
-    public void update(float dt) throws Exception {
+    public void update(Ball ball, float dt) throws Exception {
         for (Map.Entry<Coordinates, SpringMass> s : springMasses.entrySet()) {
-            s.getValue().parallelizableUpdate();
-        }
-        for (Map.Entry<Coordinates, SpringMass> s : springMasses.entrySet()) {
-            s.getValue().parallelizableIntegrate(dt);
+            s.getValue().update(ball);
+            s.getValue().eularianIntegrate(dt);
         }
     }
 
