@@ -23,7 +23,7 @@ public class Main extends PApplet {
 //        liamCam = new LiamCam(this);
         queasyCam = new QueasyCam(this);
 
-        gridSpringMassSystem = new GridSpringMassSystem(this, 30, 30, 10, 2, 500, 1000f);
+        gridSpringMassSystem = new GridSpringMassSystem(this, 30, 30, 10, 2, 500, 1000f, loadImage("aladdin-s-carpet.jpeg"));
         ball = new Ball(this, 10, Vec3.of(0, 20, -80), Vec3.of(0, 128, 0));
     }
 
