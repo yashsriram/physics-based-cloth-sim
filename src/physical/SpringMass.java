@@ -54,7 +54,7 @@ public class SpringMass {
         this.isFixed = isFixed;
     }
 
-    public void parallelUpdate() throws Exception {
+    public void update() throws Exception {
         if (isFixed) {
             return;
         }
@@ -67,7 +67,30 @@ public class SpringMass {
         acceleration = acceleration.plus(velocity.scale(-1 * airDragConstant));
     }
 
-    public void integrate(float dt) {
+    public void update(Ball ball) throws Exception {
+        if (isFixed) {
+            return;
+        }
+        Vec3 totalSpringForce = Vec3.zero();
+        for (Spring spring : springs) {
+            totalSpringForce = totalSpringForce.plus(spring.forceOn(this));
+        }
+        acceleration = totalSpringForce.scale(1 / mass);
+        acceleration = acceleration.plus(gravity);
+        acceleration = acceleration.plus(velocity.scale(-1 * airDragConstant));
+        // mass ball interaction
+        Vec3 ballToMass = position.minus(ball.position);
+        Vec3 ballToMassUnit = ballToMass.unit();
+        if (ballToMass.abs() <= ball.radius + 1) {
+            // net force along normal should be 0
+            acceleration = acceleration.minus(ballToMassUnit.scale(ballToMassUnit.dot(acceleration)));
+            // mass should not be inside ball and velocity along the normal should be 0
+            position = ball.position.plus(ballToMassUnit.scale(ball.radius + 1));
+            velocity = velocity.minus(ballToMassUnit.scale(ballToMassUnit.dot(velocity)));
+        }
+    }
+
+    public void eularianIntegrate(float dt) {
         position = position.plus(velocity.scale(dt));
         velocity = velocity.plus(acceleration.scale(dt));
     }
