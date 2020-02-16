@@ -1,6 +1,6 @@
 import camera.QueasyCam;
 import linalg.Vec3;
-import physical.Ball;
+import physical.UserControlledBall;
 import physical.GridSpringMassSystem;
 import processing.core.PApplet;
 
@@ -10,7 +10,7 @@ public class Main extends PApplet {
 
     //    private LiamCam liamCam;
     private QueasyCam queasyCam;
-    private Ball ball;
+    private UserControlledBall userControlledBall;
 
     private GridSpringMassSystem gridSpringMassSystem;
 
@@ -24,7 +24,7 @@ public class Main extends PApplet {
         queasyCam = new QueasyCam(this);
 
         gridSpringMassSystem = new GridSpringMassSystem(this, 30, 30, 10, 2, 500, 1000f, loadImage("aladdin-s-carpet.jpeg"));
-        ball = new Ball(this, 10, Vec3.of(0, 20, -80), Vec3.of(0, 128, 0));
+        userControlledBall = new UserControlledBall(this, 10, Vec3.of(0, 20, -80), Vec3.of(0, 128, 0));
     }
 
     public void draw() {
@@ -34,29 +34,29 @@ public class Main extends PApplet {
         if (keyPressed) {
             switch (key) {
                 case '8':
-                    ball.update(Vec3.of(0, 0, -10), 0.05f);
+                    userControlledBall.update(Vec3.of(0, 0, -10), 0.05f);
                     break;
                 case '5':
-                    ball.update(Vec3.of(0, 0, 10), 0.05f);
+                    userControlledBall.update(Vec3.of(0, 0, 10), 0.05f);
                     break;
                 case '4':
-                    ball.update(Vec3.of(-10, 0, 0), 0.05f);
+                    userControlledBall.update(Vec3.of(-10, 0, 0), 0.05f);
                     break;
                 case '6':
-                    ball.update(Vec3.of(10, 0, 0), 0.05f);
+                    userControlledBall.update(Vec3.of(10, 0, 0), 0.05f);
                     break;
                 case '7':
-                    ball.update(Vec3.of(0, 10, 0), 0.05f);
+                    userControlledBall.update(Vec3.of(0, 10, 0), 0.05f);
                     break;
                 case '9':
-                    ball.update(Vec3.of(0, -10, 0), 0.05f);
+                    userControlledBall.update(Vec3.of(0, -10, 0), 0.05f);
                     break;
             }
         }
         // cloth update
         try {
             for (int i = 0; i < 140; ++i) {
-                gridSpringMassSystem.update(ball, 0.002f);
+                gridSpringMassSystem.update(userControlledBall, 0.002f);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,7 +65,7 @@ public class Main extends PApplet {
 
         background(0);
         gridSpringMassSystem.draw();
-        ball.draw();
+        userControlledBall.draw();
         long draw = millis();
         surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms");
     }

@@ -77,9 +77,9 @@ public class GridSpringMassSystem {
         }
     }
 
-    public void update(Ball ball, float dt) throws Exception {
+    public void update(UserControlledBall userControlledBall, float dt) throws Exception {
         for (Map.Entry<Coordinates, SpringMass> s : springMasses.entrySet()) {
-            s.getValue().update(ball);
+            s.getValue().update(userControlledBall);
             s.getValue().eularianIntegrate(dt);
         }
     }

@@ -66,7 +66,7 @@ public class SpringMass {
         acceleration = acceleration.plus(velocity.scale(-1 * airDragConstant));
     }
 
-    public void update(Ball ball) throws Exception {
+    public void update(UserControlledBall userControlledBall) throws Exception {
         if (isFixed) {
             return;
         }
@@ -78,14 +78,14 @@ public class SpringMass {
         acceleration = acceleration.plus(gravity);
         acceleration = acceleration.plus(velocity.scale(-1 * airDragConstant));
         // mass ball interaction
-        Vec3 ballToMass = position.minus(ball.position);
+        Vec3 ballToMass = position.minus(userControlledBall.position);
         Vec3 ballToMassUnit = ballToMass.unit();
-        if (ballToMass.abs() <= ball.radius + 1) {
+        if (ballToMass.abs() <= userControlledBall.radius + 1) {
             // net force along normal should be 0
             acceleration = acceleration.minus(ballToMassUnit.scale(ballToMassUnit.dot(acceleration)));
             acceleration = acceleration.scale(ballFrictionConstant);
             // mass should not be inside ball and velocity along the normal should be 0
-            position = ball.position.plus(ballToMassUnit.scale(ball.radius + 1));
+            position = userControlledBall.position.plus(ballToMassUnit.scale(userControlledBall.radius + 1));
             velocity = velocity.minus(ballToMassUnit.scale(ballToMassUnit.dot(velocity)));
         }
     }

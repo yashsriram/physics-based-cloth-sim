@@ -3,13 +3,13 @@ package physical;
 import linalg.Vec3;
 import processing.core.PApplet;
 
-public class Ball {
+public class UserControlledBall {
     final PApplet parent;
     float radius;
     Vec3 position;
     Vec3 color;
 
-    public Ball(PApplet parent, float radius, Vec3 position, Vec3 color) {
+    public UserControlledBall(PApplet parent, float radius, Vec3 position, Vec3 color) {
         this.parent = parent;
         this.radius = radius;
         this.position = position;
