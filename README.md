@@ -12,7 +12,9 @@
 
 # Compilation (on windows)
 - Use ant for building. Install ant.
-- Open a terminal in current directory and run `ant compile && java -cp "bin/;jars/*" Main`
+- Open a terminal in current directory and run `ant compile` to build the project.
+- To execute the **full cloth simulation** run this command next `java -cp "bin/;jars/*" Main`
+- To execute the **check-in simulation** run this command `java -cp "bin/;jars/*" Checkin`
 
 # Libraries used
 - Queasy cam
