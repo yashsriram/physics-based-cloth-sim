@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpringMass {
+    public static Vec3 gravity = Vec3.of(0, .5, 0);
     private static int nextId = 1;
-    private static final Vec3 gravity = Vec3.of(0, .5, 0);
     private static final float airDragConstant = 0.1f;
     private static final float ballFrictionConstant = 0.7f;
 
