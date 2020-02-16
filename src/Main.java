@@ -1,7 +1,7 @@
 import camera.QueasyCam;
 import linalg.Vec3;
-import physical.UserControlledBall;
 import physical.GridSpringMassSystem;
+import physical.UserControlledBall;
 import processing.core.PApplet;
 
 public class Main extends PApplet {
@@ -23,7 +23,14 @@ public class Main extends PApplet {
 //        liamCam = new LiamCam(this);
         queasyCam = new QueasyCam(this);
 
-        gridSpringMassSystem = new GridSpringMassSystem(this, 30, 30, 10, 2, 500, 1000f, loadImage("aladdin-s-carpet.jpeg"));
+        gridSpringMassSystem = new GridSpringMassSystem(
+                this,
+                30, 30,
+                10,
+                2, 500, 1000f, loadImage("aladdin-s-carpet.jpeg"),
+                1.5f, -50f, -50f, -100f,
+                (i, j, m, n) -> ((i == 0 || i == m - 1) && (j == n - 1 || j % 5 == 0)),
+                GridSpringMassSystem.Layout.ZX);
         userControlledBall = new UserControlledBall(this, 10, Vec3.of(0, 20, -80), Vec3.of(0, 128, 0));
     }
 

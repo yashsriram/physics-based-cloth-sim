@@ -3,11 +3,10 @@ package linalg;
 import java.util.ArrayList;
 import java.util.List;
 
-enum Axis {
-    X, Y, Z
-}
-
 class Mat4 {
+    public enum Axis {
+        X, Y, Z
+    }
     private static final int nR = 4;
     private static final int nC = 4;
 
