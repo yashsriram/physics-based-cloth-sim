@@ -29,7 +29,7 @@ public class ClothFallingOnObject extends PApplet {
                 1f, -30, -50f, -30f,
                 (i, j, m, n) -> (false),
                 GridSpringMassSystem.Layout.ZX);
-        ball = new Ball(this, 10, Vec3.of(0, 0, 0), Vec3.of(255, 255, 0));
+        ball = new Ball(this, 1, 10, Vec3.of(0, 0, 0), Vec3.of(255, 255, 0));
     }
 
     public void draw() {

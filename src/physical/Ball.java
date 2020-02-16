@@ -6,23 +6,25 @@ import processing.core.PApplet;
 public class Ball {
     final static Vec3 gravity = Vec3.of(0, .5, 0);
     final PApplet parent;
+    float mass;
     float radius;
     final Vec3 initialPosition;
     Vec3 position;
     Vec3 velocity;
-    Vec3 acceleration;
     Vec3 color;
     boolean isPaused;
+    Vec3 springMassForce;
 
-    public Ball(PApplet parent, float radius, Vec3 position, Vec3 color) {
+    public Ball(PApplet parent, float mass, float radius, Vec3 position, Vec3 color) {
         this.parent = parent;
+        this.mass = mass;
         this.radius = radius;
         this.initialPosition = position;
         this.position = position;
         this.velocity = Vec3.zero();
-        this.acceleration = gravity;
         this.color = color;
         this.isPaused = true;
+        this.springMassForce = Vec3.zero();
     }
 
     public void update(float dt) {
@@ -66,6 +68,8 @@ public class Ball {
 
     private void eularianIntegrate(float dt) {
         position = position.plus(velocity.scale(dt));
+        Vec3 totalForce = springMassForce.plus(gravity.scale(mass));
+        Vec3 acceleration = totalForce.scale(1 / mass);
         velocity = velocity.plus(acceleration.scale(dt));
     }
 
@@ -82,7 +86,12 @@ public class Ball {
         parent.popMatrix();
     }
 
-    public void accumulateForce(Vec3 force) {
-
+    public void accumulateSpringMassForce(Vec3 force) {
+        springMassForce = springMassForce.plus(force);
     }
+
+    public void clearSpringMassForce() {
+        springMassForce = Vec3.zero();
+    }
+
 }

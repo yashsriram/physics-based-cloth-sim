@@ -1,7 +1,7 @@
 import camera.QueasyCam;
 import linalg.Vec3;
-import physical.GridSpringMassSystem;
 import physical.Ball;
+import physical.GridSpringMassSystem;
 import processing.core.PApplet;
 
 public class Main extends PApplet {
@@ -31,7 +31,7 @@ public class Main extends PApplet {
                 1f, -100, 30f, -30f,
                 (i, j, m, n) -> ((j == 0 || j == n - 1) && (i == m - 1 || i % 5 == 0)),
                 GridSpringMassSystem.Layout.ZX);
-        ball = new Ball(this, 10, Vec3.of(-70, 0, 0), Vec3.of(255, 255, 0));
+        ball = new Ball(this, 1000, 10, Vec3.of(-70, 0, 0), Vec3.of(255, 255, 0));
     }
 
     public void draw() {
@@ -41,6 +41,7 @@ public class Main extends PApplet {
         // update
         try {
             for (int i = 0; i < 140; ++i) {
+                ball.clearSpringMassForce();
                 gridSpringMassSystem.update(ball, 0.002f);
                 ball.update(0.002f);
             }

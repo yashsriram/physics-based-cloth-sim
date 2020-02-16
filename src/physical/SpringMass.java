@@ -75,7 +75,7 @@ public class SpringMass {
             // Ball is paused => It exerts enough normal force on mass to cancel the normal component of total force
             Vec3 totalForceAlongNormalDir = massToBallUnit.scale(massToBallUnit.dot(totalForce));
             totalForce = totalForce.minus(totalForceAlongNormalDir);
-            ball.accumulateForce(totalForceAlongNormalDir);
+            ball.accumulateSpringMassForce(totalForceAlongNormalDir);
             // Force along tangent is reduced due to friction
             totalForce = totalForce.scale(ballFrictionConstant);
             // Mass should not be inside ball and velocity along the normal should be 0
