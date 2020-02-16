@@ -37,29 +37,6 @@ public class Main extends PApplet {
     public void draw() {
 //        liamCam.Update(1.0f / frameRate);
         long start = millis();
-        // ball update
-        if (keyPressed) {
-            switch (key) {
-                case '8':
-                    userControlledBall.update(Vec3.of(0, 0, -10), 0.05f);
-                    break;
-                case '5':
-                    userControlledBall.update(Vec3.of(0, 0, 10), 0.05f);
-                    break;
-                case '4':
-                    userControlledBall.update(Vec3.of(-10, 0, 0), 0.05f);
-                    break;
-                case '6':
-                    userControlledBall.update(Vec3.of(10, 0, 0), 0.05f);
-                    break;
-                case '7':
-                    userControlledBall.update(Vec3.of(0, 10, 0), 0.05f);
-                    break;
-                case '9':
-                    userControlledBall.update(Vec3.of(0, -10, 0), 0.05f);
-                    break;
-            }
-        }
         // cloth update
         try {
             for (int i = 0; i < 140; ++i) {
@@ -72,7 +49,6 @@ public class Main extends PApplet {
 
         background(0);
         gridSpringMassSystem.draw();
-        userControlledBall.draw();
         long draw = millis();
         surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms");
     }
