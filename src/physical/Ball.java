@@ -3,8 +3,8 @@ package physical;
 import linalg.Vec3;
 import processing.core.PApplet;
 
-public class UserControlledBall {
-    final static Vec3 gravity = Vec3.of(0, 5, 0);
+public class Ball {
+    final static Vec3 gravity = Vec3.of(0, .5, 0);
     final PApplet parent;
     float radius;
     final Vec3 initialPosition;
@@ -12,9 +12,9 @@ public class UserControlledBall {
     Vec3 velocity;
     Vec3 acceleration;
     Vec3 color;
-    boolean isUnderFreeFall;
+    boolean isPaused;
 
-    public UserControlledBall(PApplet parent, float radius, Vec3 position, Vec3 color) {
+    public Ball(PApplet parent, float radius, Vec3 position, Vec3 color) {
         this.parent = parent;
         this.radius = radius;
         this.initialPosition = position;
@@ -22,48 +22,58 @@ public class UserControlledBall {
         this.velocity = Vec3.zero();
         this.acceleration = gravity;
         this.color = color;
-        this.isUnderFreeFall = false;
-        parent.registerMethod("draw", this);
+        this.isPaused = true;
     }
 
-    public void draw() {
+    public void update(float dt) {
         if (parent.keyPressed) {
             switch (parent.key) {
                 case '8':
-                    update(Vec3.of(0, 0, -10), 0.05f);
+                    eularianIntegrate(Vec3.of(0, 0, -1), dt);
                     break;
                 case '5':
-                    update(Vec3.of(0, 0, 10), 0.05f);
+                    eularianIntegrate(Vec3.of(0, 0, 1), dt);
                     break;
                 case '4':
-                    update(Vec3.of(-10, 0, 0), 0.05f);
+                    eularianIntegrate(Vec3.of(-1, 0, 0), dt);
                     break;
                 case '6':
-                    update(Vec3.of(10, 0, 0), 0.05f);
+                    eularianIntegrate(Vec3.of(1, 0, 0), dt);
                     break;
                 case '7':
-                    update(Vec3.of(0, 10, 0), 0.05f);
+                    eularianIntegrate(Vec3.of(0, 1, 0), dt);
                     break;
                 case '9':
-                    update(Vec3.of(0, -10, 0), 0.05f);
+                    eularianIntegrate(Vec3.of(0, -1, 0), dt);
                     break;
                 case 'r':
                     position = initialPosition;
                     velocity = Vec3.zero();
-                    isUnderFreeFall = false;
+                    isPaused = true;
                     break;
                 case 'g':
-                    isUnderFreeFall = true;
+                    isPaused = false;
                     break;
                 case 'h':
-                    isUnderFreeFall = false;
+                    isPaused = true;
                     break;
             }
         }
-        if (isUnderFreeFall) {
-            update(0.05f);
+        if (!isPaused) {
+            eularianIntegrate(dt);
         }
+    }
 
+    private void eularianIntegrate(float dt) {
+        position = position.plus(velocity.scale(dt));
+        velocity = velocity.plus(acceleration.scale(dt));
+    }
+
+    private void eularianIntegrate(Vec3 instantaneousVelocity, float dt) {
+        position = position.plus(instantaneousVelocity.scale(dt));
+    }
+
+    public void draw() {
         parent.pushMatrix();
         parent.noStroke();
         parent.fill(color.x, color.y, color.z);
@@ -72,12 +82,7 @@ public class UserControlledBall {
         parent.popMatrix();
     }
 
-    private void update(Vec3 instantaneousVelocity, float dt) {
-        position = position.plus(instantaneousVelocity.scale(dt));
-    }
+    public void accumulateForce(Vec3 force) {
 
-    private void update(float dt) {
-        position = position.plus(velocity.scale(dt));
-        velocity = velocity.plus(acceleration.scale(dt));
     }
 }
