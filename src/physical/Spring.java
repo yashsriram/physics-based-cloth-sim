@@ -10,6 +10,7 @@ public class Spring {
     private float dampConstant;
     private SpringMass m1;
     private SpringMass m2;
+    private boolean broken = false;
 
     public Spring(PApplet parent, float restLength, float forceConstant, float dampConstant, SpringMass m1, SpringMass m2) {
         this.parent = parent;
@@ -23,6 +24,9 @@ public class Spring {
     }
 
     public Vec3 forceOn(SpringMass m) throws Exception {
+    	if(this.broken) {
+    		return Vec3.zero();
+    	}
         Vec3 lengthVector = Vec3.zero();
         SpringMass mOther = m;
         if (m.id == m1.id) {
@@ -51,6 +55,13 @@ public class Spring {
     public void draw() {
         parent.stroke(255);
         parent.line(m1.position.x, m1.position.y, m1.position.z, m2.position.x, m2.position.y, m2.position.z);
+    }
+    
+    public void setBroken() {
+    	this.broken = true;
+    }
+    public void resetBroken() {
+    	this.broken = false;
     }
 
 }

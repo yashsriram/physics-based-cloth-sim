@@ -27,6 +27,8 @@ public class GridSpringMassSystem {
     final PImage clothTexture;
 
     final Map<Coordinates, SpringMass> springMasses = new HashMap<>();
+    final Map<Coordinates, Spring> springMapVertical = new HashMap<>();
+    final Map<Coordinates, Spring> springMapHorizontal = new HashMap<>();
     final float mass;
 
     final List<Spring> springs = new ArrayList<>();
@@ -87,15 +89,33 @@ public class GridSpringMassSystem {
                 springMasses.put(Coordinates.of(i, j), currentSpringMass);
                 SpringMass prevColSpringMass = springMasses.get(Coordinates.of(i, j - 1));
                 SpringMass prevRowSpringMass = springMasses.get(Coordinates.of(i - 1, j));
+                
+                Spring spring = null;
                 if (i > 0) {
-                    springs.add(new Spring(parent, restLength, forceConstant, dampConstant, prevRowSpringMass, currentSpringMass));
+                    spring = new Spring(parent, restLength, forceConstant, dampConstant, prevRowSpringMass, currentSpringMass);
+                    springs.add(spring);
+                    springMapVertical.put(Coordinates.of(i, j), spring);
                 }
                 if (j > 0) {
-                    springs.add(new Spring(parent, restLength, forceConstant, dampConstant, prevColSpringMass, currentSpringMass));
+                    spring = new Spring(parent, restLength, forceConstant, dampConstant, prevColSpringMass, currentSpringMass);
+                    springs.add(spring);
+                    springMapHorizontal.put(Coordinates.of(i, j), spring);
                 }
             }
         }
     }
+    
+//    public void cutSpring(float mouseX, float mouseY) {
+//    	Spring s = null;
+//    	for(int i=1; i<m; i++) {
+//    		s = springMapVertical.get(Coordinates.of(i, n/2));
+//    		s.setBroken();
+//    	}
+//    	for(int j=1; j<n; j++) {
+//    		s = springMapHorizontal.get(Coordinates.of(m/2, j));
+//    		s.setBroken();
+//    	}
+//    }
 
     public void update(UserControlledBall userControlledBall, float dt) throws Exception {
         for (Map.Entry<Coordinates, SpringMass> s : springMasses.entrySet()) {

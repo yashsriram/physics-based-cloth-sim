@@ -22,6 +22,7 @@ public class Main extends PApplet {
         surface.setTitle("Processing");
 //        liamCam = new LiamCam(this);
         queasyCam = new QueasyCam(this);
+        queasyCam.sensitivity = 0;
 
         gridSpringMassSystem = new GridSpringMassSystem(
                 this,
@@ -54,7 +55,7 @@ public class Main extends PApplet {
 
         surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms");
     }
-
+    
     public void keyPressed() {
 //        liamCam.HandleKeyPressed();
     }
