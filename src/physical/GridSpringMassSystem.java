@@ -27,8 +27,6 @@ public class GridSpringMassSystem {
     final PImage clothTexture;
 
     final Map<Coordinates, SpringMass> springMasses = new HashMap<>();
-    final Map<Coordinates, Spring> springMapVertical = new HashMap<>();
-    final Map<Coordinates, Spring> springMapHorizontal = new HashMap<>();
     final float mass;
 
     final List<Spring> springs = new ArrayList<>();
@@ -90,32 +88,15 @@ public class GridSpringMassSystem {
                 SpringMass prevColSpringMass = springMasses.get(Coordinates.of(i, j - 1));
                 SpringMass prevRowSpringMass = springMasses.get(Coordinates.of(i - 1, j));
                 
-                Spring spring = null;
                 if (i > 0) {
-                    spring = new Spring(parent, restLength, forceConstant, dampConstant, prevRowSpringMass, currentSpringMass);
-                    springs.add(spring);
-                    springMapVertical.put(Coordinates.of(i, j), spring);
+                	springs.add(new Spring(parent, restLength, forceConstant, dampConstant, prevRowSpringMass, currentSpringMass));
                 }
                 if (j > 0) {
-                    spring = new Spring(parent, restLength, forceConstant, dampConstant, prevColSpringMass, currentSpringMass);
-                    springs.add(spring);
-                    springMapHorizontal.put(Coordinates.of(i, j), spring);
+                	springs.add(new Spring(parent, restLength, forceConstant, dampConstant, prevColSpringMass, currentSpringMass));
                 }
             }
         }
     }
-    
-//    public void cutSpring(float mouseX, float mouseY) {
-//    	Spring s = null;
-//    	for(int i=1; i<m; i++) {
-//    		s = springMapVertical.get(Coordinates.of(i, n/2));
-//    		s.setBroken();
-//    	}
-//    	for(int j=1; j<n; j++) {
-//    		s = springMapHorizontal.get(Coordinates.of(m/2, j));
-//    		s.setBroken();
-//    	}
-//    }
 
     public void update(Ball ball, float dt) throws Exception {
         for (Map.Entry<Coordinates, SpringMass> s : springMasses.entrySet()) {
@@ -133,13 +114,19 @@ public class GridSpringMassSystem {
             parent.texture(this.clothTexture);
             for (int j = 0; j < n; ++j) {
                 SpringMass sMass1 = springMasses.get(Coordinates.of(i, j));
+                SpringMass sMass2 = springMasses.get(Coordinates.of(i + 1, j));
+                
+                if(sMass1.getBroken() || sMass2.getBroken()) {
+                	parent.endShape();
+                	parent.beginShape(PConstants.TRIANGLE_STRIP);
+                    parent.texture(this.clothTexture);
+                    continue;
+                }
                 Vec3 pos1 = sMass1.position;
                 float u1 = PApplet.map(i, 0, m - 1, 0, 1);
                 float v = PApplet.map(j, 0, n - 1, 0, 1);
                 parent.vertex(pos1.x, pos1.y, pos1.z, u1, v);
                 
-                // The mass right below the previous mass in the grid
-                SpringMass sMass2 = springMasses.get(Coordinates.of(i + 1, j));
                 Vec3 pos2 = sMass2.position;
                 float u2 = PApplet.map(i + 1, 0, m - 1, 0, 1);
                 parent.vertex(pos2.x, pos2.y, pos2.z, u2, v);

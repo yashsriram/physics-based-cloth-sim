@@ -45,6 +45,16 @@ public class Spring {
         // spring on compression does not exert force
         Vec3 springForce = Vec3.zero();
         float extension = springLength - restLength;
+        if (extension > 10) {
+            for(Spring s : m1.springs) {
+            	s.setBroken();
+            }
+            m1.setBroken();
+            for(Spring s : m2.springs) {
+            	s.setBroken();
+            }
+            m2.setBroken();
+        }
         if (extension > 0) {
             springForce = forceDir.scale(forceConstant * (extension));
         }
@@ -53,7 +63,12 @@ public class Spring {
     }
 
     public void draw() {
-        parent.stroke(255);
+    	parent.strokeWeight(2);
+    	if(this.broken) {
+    		parent.stroke(255,0,0,255);
+    	}else {
+    		parent.stroke(0,255,0,255);
+    	}
         parent.line(m1.position.x, m1.position.y, m1.position.z, m2.position.x, m2.position.y, m2.position.z);
     }
     

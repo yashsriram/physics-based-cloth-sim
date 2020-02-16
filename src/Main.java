@@ -22,7 +22,7 @@ public class Main extends PApplet {
         surface.setTitle("Processing");
 //        liamCam = new LiamCam(this);
         queasyCam = new QueasyCam(this);
-        queasyCam.sensitivity = 0;
+        queasyCam.sensitivity = 0.25f;
 
         gridSpringMassSystem = new GridSpringMassSystem(
                 this,
