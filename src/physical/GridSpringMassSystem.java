@@ -55,7 +55,6 @@ public class GridSpringMassSystem {
         this.dampConstant = dampConstant;
         this.clothTexture = clothTexture;
 
-
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
                 boolean isFixed = (i == 0 && (j == n - 1 || j % 5 == 0));
@@ -93,15 +92,16 @@ public class GridSpringMassSystem {
             parent.texture(this.clothTexture);
             for (int j = 0; j < n; ++j) {
                 SpringMass sMass1 = springMasses.get(new Coordinates(i, j));
-                Vec3 px1 = sMass1.position;
+                Vec3 pos1 = sMass1.position;
                 float u1 = PApplet.map(i, 0, m - 1, 0, 1);
                 float v = PApplet.map(j, 0, n - 1, 0, 1);
-                parent.vertex(px1.x, px1.y, px1.z, u1, v);
+                parent.vertex(pos1.x, pos1.y, pos1.z, u1, v);
 
+                // The mass right below the previous mass in the grid
                 SpringMass sMass2 = springMasses.get(new Coordinates(i + 1, j));
-                Vec3 px2 = sMass2.position;
+                Vec3 pos2 = sMass2.position;
                 float u2 = PApplet.map(i + 1, 0, m - 1, 0, 1);
-                parent.vertex(px2.x, px2.y, px2.z, u2, v);
+                parent.vertex(pos2.x, pos2.y, pos2.z, u2, v);
             }
             parent.endShape();
         }
