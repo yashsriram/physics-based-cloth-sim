@@ -27,24 +27,9 @@ public class SpringMass {
     Vec3 acceleration;
     boolean isFixed;
     List<Spring> springs = new ArrayList<>();
-    PImage clothTexture;
 
     public SpringMass(PApplet parent, float mass, Vec3 position, Vec3 velocity, Vec3 acceleration, boolean isFixed) {
     	this.parent = parent;
-        this.id = nextId();
-        this.mass = mass;
-        this.position = position;
-        this.velocity = velocity;
-        this.acceleration = acceleration;
-        this.isFixed = isFixed;
-    }
-
-	public SpringMass(PApplet parent, float mass,
-					  Vec3 position, Vec3 velocity,
-					  Vec3 acceleration, boolean isFixed,
-					  PImage clothTexture, int px, int py) {
-        this.clothTexture = clothTexture;
-        this.parent = parent;
         this.id = nextId();
         this.mass = mass;
         this.position = position;
@@ -77,12 +62,13 @@ public class SpringMass {
         acceleration = totalSpringForce.scale(1 / mass);
         acceleration = acceleration.plus(gravity);
         acceleration = acceleration.plus(velocity.scale(-1 * airDragConstant));
-        // mass ball interaction
+        // mass user controlled ball interaction
         Vec3 ballToMass = position.minus(userControlledBall.position);
         Vec3 ballToMassUnit = ballToMass.unit();
         if (ballToMass.abs() <= userControlledBall.radius + 1) {
             // net force along normal should be 0
             acceleration = acceleration.minus(ballToMassUnit.scale(ballToMassUnit.dot(acceleration)));
+            // net force along tangent is reduced due to friction
             acceleration = acceleration.scale(ballFrictionConstant);
             // mass should not be inside ball and velocity along the normal should be 0
             position = userControlledBall.position.plus(ballToMassUnit.scale(userControlledBall.radius + 1));
@@ -101,13 +87,6 @@ public class SpringMass {
             parent.stroke(0, 255, 0);
             parent.point(position.x, position.y, position.z);
             parent.popMatrix();
-        } else {
-//            parent.pushMatrix();
-//            parent.translate(position.x, position.y, position.z);
-//            parent.fill(255, 100, 0);
-//            parent.box(3);
-//            parent.popMatrix();
         }
-        
     }
 }

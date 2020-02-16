@@ -38,6 +38,7 @@ public class Spring {
         }
         float springLength = lengthVector.abs();
         Vec3 forceDir = lengthVector.unit();
+        // spring on compression does not exert force
         Vec3 springForce = Vec3.zero();
         float extension = springLength - restLength;
         if (extension > 0) {
