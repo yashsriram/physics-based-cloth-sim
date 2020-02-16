@@ -28,10 +28,10 @@ public class Main extends PApplet {
                 30, 30,
                 10,
                 2, 500, 1000f, loadImage("aladdin-s-carpet.jpeg"),
-                1f, -30, -50f, -30f,
-                (i, j, m, n) -> ((i == 0 || i == m - 1) && (j == n - 1 || j % 5 == 0)),
+                1f, -100, 30f, -30f,
+                (i, j, m, n) -> ((j == 0 || j == n - 1) && (i == m - 1 || i % 5 == 0)),
                 GridSpringMassSystem.Layout.ZX);
-        ball = new Ball(this, 10, Vec3.of(0, 0, 0), Vec3.of(255, 255, 0));
+        ball = new Ball(this, 10, Vec3.of(-70, 0, 0), Vec3.of(255, 255, 0));
     }
 
     public void draw() {
