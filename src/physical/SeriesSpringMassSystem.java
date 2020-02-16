@@ -21,10 +21,12 @@ public class SeriesSpringMassSystem {
         this.restLength = restLength;
         this.forceConstant = forceConstant;
         this.dampConstant = dampConstant;
-
+        
+        int rdm = ((int)parent.random(5f) % 2 == 0) ? -1 : 1;
+        Vec3 displacement = Vec3.of(20, 0, 0).scale(rdm);
         for (int i = 0; i < numMasses; ++i) {
             boolean isFixed = i == 0;
-            addMass(new SpringMass(parent, mass, initialPoint.plus(Vec3.sphereRandom(5f).scale(i)), Vec3.zero(), Vec3.zero(), isFixed));
+            addMass(new SpringMass(parent, mass, initialPoint.plus(displacement.scale(i)), Vec3.zero(), Vec3.zero(), isFixed));
         }
     }
 

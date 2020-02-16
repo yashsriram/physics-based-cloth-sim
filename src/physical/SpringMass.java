@@ -2,6 +2,7 @@ package physical;
 
 import linalg.Vec3;
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PImage;
 
 import java.util.ArrayList;
@@ -84,9 +85,19 @@ public class SpringMass {
     public void draw() {
         if (!this.isFixed) {
             parent.pushMatrix();
-            parent.stroke(0, 255, 0);
-            parent.point(position.x, position.y, position.z);
+            parent.stroke(80, 204, 133);
+            parent.translate(position.x, position.y, position.z);
+            parent.sphere(2);
             parent.popMatrix();
+        }else {
+        	parent.fill(150);
+        	parent.stroke(150);
+        	parent.beginShape(PConstants.QUAD);
+        	parent.vertex(position.x+3, position.y, position.z+3);
+        	parent.vertex(position.x-3, position.y, position.z+3);
+        	parent.vertex(position.x-3, position.y, position.z-3);
+        	parent.vertex(position.x+3, position.y, position.z-3);
+        	parent.endShape(PConstants.CLOSE);
         }
     }
 }
