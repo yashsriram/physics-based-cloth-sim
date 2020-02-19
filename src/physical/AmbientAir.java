@@ -3,7 +3,7 @@ package physical;
 import linalg.Vec3;
 
 public class AmbientAir {
-	float density = 0.01f;
+	float density = 0.05f;
 	float dragCoeff = 1f;
 	Vec3 windDirection = Vec3.of(0,0,1);
 	public float windSpeed = 0;

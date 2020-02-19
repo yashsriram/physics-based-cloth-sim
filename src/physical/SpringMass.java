@@ -55,7 +55,7 @@ public class SpringMass {
         Vec3 airDrag = velocity.scale(-1 * airDragConstant * mass);
         Vec3 totalForce = totalSpringForce.plus(weight).plus(airDrag);
         if(dragForceCount > 0) {
-        	totalForce = totalForce.plus(dragForce.scale( (float)1/dragForceCount  ));
+        	totalForce = totalForce.plus(dragForce.scale(1f/dragForceCount));
         }
     	// reset to 0 for the next iteration.
     	this.resetDragForce();
@@ -76,7 +76,7 @@ public class SpringMass {
         Vec3 airDrag = velocity.scale(-1 * airDragConstant * mass);
         Vec3 totalForce = totalSpringForce.plus(weight).plus(airDrag);
         if(dragForceCount > 0) {
-        	totalForce = totalForce.plus(dragForce.scale( (float)1/dragForceCount  ));
+        	totalForce = totalForce.plus(dragForce.scale(1f/dragForceCount));
         }
         
         // Mass user controlled ball interaction
