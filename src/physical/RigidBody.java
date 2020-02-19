@@ -1,9 +1,12 @@
 package physical;
 
-import linalg.Quaternion;
 import linalg.Vec3;
+import processing.core.PApplet;
+import processing.core.PMatrix3D;
 
 public class RigidBody {
+    final PApplet parent;
+
     float mass;
 
     // translational
@@ -12,11 +15,12 @@ public class RigidBody {
     Vec3 acceleration;
 
     // rotational
-    Quaternion orientation;
     Vec3 angularVelocity;
     Vec3 angularAcceleration;
+    PMatrix3D orientation;
 
-    public RigidBody(float mass, Vec3 position, Vec3 velocity, Vec3 acceleration, Quaternion orientation, Vec3 angularVelocity, Vec3 angularAcceleration) {
+    public RigidBody(PApplet parent, float mass, Vec3 position, Vec3 velocity, Vec3 acceleration, PMatrix3D orientation, Vec3 angularVelocity, Vec3 angularAcceleration) {
+        this.parent = parent;
         this.mass = mass;
         this.position = position;
         this.velocity = velocity;
@@ -25,4 +29,30 @@ public class RigidBody {
         this.angularVelocity = angularVelocity;
         this.angularAcceleration = angularAcceleration;
     }
+
+    public void update(float dt) {
+        firstOrderIntegration(dt);
+    }
+
+    private void firstOrderIntegration(float dt) {
+        // translation
+        position = position.plus(velocity.scale(dt));
+        velocity = velocity.plus(acceleration.scale(dt));
+
+        // orientation
+        Vec3 angularVelocityDir = angularVelocity.unit();
+        orientation.rotate(angularVelocity.abs() * dt, angularVelocityDir.x, angularVelocityDir.y, angularVelocityDir.z);
+        angularVelocity = angularVelocity.plus(angularAcceleration.scale(dt));
+    }
+
+    public void draw() {
+        parent.fill(255);
+        parent.stroke(0);
+        parent.pushMatrix();
+        parent.translate(position.x, position.y, position.z);
+        parent.applyMatrix(orientation);
+        parent.box(20);
+        parent.popMatrix();
+    }
+
 }
