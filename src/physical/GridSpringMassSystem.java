@@ -1,15 +1,12 @@
 package physical;
 
-import linalg.Coordinates;
+import java.util.ArrayList;
+import java.util.List;
+
 import linalg.Vec3;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 public class GridSpringMassSystem {
@@ -25,8 +22,7 @@ public class GridSpringMassSystem {
     final int m;
     final int n;
     final PImage clothTexture;
-
-    final Map<Coordinates, SpringMass> springMasses = new HashMap<>();
+    final ArrayList<ArrayList<SpringMass>> springMasses = new ArrayList<ArrayList<SpringMass>>();
     final float mass;
 
     final List<Spring> springs = new ArrayList<>();
@@ -52,6 +48,10 @@ public class GridSpringMassSystem {
         this.forceConstant = forceConstant;
         this.dampConstant = dampConstant;
         this.clothTexture = clothTexture;
+        
+        for (int i = 0; i < m; ++i) {
+        	springMasses.add(new ArrayList<SpringMass>());
+        }
 
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
@@ -86,14 +86,14 @@ public class GridSpringMassSystem {
                                 Vec3.zero(),
                                 fixedMassDecider.isFixed(i, j, m, n)
                         );
-                springMasses.put(Coordinates.of(i, j), currentSpringMass);
-                SpringMass prevColSpringMass = springMasses.get(Coordinates.of(i, j - 1));
-                SpringMass prevRowSpringMass = springMasses.get(Coordinates.of(i - 1, j));
-
+                
+                springMasses.get(i).add(currentSpringMass);
                 if (i > 0) {
+                	SpringMass prevRowSpringMass = springMasses.get(i-1).get(j);
                     springs.add(new Spring(parent, restLength, forceConstant, dampConstant, prevRowSpringMass, currentSpringMass));
                 }
                 if (j > 0) {
+                	SpringMass prevColSpringMass = springMasses.get(i).get(j-1);
                     springs.add(new Spring(parent, restLength, forceConstant, dampConstant, prevColSpringMass, currentSpringMass));
                 }
             }
@@ -106,17 +106,17 @@ public class GridSpringMassSystem {
         }
         for (int i = 0; i < m - 1; i++) {
             for (int j = 0; j < n; j++) {
-                SpringMass mass1 = springMasses.get(Coordinates.of(i, j));
-                SpringMass mass2 = springMasses.get(Coordinates.of(i + 1, j));
+                SpringMass mass1 = springMasses.get(i).get(j);
+                SpringMass mass2 = springMasses.get(i + 1).get(j);
                 if (j < n - 1) {
-                    SpringMass mass3 = springMasses.get(Coordinates.of(i, j + 1));
+                    SpringMass mass3 = springMasses.get(i).get(j + 1);
                     // x - *
                     // | /
                     // x
                     addDragToTriangle(mass1, mass2, mass3);
                 }
                 if (j > 0) {
-                    SpringMass mass4 = springMasses.get(Coordinates.of(i + 1, j - 1));
+                    SpringMass mass4 = springMasses.get(i + 1).get(j - 1);
                     //     x
                     //   / |
                     // * - x
@@ -132,16 +132,19 @@ public class GridSpringMassSystem {
         Vec3 normal = r12.cross(r13);
 
         Vec3 surfaceVelocity = mass1.velocity
-                .plus(mass2.velocity)
-                .plus(mass3.velocity)
-                .scale(1f / 3);
+					                .plus(mass2.velocity)
+					                .plus(mass3.velocity)
+					                .scale(1f / 3);
         Vec3 windVelocity = air.windDirection.scale(air.windSpeed);
         Vec3 relativeVelocity = surfaceVelocity.minus(windVelocity);
 
         float vSquareAN = relativeVelocity.dot(normal) * relativeVelocity.abs();
 
-        float scaleFactor = -0.5f * air.density * air.dragCoefficient * vSquareAN;
+        float scaleFactor = -0.5f * air.dragCoefficient * vSquareAN;
         Vec3 dragForce = normal.unit().scale(scaleFactor);
+        
+        Vec3 airFriction = relativeVelocity.scale(-1f * air.frictionCoefficient * mass1.mass);
+        dragForce.plusAccumulate(airFriction);
 
         mass1.addDragForce(dragForce);
         mass2.addDragForce(dragForce);
@@ -150,17 +153,26 @@ public class GridSpringMassSystem {
 
     public void update(Ball ball, float dt) throws Exception {
         addDragForces();
-        for (Map.Entry<Coordinates, SpringMass> s : springMasses.entrySet()) {
-            s.getValue().update(ball);
-            s.getValue().eularianIntegrate(dt);
+        SpringMass s = null;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+	            s = springMasses.get(i).get(j);
+	            s.update(ball);
+//	            s.eularianIntegrate(dt);
+	            s.secondOrderIntegrate(dt);
+            }
         }
     }
 
     public void update(float dt) throws Exception {
         addDragForces();
-        for (Map.Entry<Coordinates, SpringMass> s : springMasses.entrySet()) {
-            s.getValue().update();
-            s.getValue().eularianIntegrate(dt);
+        SpringMass s = null;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+	            s = springMasses.get(i).get(j);
+	            s.update();
+	            s.eularianIntegrate(dt);
+            }
         }
     }
 
@@ -172,8 +184,8 @@ public class GridSpringMassSystem {
             parent.beginShape(PConstants.TRIANGLE_STRIP);
             parent.texture(this.clothTexture);
             for (int j = 0; j < n; ++j) {
-                SpringMass sMass1 = springMasses.get(Coordinates.of(i, j));
-                SpringMass sMass2 = springMasses.get(Coordinates.of(i + 1, j));
+                SpringMass sMass1 = springMasses.get(i).get(j);
+                SpringMass sMass2 = springMasses.get(i + 1).get(j);
 
                 if (sMass1.getIsBroken() || sMass2.getIsBroken()) {
                     parent.endShape();
@@ -197,7 +209,7 @@ public class GridSpringMassSystem {
     public void startBurning() {
         int start_i = 0;
         int start_j = n;
-        SpringMass sMass = springMasses.get(Coordinates.of(start_i, start_j));
+        SpringMass sMass = springMasses.get(start_i).get(start_j);
         sMass.setIsBurning(true);
     }
 }

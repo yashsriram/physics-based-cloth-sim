@@ -67,14 +67,14 @@ public class Ball {
     }
 
     private void eularianIntegrate(float dt) {
-        position = position.plus(velocity.scale(dt));
+        position.plusAccumulate(velocity.scale(dt));
         Vec3 totalForce = springMassForce.plus(gravity.scale(mass));
         Vec3 acceleration = totalForce.scale(1 / mass);
-        velocity = velocity.plus(acceleration.scale(dt));
+        velocity.plusAccumulate(acceleration.scale(dt));
     }
 
     private void eularianIntegrate(Vec3 instantaneousVelocity, float dt) {
-        position = position.plus(instantaneousVelocity.scale(dt));
+        position.plusAccumulate(instantaneousVelocity.scale(dt));
     }
 
     public void draw() {
@@ -87,7 +87,7 @@ public class Ball {
     }
 
     public void accumulateSpringMassForce(Vec3 force) {
-        springMassForce = springMassForce.plus(force);
+        springMassForce.plusAccumulate(force);
     }
 
     public void clearSpringMassForce() {

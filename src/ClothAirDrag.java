@@ -29,10 +29,10 @@ public class ClothAirDrag extends PApplet {
                 30,
                 5, 400, 1500f, loadImage("aladdin-s-carpet.jpeg"),
                 1f, -20, -40f, -30f,
-                ((i, j, m, n) -> (j == 0 && (i % 3 == 0 || i == m - 1))),
+                ((i, j, m, n) -> (j == 0)),
                 GridSpringMassSystem.Layout.ZX);
 
-        gridSpringMassSystem.air = new AmbientAir(0.05f, 0.6f, Vec3.of(0, 0, 1), 0);
+        gridSpringMassSystem.air = new AmbientAir(0.08f, 0.08f, Vec3.of(0, 0, 1), 0);
         ball = new Ball(this, 1, 30, Vec3.of(50, 90, 0), Vec3.of(255, 255, 0));
     }
 
@@ -40,9 +40,9 @@ public class ClothAirDrag extends PApplet {
         long start = millis();
         // update
         try {
-            for (int i = 0; i < 80; ++i) {
-                gridSpringMassSystem.update(ball,0.0055f);
-                ball.update(0.0055f);
+            for (int i = 0; i < 100; ++i) {
+                gridSpringMassSystem.update(ball,0.006f);
+                ball.update(0.006f);
             }
         } catch (Exception e) {
             e.printStackTrace();

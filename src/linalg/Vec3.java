@@ -30,9 +30,21 @@ public class Vec3 {
     public Vec3 plus(Vec3 b) {
         return new Vec3(this.x + b.x, this.y + b.y, this.z + b.z);
     }
+    
+    public void plusAccumulate(Vec3 b) {
+        this.x += b.x;
+        this.y += b.y;
+        this.z += b.z;
+    }
 
     public Vec3 minus(Vec3 b) {
         return new Vec3(this.x - b.x, this.y - b.y, this.z - b.z);
+    }
+    
+    public void minusAccumulate(Vec3 b) {
+        this.x -= b.x;
+        this.y -= b.y;
+        this.z -= b.z;
     }
 
     public Vec3 scale(float t) {

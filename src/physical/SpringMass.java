@@ -10,7 +10,6 @@ import java.util.List;
 public class SpringMass {
     public static Vec3 gravity = Vec3.of(0, .5, 0);
     private static int nextId = 1;
-    private static final float airDragConstant = 0.042f;
     private static final float ballFrictionConstant = 0.7f;
 
     private static int nextId() {
@@ -52,8 +51,7 @@ public class SpringMass {
             totalSpringForce = totalSpringForce.plus(spring.forceOn(this));
         }
         Vec3 weight = gravity.scale(mass);
-        Vec3 airDrag = velocity.scale(-1 * airDragConstant * mass);
-        Vec3 totalForce = totalSpringForce.plus(weight).plus(airDrag);
+        Vec3 totalForce = totalSpringForce.plus(weight);
         if (dragForceCount > 0) {
             totalForce = totalForce.plus(dragForce.scale(1f / dragForceCount));
         }
@@ -70,14 +68,15 @@ public class SpringMass {
         // Calculate all forces
         Vec3 totalSpringForce = Vec3.zero();
         for (Spring spring : springs) {
-            totalSpringForce = totalSpringForce.plus(spring.forceOn(this));
+            totalSpringForce.plusAccumulate(spring.forceOn(this));
         }
         Vec3 weight = gravity.scale(mass);
-        Vec3 airDrag = velocity.scale(-1 * airDragConstant * mass);
-        Vec3 totalForce = totalSpringForce.plus(weight).plus(airDrag);
+        Vec3 totalForce = totalSpringForce.plus(weight);
         if (dragForceCount > 0) {
-            totalForce = totalForce.plus(dragForce.scale(1f / dragForceCount));
+            totalForce.plusAccumulate(dragForce.scale(1f / dragForceCount));
         }
+        // reset to 0 for the next iteration.
+        this.resetDragForce();
 
         // Mass user controlled ball interaction
         Vec3 ballToMass = position.minus(ball.position);
@@ -93,7 +92,7 @@ public class SpringMass {
             totalForce = totalForce.scale(ballFrictionConstant);
             // Mass should not be inside ball and velocity along the normal should be 0
             position = ball.position.plus(ballToMassUnit.scale(ball.radius + 1));
-            velocity = velocity.minus(ballToMassUnit.scale(ballToMassUnit.dot(velocity)));
+            velocity.minusAccumulate(ballToMassUnit.scale(ballToMassUnit.dot(velocity)));
         }
         // F = ma
         acceleration = totalForce.scale(1 / mass);
@@ -103,10 +102,18 @@ public class SpringMass {
         if (isBroken) {
             return;
         }
-        position = position.plus(velocity.scale(dt));
-        velocity = velocity.plus(acceleration.scale(dt));
+        position.plusAccumulate(velocity.scale(dt));
+        velocity.plusAccumulate(acceleration.scale(dt));
     }
-
+    
+    public void secondOrderIntegrate(float dt) {
+        if (isBroken) {
+            return;
+        }
+        position.plusAccumulate(velocity.scale(dt).plus(acceleration.scale(0.5f*dt*dt)));
+        velocity.plusAccumulate(acceleration.scale(dt));
+    }
+    
     public void draw() {
         if (!this.isFixed) {
             parent.pushMatrix();
@@ -132,7 +139,7 @@ public class SpringMass {
     }
 
     public void addDragForce(Vec3 force) {
-        this.dragForce = this.dragForce.plus(force);
+        this.dragForce.plusAccumulate(force);
         this.dragForceCount += 1;
     }
 
