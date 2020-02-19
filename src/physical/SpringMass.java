@@ -29,8 +29,8 @@ public class SpringMass {
     private boolean isBroken = false;
     List<Spring> springs = new ArrayList<>();
     Vec3 dragForce = Vec3.zero();
-	private boolean burning;
-	private int dragForceCount = 0;
+    private boolean isBurning;
+    private int dragForceCount = 0;
 
     public SpringMass(PApplet parent, float mass, Vec3 position, Vec3 velocity, Vec3 acceleration, boolean isFixed) {
         this.parent = parent;
@@ -54,11 +54,11 @@ public class SpringMass {
         Vec3 weight = gravity.scale(mass);
         Vec3 airDrag = velocity.scale(-1 * airDragConstant * mass);
         Vec3 totalForce = totalSpringForce.plus(weight).plus(airDrag);
-        if(dragForceCount > 0) {
-        	totalForce = totalForce.plus(dragForce.scale(1f/dragForceCount));
+        if (dragForceCount > 0) {
+            totalForce = totalForce.plus(dragForce.scale(1f / dragForceCount));
         }
-    	// reset to 0 for the next iteration.
-    	this.resetDragForce();
+        // reset to 0 for the next iteration.
+        this.resetDragForce();
         // F = ma
         acceleration = totalForce.scale(1 / mass);
     }
@@ -75,10 +75,10 @@ public class SpringMass {
         Vec3 weight = gravity.scale(mass);
         Vec3 airDrag = velocity.scale(-1 * airDragConstant * mass);
         Vec3 totalForce = totalSpringForce.plus(weight).plus(airDrag);
-        if(dragForceCount > 0) {
-        	totalForce = totalForce.plus(dragForce.scale(1f/dragForceCount));
+        if (dragForceCount > 0) {
+            totalForce = totalForce.plus(dragForce.scale(1f / dragForceCount));
         }
-        
+
         // Mass user controlled ball interaction
         Vec3 ballToMass = position.minus(ball.position);
         if (ballToMass.abs() <= ball.radius + 1) {
@@ -100,7 +100,9 @@ public class SpringMass {
     }
 
     public void eularianIntegrate(float dt) {
-    	if(isBroken) { return;}
+        if (isBroken) {
+            return;
+        }
         position = position.plus(velocity.scale(dt));
         velocity = velocity.plus(acceleration.scale(dt));
     }
@@ -123,30 +125,31 @@ public class SpringMass {
             parent.endShape(PConstants.CLOSE);
         }
     }
-    
+
     public void setDragForce(Vec3 force) {
-    	this.dragForce = force;
-    }
-    public void resetDragForce() {
-    	this.dragForce = Vec3.zero();
-    	this.dragForceCount = 0;
-    }
-    public void addDragForce(Vec3 force) {
-    	this.dragForce = this.dragForce.plus(force);
-    	this.dragForceCount += 1;
-    }
-    
-    public boolean getBroken() {
-    	return this.isBroken;
-    }
-    public void setBroken() {
-    	this.isBroken = true;
-    }
-    public void resetBroken() {
-    	this.isBroken = false;
+        this.dragForce = force;
     }
 
-	public void setBurning() {
-		this.burning = true;
-	}
+    public void resetDragForce() {
+        this.dragForce = Vec3.zero();
+        this.dragForceCount = 0;
+    }
+
+    public void addDragForce(Vec3 force) {
+        this.dragForce = this.dragForce.plus(force);
+        this.dragForceCount += 1;
+    }
+
+    public boolean getIsBroken() {
+        return this.isBroken;
+    }
+
+    public void setIsBroken(boolean isBroken) {
+        this.isBroken = isBroken;
+    }
+
+    public void setIsBurning(boolean isBurning) {
+        this.isBurning = isBurning;
+    }
+
 }

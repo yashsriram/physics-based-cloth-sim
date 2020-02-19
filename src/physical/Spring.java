@@ -24,9 +24,9 @@ public class Spring {
     }
 
     public Vec3 forceOn(SpringMass m) throws Exception {
-    	if(this.broken) {
-    		return Vec3.zero();
-    	}
+        if (this.broken) {
+            return Vec3.zero();
+        }
         Vec3 lengthVector = Vec3.zero();
         SpringMass mOther = m;
         if (m.id == m1.id) {
@@ -46,14 +46,14 @@ public class Spring {
         Vec3 springForce = Vec3.zero();
         float extension = springLength - restLength;
         if (extension > 10) {
-            for(Spring s : m1.springs) {
-            	s.setBroken();
+            for (Spring s : m1.springs) {
+                s.setBroken(true);
             }
-            m1.setBroken();
-            for(Spring s : m2.springs) {
-            	s.setBroken();
+            m1.setIsBroken(true);
+            for (Spring s : m2.springs) {
+                s.setBroken(true);
             }
-            m2.setBroken();
+            m2.setIsBroken(true);
         }
         if (extension > 0) {
             springForce = forceDir.scale(forceConstant * (extension));
@@ -63,20 +63,16 @@ public class Spring {
     }
 
     public void draw() {
-    	parent.strokeWeight(2);
-    	if(this.broken) {
-    		parent.stroke(255,0,0,255);
-    	}else {
-    		parent.stroke(0,255,0,255);
-    	}
+        parent.strokeWeight(2);
+        if (this.broken) {
+            parent.stroke(255, 0, 0, 255);
+        } else {
+            parent.stroke(0, 255, 0, 255);
+        }
         parent.line(m1.position.x, m1.position.y, m1.position.z, m2.position.x, m2.position.y, m2.position.z);
     }
-    
-    public void setBroken() {
-    	this.broken = true;
-    }
-    public void resetBroken() {
-    	this.broken = false;
-    }
 
+    public void setBroken(boolean isBroken) {
+        this.broken = isBroken;
+    }
 }

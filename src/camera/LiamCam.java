@@ -47,15 +47,15 @@ public class LiamCam {
 
         // cap the rotation about the X axis to be less than 90 degrees to avoid gimble lock
         float maxAngleInRadians = 85 * parent.PI / 180;
-        phi = parent.min(maxAngleInRadians, parent.max(-maxAngleInRadians, phi + turnSpeed * (negativeTurn.y + positiveTurn.y) * dt));
+        phi = PApplet.min(maxAngleInRadians, PApplet.max(-maxAngleInRadians, phi + turnSpeed * (negativeTurn.y + positiveTurn.y) * dt));
 
         // re-orienting the angles to match the wikipedia formulas: https://en.wikipedia.org/wiki/Spherical_coordinate_system
         // except that their theta and phi are named opposite
         float t = theta + parent.PI / 2;
         float p = phi + parent.PI / 2;
-        PVector forwardDir = new PVector(parent.sin(p) * parent.cos(t), parent.cos(p), -parent.sin(p) * parent.sin(t));
-        PVector upDir = new PVector(parent.sin(phi) * parent.cos(t), parent.cos(phi), -parent.sin(t) * parent.sin(phi));
-        PVector rightDir = new PVector(parent.cos(theta), 0, -parent.sin(theta));
+        PVector forwardDir = new PVector(PApplet.sin(p) * PApplet.cos(t), PApplet.cos(p), -PApplet.sin(p) * PApplet.sin(t));
+        PVector upDir = new PVector(PApplet.sin(phi) * PApplet.cos(t), PApplet.cos(phi), -PApplet.sin(t) * PApplet.sin(phi));
+        PVector rightDir = new PVector(PApplet.cos(theta), 0, -PApplet.sin(theta));
         PVector velocity = new PVector(negativeMovement.x + positiveMovement.x, negativeMovement.y + positiveMovement.y, negativeMovement.z + positiveMovement.z);
         position.add(PVector.mult(forwardDir, moveSpeed * velocity.z * dt));
         position.add(PVector.mult(upDir, moveSpeed * velocity.y * dt));

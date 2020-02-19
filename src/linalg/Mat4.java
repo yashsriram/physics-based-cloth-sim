@@ -7,6 +7,7 @@ class Mat4 {
     public enum Axis {
         X, Y, Z
     }
+
     private static final int nR = 4;
     private static final int nC = 4;
 
@@ -130,12 +131,12 @@ class Mat4 {
         Mat4 result = new Mat4();
 
         for (int i = 0; i < nR; ++i) {
-            for (int j = 0; j < m.nC; ++j) {
+            for (int j = 0; j < nC; ++j) {
                 float elementSum = 0;
                 for (int k = 0; k < nC; ++k) {
-                    elementSum += values.get(i * nC + k) * m.values.get(k * m.nC + j);
+                    elementSum += values.get(i * nC + k) * m.values.get(k * nC + j);
                 }
-                result.values.set(i * m.nC + j, elementSum);
+                result.values.set(i * nC + j, elementSum);
             }
         }
         return result;

@@ -1,7 +1,7 @@
 import camera.QueasyCam;
+import linalg.Vec3;
 import physical.AmbientAir;
 import physical.GridSpringMassSystem;
-import physical.GridSpringMassSystem.FixedMassDecider;
 import processing.core.PApplet;
 
 public class ClothAirDrag extends PApplet {
@@ -15,18 +15,11 @@ public class ClothAirDrag extends PApplet {
     public void settings() {
         size(WIDTH, HEIGHT, P3D);
     }
-    
-    public class FixClothHorizontalEdge implements FixedMassDecider{
-		@Override
-		public boolean isFixed(int i, int j, int m, int n) {
-			return (j==0);
-		}
-    }
 
     public void setup() {
-        surface.setTitle("Air Drag on Cloth");
+        surface.setTitle("Processing");
         queasyCam = new QueasyCam(this);
-        queasyCam.sensitivity = 0.25f;
+        queasyCam.sensitivity = 1f;
 
         gridSpringMassSystem = new GridSpringMassSystem(
                 this,
@@ -34,11 +27,10 @@ public class ClothAirDrag extends PApplet {
                 10,
                 2, 500, 1000f, loadImage("aladdin-s-carpet.jpeg"),
                 1f, -30, -50f, -30f,
-                new FixClothHorizontalEdge(),
+                ((i, j, m, n) -> (j == 0)),
                 GridSpringMassSystem.Layout.ZX);
-        
-        AmbientAir air = new AmbientAir();
-        gridSpringMassSystem.air = air;
+
+        gridSpringMassSystem.air = new AmbientAir(0.05f, 1f, Vec3.of(0, 0, 1), 0);
     }
 
     public void draw() {
@@ -59,15 +51,15 @@ public class ClothAirDrag extends PApplet {
 
         surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms");
     }
-    
+
     public void keyPressed() {
-    	if(key == '=') {
-    		gridSpringMassSystem.air.increaseSpeed(1f);
-    		println("wind speed is "+gridSpringMassSystem.air.windSpeed);
-    	}
-    	if(key == '-') {
-    		gridSpringMassSystem.air.decreaseSpeed(1f);
-    	}
+        if (key == '=') {
+            gridSpringMassSystem.air.increaseSpeed(1f);
+            println("wind speed is " + gridSpringMassSystem.air.windSpeed);
+        }
+        if (key == '-') {
+            gridSpringMassSystem.air.decreaseSpeed(1f);
+        }
     }
 
     static public void main(String[] passedArgs) {
