@@ -1,6 +1,7 @@
 import camera.QueasyCam;
 import linalg.Vec3;
 import physical.AmbientAir;
+import physical.Ball;
 import physical.GridSpringMassSystem;
 import processing.core.PApplet;
 
@@ -11,6 +12,7 @@ public class ClothAirDrag extends PApplet {
     private QueasyCam queasyCam;
 
     private GridSpringMassSystem gridSpringMassSystem;
+    private Ball ball;
 
     public void settings() {
         size(WIDTH, HEIGHT, P3D);
@@ -26,11 +28,12 @@ public class ClothAirDrag extends PApplet {
                 30, 30,
                 30,
                 5, 400, 1500f, loadImage("aladdin-s-carpet.jpeg"),
-                1f, -30, -20f, -30f,
-                ((i, j, m, n) -> (j == 0 && (i % 10 == 0 || i == m - 1))),
+                1f, -20, -40f, -30f,
+                ((i, j, m, n) -> (j == 0 && (i % 3 == 0 || i == m - 1))),
                 GridSpringMassSystem.Layout.ZX);
 
         gridSpringMassSystem.air = new AmbientAir(0.05f, 0.6f, Vec3.of(0, 0, 1), 0);
+        ball = new Ball(this, 1, 30, Vec3.of(50, 90, 0), Vec3.of(255, 255, 0));
     }
 
     public void draw() {
@@ -38,7 +41,8 @@ public class ClothAirDrag extends PApplet {
         // update
         try {
             for (int i = 0; i < 80; ++i) {
-                gridSpringMassSystem.update(0.0055f);
+                gridSpringMassSystem.update(ball,0.0055f);
+                ball.update(0.0055f);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,6 +51,7 @@ public class ClothAirDrag extends PApplet {
         // draw
         background(0);
         gridSpringMassSystem.draw();
+        ball.draw();
         long draw = millis();
 
         surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms" + " wind : " + gridSpringMassSystem.air.windSpeed);
