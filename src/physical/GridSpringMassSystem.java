@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 
 public class GridSpringMassSystem {
@@ -34,7 +35,7 @@ public class GridSpringMassSystem {
     final float forceConstant;
     final float dampConstant;
     
-    private AmbientAir air = null;
+    public AmbientAir air = null;
 
     public GridSpringMassSystem(PApplet parent,
                                  int m, int n,
@@ -103,36 +104,43 @@ public class GridSpringMassSystem {
     private void addDragForces() {
     	if(air == null) {return;}
     	for(int i=0; i<m-1; i++) {
-    		for(int j=0; j<n-1; j++) {
+    		for(int j=0; j<n; j++) {
     			SpringMass sMass1 = springMasses.get(Coordinates.of(i, j));
     			SpringMass sMass2 = springMasses.get(Coordinates.of(i+1, j));
-    			SpringMass sMass3 = springMasses.get(Coordinates.of(i, j+1));
-    			
-    			Vec3 r12 = sMass2.position.minus(sMass1.position);
-    			Vec3 r13 = sMass3.position.minus(sMass1.position);
-    			Vec3 surfaceArea = r12.cross(r13).scale(0.5f);
-    			
-    			Vec3 surfaceVelocity = sMass1.velocity.plus(sMass2.velocity)
-    												   .plus(sMass3.velocity)
-    												   .scale(0.333f);
-    			Vec3 surfaceNormal = surfaceVelocity.unit().scale(-1);
-    			
-    			Vec3 windVelocity = air.windDirection.scale(air.windSpeed);
-    			Vec3 relVelocity = surfaceVelocity.minus(windVelocity);
-    			float velocityMagSqr = relVelocity.absSquare();
-    			float areaProjection = Math.abs(surfaceArea.dot(relVelocity.unit()));
-    			
-    			float scaleFactor = 0.5f * air.density * air.dragCoeff * velocityMagSqr * areaProjection;
-    			Vec3 dragForce = surfaceNormal.scale(scaleFactor);
-    			
-    			sMass1.setDragForce(dragForce.scale(1));
-    			sMass2.setDragForce(dragForce.scale(1));
-    			sMass3.setDragForce(dragForce.scale(1));
+    			if(j < n-1) {
+	    			SpringMass sMass3 = springMasses.get(Coordinates.of(i, j+1));
+	    			addDragToTriangle(sMass1, sMass2, sMass3);
+    			}
+    			if(j > 0) {
+    				SpringMass sMass4 = springMasses.get(Coordinates.of(i+1, j-1));
+    				addDragToTriangle(sMass1, sMass2, sMass4);
+    			}
     		}
     	}
     }
 
-    public void update(Ball ball, float dt) throws Exception {
+    private void addDragToTriangle(SpringMass sMass1, SpringMass sMass2, SpringMass sMass3) {
+    	Vec3 r12 = sMass2.position.minus(sMass1.position);
+		Vec3 r13 = sMass3.position.minus(sMass1.position);
+		Vec3 n_star = r12.cross(r13);
+		
+		Vec3 surfaceVelocity = sMass1.velocity.plus(sMass2.velocity)
+											   .plus(sMass3.velocity)
+											   .scale(0.333f);
+		Vec3 windVelocity = air.windDirection.scale(air.windSpeed);
+		Vec3 v = surfaceVelocity.minus(windVelocity);
+		
+		float vsqan = v.dot(n_star) * v.abs() * 0.5f;
+		
+		float scaleFactor = -0.5f * air.density * air.dragCoeff * vsqan;
+		Vec3 dragForce = n_star.unit().scale(scaleFactor);
+		
+		sMass1.addDragForce(dragForce.scale(1));
+		sMass2.addDragForce(dragForce.scale(1));
+		sMass3.addDragForce(dragForce.scale(1));
+	}
+
+	public void update(Ball ball, float dt) throws Exception {
     	addDragForces();
         for (Map.Entry<Coordinates, SpringMass> s : springMasses.entrySet()) {
             s.getValue().update(ball);
@@ -176,9 +184,15 @@ public class GridSpringMassSystem {
             }
             parent.endShape();
         }
+//    	for(Entry<Coordinates, SpringMass> s : springMasses.entrySet()) {
+//    		s.getValue().draw();
+//    	}
     }
 
-	public void setAmbientAir(AmbientAir air) {
-		this.air = air;
+	public void startBurning() {
+		int start_i = 0;
+		int start_j = n;
+		SpringMass sMass = springMasses.get(Coordinates.of(start_i, start_j));
+		sMass.setBurning();
 	}
 }

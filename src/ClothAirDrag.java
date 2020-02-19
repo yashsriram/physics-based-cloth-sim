@@ -38,11 +38,10 @@ public class ClothAirDrag extends PApplet {
                 GridSpringMassSystem.Layout.ZX);
         
         AmbientAir air = new AmbientAir();
-        gridSpringMassSystem.setAmbientAir(air);
+        gridSpringMassSystem.air = air;
     }
 
     public void draw() {
-
         long start = millis();
         // update
         try {
@@ -59,6 +58,16 @@ public class ClothAirDrag extends PApplet {
         long draw = millis();
 
         surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms");
+    }
+    
+    public void keyPressed() {
+    	if(key == '=') {
+    		gridSpringMassSystem.air.increaseSpeed(1f);
+    		println("wind speed is "+gridSpringMassSystem.air.windSpeed);
+    	}
+    	if(key == '-') {
+    		gridSpringMassSystem.air.decreaseSpeed(1f);
+    	}
     }
 
     static public void main(String[] passedArgs) {
