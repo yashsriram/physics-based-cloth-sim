@@ -27,18 +27,18 @@ public class ClothAirDrag extends PApplet {
                 30,
                 5, 400, 1500f, loadImage("aladdin-s-carpet.jpeg"),
                 1f, -30, -20f, -30f,
-                ((i, j, m, n) -> (j == 0)),
+                ((i, j, m, n) -> (j == 0 && (i % 10 == 0 || i == m - 1))),
                 GridSpringMassSystem.Layout.ZX);
 
-        gridSpringMassSystem.air = new AmbientAir(0.05f, 0.6f, Vec3.of(0, 0, 1), 7);
+        gridSpringMassSystem.air = new AmbientAir(0.05f, 0.6f, Vec3.of(0, 0, 1), 0);
     }
 
     public void draw() {
         long start = millis();
         // update
         try {
-            for (int i = 0; i < 70; ++i) {
-                gridSpringMassSystem.update(0.006f);
+            for (int i = 0; i < 80; ++i) {
+                gridSpringMassSystem.update(0.0055f);
             }
         } catch (Exception e) {
             e.printStackTrace();
