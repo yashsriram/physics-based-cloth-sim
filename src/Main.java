@@ -25,15 +25,15 @@ public class Main extends PApplet {
         queasyCam.speed = 2f;
 
         rigidBody = new RigidBody(this, 10,
-                Vec3.zero(), Vec3.of(0, -10, 1), Vec3.of(0, 10, 0),
+                Vec3.of(400, 0, 0), Vec3.of(0, -100, 1), Vec3.of(0, 10, 0),
                 new PMatrix3D(), Vec3.of(1, 1, 1), Vec3.zero());
 
 
         // ground
         ground = new Ground(this,
-                Vec3.of(0, 100, 0), Vec3.of(0, 0, 1), Vec3.of(1, 0, 0),
-                1024, 1024,
-                loadImage("grass.jpg"));
+                Vec3.of(400, 75, 0), Vec3.of(0, 0, 1), Vec3.of(1, 0, 0),
+                800, 800,
+                loadImage("ground.jpg"));
     }
 
     public void draw() {
