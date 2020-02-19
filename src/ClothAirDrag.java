@@ -19,26 +19,26 @@ public class ClothAirDrag extends PApplet {
     public void setup() {
         surface.setTitle("Processing");
         queasyCam = new QueasyCam(this);
-        queasyCam.sensitivity = 1f;
+        queasyCam.sensitivity = 2f;
 
         gridSpringMassSystem = new GridSpringMassSystem(
                 this,
                 30, 30,
-                10,
-                2, 500, 1000f, loadImage("aladdin-s-carpet.jpeg"),
-                1f, -30, -50f, -30f,
+                30,
+                5, 400, 1500f, loadImage("aladdin-s-carpet.jpeg"),
+                1f, -30, -20f, -30f,
                 ((i, j, m, n) -> (j == 0)),
                 GridSpringMassSystem.Layout.ZX);
 
-        gridSpringMassSystem.air = new AmbientAir(0.05f, 1f, Vec3.of(0, 0, 1), 0);
+        gridSpringMassSystem.air = new AmbientAir(0.05f, 0.6f, Vec3.of(0, 0, 1), 7);
     }
 
     public void draw() {
         long start = millis();
         // update
         try {
-            for (int i = 0; i < 140; ++i) {
-                gridSpringMassSystem.update(0.002f);
+            for (int i = 0; i < 70; ++i) {
+                gridSpringMassSystem.update(0.006f);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,13 +49,12 @@ public class ClothAirDrag extends PApplet {
         gridSpringMassSystem.draw();
         long draw = millis();
 
-        surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms");
+        surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms" + " wind : " + gridSpringMassSystem.air.windSpeed);
     }
 
     public void keyPressed() {
         if (key == '=') {
             gridSpringMassSystem.air.increaseSpeed(1f);
-            println("wind speed is " + gridSpringMassSystem.air.windSpeed);
         }
         if (key == '-') {
             gridSpringMassSystem.air.decreaseSpeed(1f);

@@ -10,7 +10,7 @@ import java.util.List;
 public class SpringMass {
     public static Vec3 gravity = Vec3.of(0, .5, 0);
     private static int nextId = 1;
-    private static final float airDragConstant = 0.07f;
+    private static final float airDragConstant = 0.042f;
     private static final float ballFrictionConstant = 0.7f;
 
     private static int nextId() {
@@ -124,10 +124,6 @@ public class SpringMass {
             parent.vertex(position.x + 3, position.y, position.z - 3);
             parent.endShape(PConstants.CLOSE);
         }
-    }
-
-    public void setDragForce(Vec3 force) {
-        this.dragForce = force;
     }
 
     public void resetDragForce() {

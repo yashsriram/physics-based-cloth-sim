@@ -106,39 +106,46 @@ public class GridSpringMassSystem {
         }
         for (int i = 0; i < m - 1; i++) {
             for (int j = 0; j < n; j++) {
-                SpringMass sMass1 = springMasses.get(Coordinates.of(i, j));
-                SpringMass sMass2 = springMasses.get(Coordinates.of(i + 1, j));
+                SpringMass mass1 = springMasses.get(Coordinates.of(i, j));
+                SpringMass mass2 = springMasses.get(Coordinates.of(i + 1, j));
                 if (j < n - 1) {
-                    SpringMass sMass3 = springMasses.get(Coordinates.of(i, j + 1));
-                    addDragToTriangle(sMass1, sMass2, sMass3);
+                    SpringMass mass3 = springMasses.get(Coordinates.of(i, j + 1));
+                    // x - *
+                    // | /
+                    // x
+                    addDragToTriangle(mass1, mass2, mass3);
                 }
                 if (j > 0) {
-                    SpringMass sMass4 = springMasses.get(Coordinates.of(i + 1, j - 1));
-                    addDragToTriangle(sMass1, sMass2, sMass4);
+                    SpringMass mass4 = springMasses.get(Coordinates.of(i + 1, j - 1));
+                    //     x
+                    //   / |
+                    // * - x
+                    addDragToTriangle(mass1, mass2, mass4);
                 }
             }
         }
     }
 
-    private void addDragToTriangle(SpringMass sMass1, SpringMass sMass2, SpringMass sMass3) {
-        Vec3 r12 = sMass2.position.minus(sMass1.position);
-        Vec3 r13 = sMass3.position.minus(sMass1.position);
-        Vec3 n_star = r12.cross(r13);
+    private void addDragToTriangle(SpringMass mass1, SpringMass mass2, SpringMass mass3) {
+        Vec3 r12 = mass2.position.minus(mass1.position);
+        Vec3 r13 = mass3.position.minus(mass1.position);
+        Vec3 normal = r12.cross(r13);
 
-        Vec3 surfaceVelocity = sMass1.velocity.plus(sMass2.velocity)
-                .plus(sMass3.velocity)
-                .scale(0.333f);
+        Vec3 surfaceVelocity = mass1.velocity
+                .plus(mass2.velocity)
+                .plus(mass3.velocity)
+                .scale(1f / 3);
         Vec3 windVelocity = air.windDirection.scale(air.windSpeed);
-        Vec3 v = surfaceVelocity.minus(windVelocity);
+        Vec3 relativeVelocity = surfaceVelocity.minus(windVelocity);
 
-        float vsqan = v.dot(n_star) * v.abs() * 0.5f;
+        float vSquareAN = relativeVelocity.dot(normal) * relativeVelocity.abs();
 
-        float scaleFactor = -0.5f * air.density * air.dragCoefficient * vsqan;
-        Vec3 dragForce = n_star.unit().scale(scaleFactor);
+        float scaleFactor = -0.5f * air.density * air.dragCoefficient * vSquareAN;
+        Vec3 dragForce = normal.unit().scale(scaleFactor);
 
-        sMass1.addDragForce(dragForce.scale(1));
-        sMass2.addDragForce(dragForce.scale(1));
-        sMass3.addDragForce(dragForce.scale(1));
+        mass1.addDragForce(dragForce);
+        mass2.addDragForce(dragForce);
+        mass3.addDragForce(dragForce);
     }
 
     public void update(Ball ball, float dt) throws Exception {
@@ -185,9 +192,6 @@ public class GridSpringMassSystem {
             }
             parent.endShape();
         }
-//    	for(Entry<Coordinates, SpringMass> s : springMasses.entrySet()) {
-//    		s.getValue().draw();
-//    	}
     }
 
     public void startBurning() {
