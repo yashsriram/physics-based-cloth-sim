@@ -28,6 +28,7 @@ public class SpringMass {
     boolean isFixed;
     private boolean isBroken = false;
     List<Spring> springs = new ArrayList<>();
+    Vec3 dragForce = Vec3.zero();
 
     public SpringMass(PApplet parent, float mass, Vec3 position, Vec3 velocity, Vec3 acceleration, boolean isFixed) {
         this.parent = parent;
@@ -50,8 +51,9 @@ public class SpringMass {
         }
         
         Vec3 weight = gravity.scale(mass);
-        Vec3 airDrag = velocity.scale(-1 * airDragConstant * mass);
+        Vec3 airDrag = Vec3.zero();//velocity.scale(-1 * airDragConstant * mass);
         Vec3 totalForce = totalSpringForce.plus(weight).plus(airDrag);
+    	totalForce = totalForce.plus(dragForce);
         // F = ma
         acceleration = totalForce.scale(1 / mass);
     }
@@ -68,6 +70,8 @@ public class SpringMass {
         Vec3 weight = gravity.scale(mass);
         Vec3 airDrag = velocity.scale(-1 * airDragConstant * mass);
         Vec3 totalForce = totalSpringForce.plus(weight).plus(airDrag);
+        totalForce = totalForce.plus(dragForce);
+        
         // Mass user controlled ball interaction
         Vec3 ballToMass = position.minus(ball.position);
         if (ballToMass.abs() <= ball.radius + 1) {
@@ -111,6 +115,20 @@ public class SpringMass {
             parent.vertex(position.x + 3, position.y, position.z - 3);
             parent.endShape(PConstants.CLOSE);
         }
+    }
+    
+    public void resetDragForce(Vec3 force) {
+    	this.dragForce = Vec3.zero();
+    }
+    
+    public void setDragForce(Vec3 force) {
+    	this.dragForce = force;
+    }
+    public void resetDragForce() {
+    	this.dragForce = Vec3.zero();
+    }
+    public void addDragForce(Vec3 force) {
+    	this.dragForce = this.dragForce.plus(force);
     }
     
     public boolean getBroken() {

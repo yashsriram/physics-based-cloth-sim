@@ -33,6 +33,8 @@ public class GridSpringMassSystem {
     final float restLength;
     final float forceConstant;
     final float dampConstant;
+    
+    private AmbientAir air = null;
 
     public GridSpringMassSystem(PApplet parent,
                                  int m, int n,
@@ -97,10 +99,51 @@ public class GridSpringMassSystem {
             }
         }
     }
+    
+    private void addDragForces() {
+    	if(air == null) {return;}
+    	for(int i=0; i<m-1; i++) {
+    		for(int j=0; j<n-1; j++) {
+    			SpringMass sMass1 = springMasses.get(Coordinates.of(i, j));
+    			SpringMass sMass2 = springMasses.get(Coordinates.of(i+1, j));
+    			SpringMass sMass3 = springMasses.get(Coordinates.of(i, j+1));
+    			
+    			Vec3 r12 = sMass2.position.minus(sMass1.position);
+    			Vec3 r13 = sMass3.position.minus(sMass1.position);
+    			Vec3 surfaceArea = r12.cross(r13).scale(0.5f);
+    			
+    			Vec3 surfaceVelocity = sMass1.velocity.plus(sMass2.velocity)
+    												   .plus(sMass3.velocity)
+    												   .scale(0.333f);
+    			Vec3 surfaceNormal = surfaceVelocity.unit().scale(-1);
+    			
+    			Vec3 windVelocity = air.windDirection.scale(air.windSpeed);
+    			Vec3 relVelocity = surfaceVelocity.minus(windVelocity);
+    			float velocityMagSqr = relVelocity.absSquare();
+    			float areaProjection = Math.abs(surfaceArea.dot(relVelocity.unit()));
+    			
+    			float scaleFactor = 0.5f * air.density * air.dragCoeff * velocityMagSqr * areaProjection;
+    			Vec3 dragForce = surfaceNormal.scale(scaleFactor);
+    			
+    			sMass1.setDragForce(dragForce.scale(1));
+    			sMass2.setDragForce(dragForce.scale(1));
+    			sMass3.setDragForce(dragForce.scale(1));
+    		}
+    	}
+    }
 
     public void update(Ball ball, float dt) throws Exception {
+    	addDragForces();
         for (Map.Entry<Coordinates, SpringMass> s : springMasses.entrySet()) {
             s.getValue().update(ball);
+            s.getValue().eularianIntegrate(dt);
+        }
+    }
+    
+    public void update(float dt) throws Exception {
+    	addDragForces();
+        for (Map.Entry<Coordinates, SpringMass> s : springMasses.entrySet()) {
+        	s.getValue().update();
             s.getValue().eularianIntegrate(dt);
         }
     }
@@ -134,4 +177,8 @@ public class GridSpringMassSystem {
             parent.endShape();
         }
     }
+
+	public void setAmbientAir(AmbientAir air) {
+		this.air = air;
+	}
 }
