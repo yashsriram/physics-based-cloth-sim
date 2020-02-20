@@ -56,10 +56,11 @@ public class Thread {
             m2.setIsBroken(true);
         }
         if (extension > 0) {
-            springForce = forceDir.scale(forceConstant * (extension));
+            springForce.plusAccumulate(forceDir.scale(forceConstant * extension));
         }
-        Vec3 dampForce = forceDir.scale(-1 * dampConstant * (m.velocity.dot(forceDir) - mOther.velocity.dot(forceDir)));
-        return springForce.plus(dampForce);
+        // dampening force along spring
+        springForce.plusAccumulate(forceDir.scale(-1 * dampConstant * (m.velocity.dot(forceDir) - mOther.velocity.dot(forceDir))));
+        return springForce;
     }
 
     public void draw() {

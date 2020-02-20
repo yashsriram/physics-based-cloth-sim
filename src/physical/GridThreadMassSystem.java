@@ -152,10 +152,12 @@ public class GridThreadMassSystem {
         Vec3 r13 = mass3.position.minus(mass1.position);
         Vec3 normal = r12.cross(r13);
 
-        Vec3 surfaceVelocity = mass1.velocity
-					                .plus(mass2.velocity)
-					                .plus(mass3.velocity)
-					                .scale(1f / 3);
+        Vec3 surfaceVelocity = Vec3.zero();
+        surfaceVelocity
+                .plusAccumulate(mass1.velocity)
+                .plusAccumulate(mass2.velocity)
+                .plusAccumulate(mass3.velocity)
+                .scaleAccumulate(1f / 3);
         Vec3 windVelocity = air.windDirection.scale(air.windSpeed);
         Vec3 relativeVelocity = surfaceVelocity.minus(windVelocity);
 

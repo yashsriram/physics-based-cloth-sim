@@ -36,8 +36,8 @@ public class RigidBody {
 
     private void firstOrderIntegration(float dt) {
         // translation
-        position = position.plus(velocity.scale(dt));
-        velocity = velocity.plus(acceleration.scale(dt));
+        position.plusAccumulate(velocity.scale(dt));
+        velocity.plusAccumulate(acceleration.scale(dt));
 
         // orientation
         Vec3 angularVelocityDir = angularVelocity.unit();

@@ -31,24 +31,33 @@ public class Vec3 {
         return new Vec3(this.x + b.x, this.y + b.y, this.z + b.z);
     }
     
-    public void plusAccumulate(Vec3 b) {
+    public Vec3 plusAccumulate(Vec3 b) {
         this.x += b.x;
         this.y += b.y;
         this.z += b.z;
+        return this;
     }
 
     public Vec3 minus(Vec3 b) {
         return new Vec3(this.x - b.x, this.y - b.y, this.z - b.z);
     }
     
-    public void minusAccumulate(Vec3 b) {
+    public Vec3 minusAccumulate(Vec3 b) {
         this.x -= b.x;
         this.y -= b.y;
         this.z -= b.z;
+        return this;
     }
 
     public Vec3 scale(float t) {
         return new Vec3(this.x * t, this.y * t, this.z * t);
+    }
+
+    public Vec3 scaleAccumulate(float t) {
+        this.x  *= t;
+        this.y  *= t;
+        this.z  *= t;
+        return this;
     }
 
     public float dot(Vec3 b) {
@@ -61,10 +70,6 @@ public class Vec3 {
 
     public float abs() {
         return (float) Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
-    }
-
-    public float absSquare() {
-        return this.x * this.x + this.y * this.y + this.z * this.z;
     }
 
     public Vec3 unit() {

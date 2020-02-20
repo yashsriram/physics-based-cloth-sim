@@ -47,19 +47,20 @@ public class PointMass {
             return;
         }
         // Calculate all forces
-        Vec3 totalSpringForce = Vec3.zero();
+        Vec3 totalForce1 = Vec3.zero();
         for (Thread thread : threads) {
-            totalSpringForce = totalSpringForce.plus(thread.forceOn(this));
+            totalForce1.plusAccumulate(thread.forceOn(this));
         }
-        Vec3 weight = gravity.scale(mass);
-        Vec3 totalForce = totalSpringForce.plus(weight);
+        // Weight
+        totalForce1.plusAccumulate(gravity.scale(mass));
+        // Air drag
         if (dragForceCount > 0) {
-            totalForce = totalForce.plus(dragForce.scale(1f / dragForceCount));
+            totalForce1.plusAccumulate(dragForce.scale(1f / dragForceCount));
         }
-        // reset to 0 for the next iteration.
+        // Reset to 0 for the next iteration.
         this.resetDragForce();
         // F = ma
-        acceleration = totalForce.scale(1 / mass);
+        acceleration = totalForce1.scale(1 / mass);
     }
 
     public void update(Ball ball) throws Exception {
@@ -67,12 +68,13 @@ public class PointMass {
             return;
         }
         // Calculate all forces
-        Vec3 totalSpringForce = Vec3.zero();
+        Vec3 totalForce = Vec3.zero();
         for (Thread thread : threads) {
-            totalSpringForce.plusAccumulate(thread.forceOn(this));
+            totalForce.plusAccumulate(thread.forceOn(this));
         }
-        Vec3 weight = gravity.scale(mass);
-        Vec3 totalForce = totalSpringForce.plus(weight);
+        // Weight
+        totalForce.plusAccumulate(gravity.scale(mass));
+        // Air drag
         if (dragForceCount > 0) {
             totalForce.plusAccumulate(dragForce.scale(1f / dragForceCount));
         }
@@ -87,10 +89,10 @@ public class PointMass {
             Vec3 massToBallUnit = ballToMassUnit.scale(-1);
             // Ball is paused => It exerts enough normal force on mass to cancel the normal component of total force
             Vec3 totalForceAlongNormalDir = massToBallUnit.scale(massToBallUnit.dot(totalForce));
-            totalForce = totalForce.minus(totalForceAlongNormalDir);
+            totalForce.minusAccumulate(totalForceAlongNormalDir);
             ball.accumulateSpringMassForce(totalForceAlongNormalDir);
             // Force along tangent is reduced due to friction
-            totalForce = totalForce.scale(ballFrictionConstant);
+            totalForce.scaleAccumulate(ballFrictionConstant);
             // Mass should not be inside ball and velocity along the normal should be 0
             position = ball.position.plus(ballToMassUnit.scale(ball.radius + 1));
             velocity.minusAccumulate(ballToMassUnit.scale(ballToMassUnit.dot(velocity)));
