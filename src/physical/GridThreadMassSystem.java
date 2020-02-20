@@ -9,7 +9,7 @@ import processing.core.PConstants;
 import processing.core.PImage;
 
 
-public class GridSpringMassSystem {
+public class GridThreadMassSystem {
     public interface FixedMassDecider {
         boolean isFixed(int i, int j, int m, int n);
     }
@@ -22,17 +22,17 @@ public class GridSpringMassSystem {
     final int m;
     final int n;
     final PImage clothTexture;
-    final ArrayList<ArrayList<SpringMass>> springMasses = new ArrayList<ArrayList<SpringMass>>();
+    final ArrayList<ArrayList<PointMass>> springMasses = new ArrayList<ArrayList<PointMass>>();
     final float mass;
 
-    final List<Spring> springs = new ArrayList<>();
+    final List<Thread> threads = new ArrayList<>();
     final float restLength;
     final float forceConstant;
     final float dampConstant;
 
-    public AmbientAir air = null;
+    public Air air = null;
 
-    public GridSpringMassSystem(PApplet parent,
+    public GridThreadMassSystem(PApplet parent,
                                 int m, int n,
                                 float mass,
                                 float restLength, float forceConstant, float dampConstant,
@@ -50,7 +50,7 @@ public class GridSpringMassSystem {
         this.clothTexture = clothTexture;
         
         for (int i = 0; i < m; ++i) {
-        	springMasses.add(new ArrayList<SpringMass>());
+        	springMasses.add(new ArrayList<PointMass>());
         }
 
         for (int i = 0; i < m; ++i) {
@@ -77,8 +77,8 @@ public class GridSpringMassSystem {
                         break;
                 }
 
-                SpringMass currentSpringMass =
-                        new SpringMass(
+                PointMass currentPointMass =
+                        new PointMass(
                                 parent,
                                 mass,
                                 position,
@@ -87,14 +87,14 @@ public class GridSpringMassSystem {
                                 fixedMassDecider.isFixed(i, j, m, n)
                         );
                 
-                springMasses.get(i).add(currentSpringMass);
+                springMasses.get(i).add(currentPointMass);
                 if (i > 0) {
-                	SpringMass prevRowSpringMass = springMasses.get(i-1).get(j);
-                    springs.add(new Spring(parent, restLength, forceConstant, dampConstant, prevRowSpringMass, currentSpringMass));
+                	PointMass prevRowPointMass = springMasses.get(i-1).get(j);
+                    threads.add(new Thread(parent, restLength, forceConstant, dampConstant, prevRowPointMass, currentPointMass));
                 }
                 if (j > 0) {
-                	SpringMass prevColSpringMass = springMasses.get(i).get(j-1);
-                    springs.add(new Spring(parent, restLength, forceConstant, dampConstant, prevColSpringMass, currentSpringMass));
+                	PointMass prevColPointMass = springMasses.get(i).get(j-1);
+                    threads.add(new Thread(parent, restLength, forceConstant, dampConstant, prevColPointMass, currentPointMass));
                 }
             }
         }
@@ -106,16 +106,16 @@ public class GridSpringMassSystem {
         
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
-            	SpringMass currentSpringMass = springMasses.get(i).get(j);
+            	PointMass currentPointMass = springMasses.get(i).get(j);
             	// Skip nodes springs to stiffen cloth
 		        if (i > 1 && j > 1) {
-		        	SpringMass leftUpperDiagonal = springMasses.get(i-2).get(j-2);
-		            springs.add(new Spring(parent, skipRestLength, skipForceConstant, dampConstant, leftUpperDiagonal, currentSpringMass));
+		        	PointMass leftUpperDiagonal = springMasses.get(i-2).get(j-2);
+		            threads.add(new Thread(parent, skipRestLength, skipForceConstant, dampConstant, leftUpperDiagonal, currentPointMass));
 		        }
 		        if (i < m-2  && j > 1) {
-		        	SpringMass rightUpperDiagonal = springMasses.get(i+2).get(j-2);
+		        	PointMass rightUpperDiagonal = springMasses.get(i+2).get(j-2);
 		        	// rest length = 2*sqrt(2) times the regular spring length
-		            springs.add(new Spring(parent, skipRestLength, skipForceConstant, dampConstant, rightUpperDiagonal, currentSpringMass));
+		            threads.add(new Thread(parent, skipRestLength, skipForceConstant, dampConstant, rightUpperDiagonal, currentPointMass));
 		        }
             }
         }
@@ -127,17 +127,17 @@ public class GridSpringMassSystem {
         }
         for (int i = 0; i < m - 1; i++) {
             for (int j = 0; j < n; j++) {
-                SpringMass mass1 = springMasses.get(i).get(j);
-                SpringMass mass2 = springMasses.get(i + 1).get(j);
+                PointMass mass1 = springMasses.get(i).get(j);
+                PointMass mass2 = springMasses.get(i + 1).get(j);
                 if (j < n - 1) {
-                    SpringMass mass3 = springMasses.get(i).get(j + 1);
+                    PointMass mass3 = springMasses.get(i).get(j + 1);
                     // x - *
                     // | /
                     // x
                     addDragToTriangle(mass1, mass2, mass3);
                 }
                 if (j > 0) {
-                    SpringMass mass4 = springMasses.get(i + 1).get(j - 1);
+                    PointMass mass4 = springMasses.get(i + 1).get(j - 1);
                     //     x
                     //   / |
                     // * - x
@@ -147,7 +147,7 @@ public class GridSpringMassSystem {
         }
     }
 
-    private void addDragToTriangle(SpringMass mass1, SpringMass mass2, SpringMass mass3) {
+    private void addDragToTriangle(PointMass mass1, PointMass mass2, PointMass mass3) {
         Vec3 r12 = mass2.position.minus(mass1.position);
         Vec3 r13 = mass3.position.minus(mass1.position);
         Vec3 normal = r12.cross(r13);
@@ -174,7 +174,7 @@ public class GridSpringMassSystem {
 
     public void update(Ball ball, float dt) throws Exception {
         addDragForces();
-        SpringMass s = null;
+        PointMass s = null;
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
 	            s = springMasses.get(i).get(j);
@@ -187,7 +187,7 @@ public class GridSpringMassSystem {
 
     public void update(float dt) throws Exception {
         addDragForces();
-        SpringMass s = null;
+        PointMass s = null;
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
 	            s = springMasses.get(i).get(j);
@@ -205,8 +205,8 @@ public class GridSpringMassSystem {
             parent.beginShape(PConstants.TRIANGLE_STRIP);
             parent.texture(this.clothTexture);
             for (int j = 0; j < n; ++j) {
-                SpringMass sMass1 = springMasses.get(i).get(j);
-                SpringMass sMass2 = springMasses.get(i + 1).get(j);
+                PointMass sMass1 = springMasses.get(i).get(j);
+                PointMass sMass2 = springMasses.get(i + 1).get(j);
 
                 if (sMass1.getIsBroken() || sMass2.getIsBroken()) {
                     parent.endShape();
@@ -230,7 +230,7 @@ public class GridSpringMassSystem {
     public void startBurning() {
         int start_i = 0;
         int start_j = n;
-        SpringMass sMass = springMasses.get(start_i).get(start_j);
+        PointMass sMass = springMasses.get(start_i).get(start_j);
         sMass.setIsBurning(true);
     }
 }

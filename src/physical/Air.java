@@ -2,20 +2,20 @@ package physical;
 
 import linalg.Vec3;
 
-public class AmbientAir {
+public class Air {
     float frictionCoefficient;
     float dragCoefficient;
     Vec3 windDirection;
     public float windSpeed;
 
-    public AmbientAir(float dragCoefficient, float frictionCoefficient, Vec3 windDirection, float windSpeed) {
+    public Air(float dragCoefficient, float frictionCoefficient, Vec3 windDirection, float windSpeed) {
         this.frictionCoefficient = frictionCoefficient;
         this.dragCoefficient = dragCoefficient;
         this.windDirection = windDirection;
         this.windSpeed = windSpeed;
     }
     
-    public AmbientAir() {
+    public Air() {
         this.frictionCoefficient = 0.042f;
         this.dragCoefficient = 0.03f;
         this.windDirection = Vec3.of(0,0,1);

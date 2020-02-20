@@ -7,7 +7,7 @@ import processing.core.PConstants;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpringMass {
+public class PointMass {
     public static Vec3 gravity = Vec3.of(0, .5, 0);
     private static int nextId = 1;
     private static final float ballFrictionConstant = 0.7f;
@@ -26,12 +26,12 @@ public class SpringMass {
     Vec3 acceleration;
     boolean isFixed;
     private boolean isBroken = false;
-    List<Spring> springs = new ArrayList<>();
+    List<Thread> threads = new ArrayList<>();
     Vec3 dragForce = Vec3.zero();
     private boolean isBurning;
     private int dragForceCount = 0;
 
-    public SpringMass(PApplet parent, float mass, Vec3 position, Vec3 velocity, Vec3 acceleration, boolean isFixed) {
+    public PointMass(PApplet parent, float mass, Vec3 position, Vec3 velocity, Vec3 acceleration, boolean isFixed) {
         this.parent = parent;
         this.id = nextId();
         this.mass = mass;
@@ -47,8 +47,8 @@ public class SpringMass {
         }
         // Calculate all forces
         Vec3 totalSpringForce = Vec3.zero();
-        for (Spring spring : springs) {
-            totalSpringForce = totalSpringForce.plus(spring.forceOn(this));
+        for (Thread thread : threads) {
+            totalSpringForce = totalSpringForce.plus(thread.forceOn(this));
         }
         Vec3 weight = gravity.scale(mass);
         Vec3 totalForce = totalSpringForce.plus(weight);
@@ -67,8 +67,8 @@ public class SpringMass {
         }
         // Calculate all forces
         Vec3 totalSpringForce = Vec3.zero();
-        for (Spring spring : springs) {
-            totalSpringForce.plusAccumulate(spring.forceOn(this));
+        for (Thread thread : threads) {
+            totalSpringForce.plusAccumulate(thread.forceOn(this));
         }
         Vec3 weight = gravity.scale(mass);
         Vec3 totalForce = totalSpringForce.plus(weight);

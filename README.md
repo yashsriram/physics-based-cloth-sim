@@ -7,14 +7,14 @@
 # Compilation (on linux)
 - Open a terminal with current directory as the one containing this file
 - Use `javac -cp "jars/*" -d build/ src/*.java src/*/*.java` to compile and put all output class files under build/
-- Use `java -cp "build/:jars/*" Checkin` to run checkin simulation
+- Use `java -cp "build/:jars/*" demos.<simulation>` to run any simulation
 - Use `java -cp "build/:jars/*" Main` to run main simulation
 
 # Compilation (on windows)
 - Use ant for building. Install ant.
 - Open a terminal in current directory and run `ant compile` to build the project.
 - To execute the **full cloth simulation** run this command next `java -cp "bin/;jars/*" Main`
-- To execute the **check-in simulation** run this command `java -cp "bin/;jars/*" Checkin`
+- To execute any **demo simulation** run this command `java -cp "bin/;jars/*" demos.<simulation>`
 
 # Libraries used
 - Queasy cam

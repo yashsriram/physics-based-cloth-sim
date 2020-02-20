@@ -1,7 +1,9 @@
+package demos;
+
 import camera.QueasyCam;
 import linalg.Vec3;
 import physical.Ball;
-import physical.GridSpringMassSystem;
+import physical.GridThreadMassSystem;
 import processing.core.PApplet;
 
 public class ClothFallingOnBall extends PApplet {
@@ -11,7 +13,7 @@ public class ClothFallingOnBall extends PApplet {
     private QueasyCam queasyCam;
     private Ball ball;
 
-    private GridSpringMassSystem gridSpringMassSystem;
+    private GridThreadMassSystem gridThreadMassSystem;
 
     public void settings() {
         size(WIDTH, HEIGHT, P3D);
@@ -21,14 +23,14 @@ public class ClothFallingOnBall extends PApplet {
         surface.setTitle("Processing");
         queasyCam = new QueasyCam(this);
 
-        gridSpringMassSystem = new GridSpringMassSystem(
+        gridThreadMassSystem = new GridThreadMassSystem(
                 this,
                 30, 30,
                 10,
                 2, 500, 1000f, loadImage("aladdin-s-carpet.jpeg"),
                 1f, -30, -50f, -30f,
                 (i, j, m, n) -> (false),
-                GridSpringMassSystem.Layout.ZX);
+                GridThreadMassSystem.Layout.ZX);
         ball = new Ball(this, 1, 10, Vec3.of(0, 0, 0), Vec3.of(255, 255, 0));
     }
 
@@ -38,7 +40,7 @@ public class ClothFallingOnBall extends PApplet {
         // update
         try {
             for (int i = 0; i < 140; ++i) {
-                gridSpringMassSystem.update(ball, 0.002f);
+                gridThreadMassSystem.update(ball, 0.002f);
                 ball.update(0.002f);
             }
         } catch (Exception e) {
@@ -47,7 +49,7 @@ public class ClothFallingOnBall extends PApplet {
         long update = millis();
         // draw
         background(0);
-        gridSpringMassSystem.draw();
+        gridThreadMassSystem.draw();
         ball.draw();
         long draw = millis();
 
@@ -55,7 +57,7 @@ public class ClothFallingOnBall extends PApplet {
     }
 
     static public void main(String[] passedArgs) {
-        String[] appletArgs = new String[]{"ClothFallingOnBall"};
+        String[] appletArgs = new String[]{"demos.ClothFallingOnBall"};
         if (passedArgs != null) {
             PApplet.main(concat(appletArgs, passedArgs));
         } else {
