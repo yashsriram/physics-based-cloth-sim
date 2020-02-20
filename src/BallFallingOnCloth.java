@@ -1,5 +1,6 @@
 import camera.QueasyCam;
 import linalg.Vec3;
+import physical.AmbientAir;
 import physical.Ball;
 import physical.GridSpringMassSystem;
 import processing.core.PApplet;
@@ -32,6 +33,7 @@ public class BallFallingOnCloth extends PApplet {
                 (i, j, m, n) -> ((j == 0 || j == n - 1) && (i == m - 1 || i % 5 == 0)),
                 GridSpringMassSystem.Layout.ZX);
         ball = new Ball(this, 1000, 10, Vec3.of(-70, 0, 0), Vec3.of(255, 255, 0));
+        gridSpringMassSystem.air = new AmbientAir(0.02f, 0.1f, Vec3.of(0,0,1), 0);
     }
 
     public void draw() {
