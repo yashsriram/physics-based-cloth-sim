@@ -37,7 +37,7 @@ public class BallFallingOnCloth extends PApplet {
 
         gridThreadMassSystem.air = new Air(0.02f, 0.4f, Vec3.of(0, 0, 1), 0);
 
-        ball = new Ball(this, 1000, 10, Vec3.of(-70, 0, 0), Vec3.of(255, 255, 0));
+        ball = new Ball(this, 1000, 10, Vec3.of(-70, 0, 0), Vec3.of(255, 255, 0), true);
         Ball.userControlVelocity = 5;
     }
 
@@ -48,7 +48,7 @@ public class BallFallingOnCloth extends PApplet {
         // update
         try {
             for (int i = 0; i < 140; ++i) {
-                ball.clearSpringMassForce();
+                ball.clearExternalForces();
                 gridThreadMassSystem.update(ball, 0.002f);
                 ball.update(0.002f);
             }

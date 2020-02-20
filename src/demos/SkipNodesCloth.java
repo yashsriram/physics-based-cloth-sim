@@ -37,7 +37,7 @@ public class SkipNodesCloth extends PApplet {
         gridThreadMassSystem.addSkipNodes();
 
         gridThreadMassSystem.air = new Air(0.08f, 0.08f, Vec3.of(0, 0, 1), 0);
-        ball = new Ball(this, 1, 30, Vec3.of(50, 90, 0), Vec3.of(255, 255, 0));
+        ball = new Ball(this, 1, 30, Vec3.of(50, 90, 0), Vec3.of(255, 255, 0), true);
     }
 
     public void draw() {

@@ -186,6 +186,18 @@ public class GridThreadMassSystem {
         }
     }
 
+    public void update(List<Ball> balls, float dt) throws Exception {
+        addDragForces();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+	            PointMass s = springMasses.get(i).get(j);
+	            s.update(balls);
+//	            s.eularianIntegrate(dt);
+	            s.secondOrderIntegrate(dt);
+            }
+        }
+    }
+
     public void draw() {
         parent.noStroke();
         parent.noFill();

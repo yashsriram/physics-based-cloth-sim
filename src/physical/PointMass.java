@@ -78,10 +78,44 @@ public class PointMass {
         if (dragForceCount > 0) {
             totalForce.plusAccumulate(dragForce.scale(1f / dragForceCount));
         }
+        // Reset to 0 for the next iteration.
+        this.resetDragForce();
+
+        // Ball Interaction
+        ballInteraction(ball, totalForce);
+
+        // F = ma
+        acceleration = totalForce.scale(1 / mass);
+    }
+
+    public void update(List<Ball> balls) throws Exception {
+        if (isFixed || isBroken) {
+            return;
+        }
+        // Calculate all forces
+        Vec3 totalForce = Vec3.zero();
+        for (Thread thread : threads) {
+            totalForce.plusAccumulate(thread.forceOn(this));
+        }
+        // Weight
+        totalForce.plusAccumulate(gravity.scale(mass));
+        // Air drag
+        if (dragForceCount > 0) {
+            totalForce.plusAccumulate(dragForce.scale(1f / dragForceCount));
+        }
         // reset to 0 for the next iteration.
         this.resetDragForce();
 
-        // Mass user controlled ball interaction
+        // Ball Interaction
+        for (Ball ball: balls) {
+            ballInteraction(ball, totalForce);
+        }
+
+        // F = ma
+        acceleration = totalForce.scale(1 / mass);
+    }
+
+    private void ballInteraction(Ball ball, Vec3 totalForce) {
         Vec3 ballToMass = position.minus(ball.position);
         if (ballToMass.abs() <= ball.radius + 1) {
             // Helpful unit vectors
@@ -97,8 +131,6 @@ public class PointMass {
             position = ball.position.plus(ballToMassUnit.scale(ball.radius + 1));
             velocity.minusAccumulate(ballToMassUnit.scale(ballToMassUnit.dot(velocity)));
         }
-        // F = ma
-        acceleration = totalForce.scale(1 / mass);
     }
 
     public void eularianIntegrate(float dt) {
@@ -108,15 +140,15 @@ public class PointMass {
         position.plusAccumulate(velocity.scale(dt));
         velocity.plusAccumulate(acceleration.scale(dt));
     }
-    
+
     public void secondOrderIntegrate(float dt) {
         if (isBroken) {
             return;
         }
-        position.plusAccumulate(velocity.scale(dt).plus(acceleration.scale(0.5f*dt*dt)));
+        position.plusAccumulate(velocity.scale(dt).plus(acceleration.scale(0.5f * dt * dt)));
         velocity.plusAccumulate(acceleration.scale(dt));
     }
-    
+
     public void draw() {
         if (!this.isFixed) {
             parent.pushMatrix();

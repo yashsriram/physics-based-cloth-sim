@@ -8,15 +8,15 @@ public class Ball {
     public static Vec3 gravity = Vec3.of(0, .5, 0);
     final PApplet parent;
     float mass;
-    float radius;
+    public float radius;
     final Vec3 initialPosition;
-    Vec3 position;
-    Vec3 velocity;
+    public Vec3 position;
+    public Vec3 velocity;
     Vec3 color;
     boolean isPaused;
-    Vec3 springMassForce;
+    Vec3 externalForces;
 
-    public Ball(PApplet parent, float mass, float radius, Vec3 position, Vec3 color) {
+    public Ball(PApplet parent, float mass, float radius, Vec3 position, Vec3 color, boolean isPaused) {
         this.parent = parent;
         this.mass = mass;
         this.radius = radius;
@@ -24,8 +24,8 @@ public class Ball {
         this.position = position;
         this.velocity = Vec3.zero();
         this.color = color;
-        this.isPaused = true;
-        this.springMassForce = Vec3.zero();
+        this.isPaused = isPaused;
+        this.externalForces = Vec3.zero();
     }
 
     public void update(float dt) {
@@ -57,7 +57,7 @@ public class Ball {
                 case 'g':
                     isPaused = false;
                     break;
-                case 'h':
+                case 'f':
                     isPaused = true;
                     break;
             }
@@ -69,7 +69,7 @@ public class Ball {
 
     private void eularianIntegrate(float dt) {
         position.plusAccumulate(velocity.scale(dt));
-        Vec3 totalForce = springMassForce.plus(gravity.scale(mass));
+        Vec3 totalForce = externalForces.plus(gravity.scale(mass));
         Vec3 acceleration = totalForce.scale(1 / mass);
         velocity.plusAccumulate(acceleration.scale(dt));
     }
@@ -88,11 +88,11 @@ public class Ball {
     }
 
     public void accumulateSpringMassForce(Vec3 force) {
-        springMassForce.plusAccumulate(force);
+        externalForces.plusAccumulate(force);
     }
 
-    public void clearSpringMassForce() {
-        springMassForce = Vec3.zero();
+    public void clearExternalForces() {
+        externalForces = Vec3.zero();
     }
 
 }

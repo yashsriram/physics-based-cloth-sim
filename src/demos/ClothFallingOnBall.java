@@ -34,7 +34,7 @@ public class ClothFallingOnBall extends PApplet {
                 GridThreadMassSystem.Layout.ZX);
         gridThreadMassSystem.air = new Air(0.08f, 0.08f, Vec3.of(0, 0, 1), 0);
 
-        ball = new Ball(this, 1, 20, Vec3.of(-70, 70, 0), Vec3.of(255, 255, 0));
+        ball = new Ball(this, 1, 20, Vec3.of(-70, 70, 0), Vec3.of(255, 255, 0), true);
     }
 
     public void draw() {
