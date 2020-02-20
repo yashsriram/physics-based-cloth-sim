@@ -4,7 +4,8 @@ import linalg.Vec3;
 import processing.core.PApplet;
 
 public class Ball {
-    final static Vec3 gravity = Vec3.of(0, .5, 0);
+    public static float userControlVelocity = 1;
+    public static Vec3 gravity = Vec3.of(0, .5, 0);
     final PApplet parent;
     float mass;
     float radius;
@@ -30,23 +31,23 @@ public class Ball {
     public void update(float dt) {
         if (parent.keyPressed) {
             switch (parent.key) {
-                case '8':
-                    eularianIntegrate(Vec3.of(0, 0, -1), dt);
-                    break;
-                case '5':
-                    eularianIntegrate(Vec3.of(0, 0, 1), dt);
-                    break;
                 case '4':
-                    eularianIntegrate(Vec3.of(-1, 0, 0), dt);
+                    eularianIntegrate(Vec3.of(0, 0, -userControlVelocity), dt);
                     break;
                 case '6':
-                    eularianIntegrate(Vec3.of(1, 0, 0), dt);
+                    eularianIntegrate(Vec3.of(0, 0, userControlVelocity), dt);
+                    break;
+                case '5':
+                    eularianIntegrate(Vec3.of(-userControlVelocity, 0, 0), dt);
+                    break;
+                case '8':
+                    eularianIntegrate(Vec3.of(userControlVelocity, 0, 0), dt);
                     break;
                 case '7':
-                    eularianIntegrate(Vec3.of(0, 1, 0), dt);
+                    eularianIntegrate(Vec3.of(0, userControlVelocity, 0), dt);
                     break;
                 case '9':
-                    eularianIntegrate(Vec3.of(0, -1, 0), dt);
+                    eularianIntegrate(Vec3.of(0, -userControlVelocity, 0), dt);
                     break;
                 case 'r':
                     position = initialPosition;

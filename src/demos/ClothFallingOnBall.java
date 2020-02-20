@@ -2,6 +2,7 @@ package demos;
 
 import camera.QueasyCam;
 import linalg.Vec3;
+import physical.Air;
 import physical.Ball;
 import physical.GridThreadMassSystem;
 import processing.core.PApplet;
@@ -28,10 +29,12 @@ public class ClothFallingOnBall extends PApplet {
                 30, 30,
                 10,
                 2, 500, 1000f, loadImage("aladdin-s-carpet.jpeg"),
-                1f, -30, -50f, -30f,
+                1f, -100, 10f, -30f,
                 (i, j, m, n) -> (false),
                 GridThreadMassSystem.Layout.ZX);
-        ball = new Ball(this, 1, 10, Vec3.of(0, 0, 0), Vec3.of(255, 255, 0));
+        gridThreadMassSystem.air = new Air(0.08f, 0.08f, Vec3.of(0, 0, 1), 0);
+
+        ball = new Ball(this, 1, 20, Vec3.of(-70, 70, 0), Vec3.of(255, 255, 0));
     }
 
     public void draw() {

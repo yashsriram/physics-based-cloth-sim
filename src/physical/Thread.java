@@ -10,7 +10,7 @@ public class Thread {
     private float dampConstant;
     private PointMass m1;
     private PointMass m2;
-    private boolean broken = false;
+    private boolean isBroken = false;
 
     public Thread(PApplet parent, float restLength, float forceConstant, float dampConstant, PointMass m1, PointMass m2) {
         this.parent = parent;
@@ -24,7 +24,7 @@ public class Thread {
     }
 
     public Vec3 forceOn(PointMass m) throws Exception {
-        if (this.broken) {
+        if (this.isBroken) {
             return Vec3.zero();
         }
         Vec3 lengthVector = Vec3.zero();
@@ -65,7 +65,7 @@ public class Thread {
 
     public void draw() {
         parent.strokeWeight(2);
-        if (this.broken) {
+        if (this.isBroken) {
             parent.stroke(255, 0, 0, 255);
         } else {
             parent.stroke(0, 255, 0, 255);
@@ -74,6 +74,6 @@ public class Thread {
     }
 
     public void setBroken(boolean isBroken) {
-        this.broken = isBroken;
+        this.isBroken = isBroken;
     }
 }

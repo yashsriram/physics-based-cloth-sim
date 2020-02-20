@@ -29,13 +29,16 @@ public class BallFallingOnCloth extends PApplet {
         gridThreadMassSystem = new GridThreadMassSystem(
                 this,
                 30, 30,
-                10,
-                2, 500, 1000f, loadImage("aladdin-s-carpet.jpeg"),
-                1f, -100, 30f, -30f,
-                (i, j, m, n) -> ((j == 0 || j == n - 1) && (i == m - 1 || i % 5 == 0)),
+                6,
+                4, 500, 1000f, loadImage("aladdin-s-carpet.jpeg"),
+                1.05f, -100, 30f, -30f,
+                (i, j, m, n) -> ((j == 0 && i == m - 1) || (i == 0 && j == n - 1) || (i == m - 1 && j == n - 1) || (i == 0 && j == 0)),
                 GridThreadMassSystem.Layout.ZX);
+
+        gridThreadMassSystem.air = new Air(0.02f, 0.4f, Vec3.of(0, 0, 1), 0);
+
         ball = new Ball(this, 1000, 10, Vec3.of(-70, 0, 0), Vec3.of(255, 255, 0));
-        gridThreadMassSystem.air = new Air(0.02f, 0.1f, Vec3.of(0,0,1), 0);
+        Ball.userControlVelocity = 5;
     }
 
     public void draw() {

@@ -95,12 +95,6 @@ public class Vec3 {
         this.z = z;
     }
 
-    private Vec3(float c) {
-        this.x = c;
-        this.y = c;
-        this.z = c;
-    }
-
     private Vec3(Vec3 c) {
         this.x = c.x;
         this.y = c.y;
