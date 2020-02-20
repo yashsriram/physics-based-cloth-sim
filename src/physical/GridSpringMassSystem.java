@@ -96,12 +96,27 @@ public class GridSpringMassSystem {
                 	SpringMass prevColSpringMass = springMasses.get(i).get(j-1);
                     springs.add(new Spring(parent, restLength, forceConstant, dampConstant, prevColSpringMass, currentSpringMass));
                 }
-                
-                // Skip nodes springs to stiffen cloth
-                if (i > 2 && j > 2) {
-                	SpringMass prevRowSpringMass = springMasses.get(i-2).get(j-2);
-                    springs.add(new Spring(parent, restLength*2.828f, forceConstant, dampConstant, prevRowSpringMass, currentSpringMass));
-                }
+            }
+        }
+    }
+    
+    public void addSkipNodes() {
+    	float skipRestLength = restLength* 2.828f; // 2*sqrt(2) times the regular spring length
+        float skipForceConstant = forceConstant * 0.8f;
+        
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+            	SpringMass currentSpringMass = springMasses.get(i).get(j);
+            	// Skip nodes springs to stiffen cloth
+		        if (i > 1 && j > 1) {
+		        	SpringMass leftUpperDiagonal = springMasses.get(i-2).get(j-2);
+		            springs.add(new Spring(parent, skipRestLength, skipForceConstant, dampConstant, leftUpperDiagonal, currentSpringMass));
+		        }
+		        if (i < m-2  && j > 1) {
+		        	SpringMass rightUpperDiagonal = springMasses.get(i+2).get(j-2);
+		        	// rest length = 2*sqrt(2) times the regular spring length
+		            springs.add(new Spring(parent, skipRestLength, skipForceConstant, dampConstant, rightUpperDiagonal, currentSpringMass));
+		        }
             }
         }
     }
