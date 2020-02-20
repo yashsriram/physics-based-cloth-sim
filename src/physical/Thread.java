@@ -68,7 +68,7 @@ public class Thread {
         if (this.isBroken) {
             parent.stroke(255, 0, 0, 255);
         } else {
-            parent.stroke(0, 255, 0, 255);
+            parent.stroke(255);
         }
         parent.line(m1.position.x, m1.position.y, m1.position.z, m2.position.x, m2.position.y, m2.position.z);
     }

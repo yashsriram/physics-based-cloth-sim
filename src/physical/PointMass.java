@@ -21,9 +21,9 @@ public class PointMass {
     final PApplet parent;
     final int id;
     float mass;
-    Vec3 position;
-    Vec3 velocity;
-    Vec3 acceleration;
+    public Vec3 position;
+    public Vec3 velocity;
+    public Vec3 acceleration;
     boolean isFixed;
     private boolean isBroken = false;
     List<Thread> threads = new ArrayList<>();
