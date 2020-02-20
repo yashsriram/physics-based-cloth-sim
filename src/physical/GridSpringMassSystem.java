@@ -96,6 +96,12 @@ public class GridSpringMassSystem {
                 	SpringMass prevColSpringMass = springMasses.get(i).get(j-1);
                     springs.add(new Spring(parent, restLength, forceConstant, dampConstant, prevColSpringMass, currentSpringMass));
                 }
+                
+                // Skip nodes springs to stiffen cloth
+                if (i > 2 && j > 2) {
+                	SpringMass prevRowSpringMass = springMasses.get(i-2).get(j-2);
+                    springs.add(new Spring(parent, restLength*2.828f, forceConstant, dampConstant, prevRowSpringMass, currentSpringMass));
+                }
             }
         }
     }
