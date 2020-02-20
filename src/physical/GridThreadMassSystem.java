@@ -22,7 +22,7 @@ public class GridThreadMassSystem {
     final int m;
     final int n;
     final PImage clothTexture;
-    final ArrayList<ArrayList<PointMass>> springMasses = new ArrayList<ArrayList<PointMass>>();
+    final ArrayList<ArrayList<PointMass>> springMasses = new ArrayList<>();
     final float mass;
 
     final List<Thread> threads = new ArrayList<>();
@@ -48,9 +48,9 @@ public class GridThreadMassSystem {
         this.forceConstant = forceConstant;
         this.dampConstant = dampConstant;
         this.clothTexture = clothTexture;
-        
+
         for (int i = 0; i < m; ++i) {
-        	springMasses.add(new ArrayList<PointMass>());
+        	springMasses.add(new ArrayList<>());
         }
 
         for (int i = 0; i < m; ++i) {
@@ -86,7 +86,7 @@ public class GridThreadMassSystem {
                                 Vec3.zero(),
                                 fixedMassDecider.isFixed(i, j, m, n)
                         );
-                
+
                 springMasses.get(i).add(currentPointMass);
                 if (i > 0) {
                 	PointMass prevRowPointMass = springMasses.get(i-1).get(j);
@@ -99,11 +99,11 @@ public class GridThreadMassSystem {
             }
         }
     }
-    
+
     public void addSkipNodes() {
     	float skipRestLength = restLength* 2.828f; // 2*sqrt(2) times the regular spring length
         float skipForceConstant = forceConstant * 0.8f;
-        
+
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
             	PointMass currentPointMass = springMasses.get(i).get(j);
@@ -163,7 +163,7 @@ public class GridThreadMassSystem {
 
         float scaleFactor = -0.5f * air.dragCoefficient * vSquareAN;
         Vec3 dragForce = normal.unit().scale(scaleFactor);
-        
+
         Vec3 airFriction = relativeVelocity.scale(-1f * air.frictionCoefficient * mass1.mass);
         dragForce.plusAccumulate(airFriction);
 
@@ -174,25 +174,12 @@ public class GridThreadMassSystem {
 
     public void update(Ball ball, float dt) throws Exception {
         addDragForces();
-        PointMass s = null;
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-	            s = springMasses.get(i).get(j);
+	            PointMass s = springMasses.get(i).get(j);
 	            s.update(ball);
 //	            s.eularianIntegrate(dt);
 	            s.secondOrderIntegrate(dt);
-            }
-        }
-    }
-
-    public void update(float dt) throws Exception {
-        addDragForces();
-        PointMass s = null;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-	            s = springMasses.get(i).get(j);
-	            s.update();
-	            s.eularianIntegrate(dt);
             }
         }
     }

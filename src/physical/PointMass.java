@@ -39,6 +39,7 @@ public class PointMass {
         this.velocity = velocity;
         this.acceleration = acceleration;
         this.isFixed = isFixed;
+        this.isBurning = false;
     }
 
     public void update() throws Exception {
