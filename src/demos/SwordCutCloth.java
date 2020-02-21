@@ -1,19 +1,21 @@
+package demos;
+
 import camera.QueasyCam;
 import linalg.Vec3;
-import physical.AmbientAir;
+import physical.Air;
 import physical.Ball;
 import physical.Cutter;
-import physical.GridSpringMassSystem;
+import physical.GridThreadMassSystem;
 import processing.core.PApplet;
 import processing.core.PShape;
 
-public class ClothAirDrag extends PApplet {
+public class SwordCutCloth extends PApplet {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
 
     private QueasyCam queasyCam;
 
-    private GridSpringMassSystem gridSpringMassSystem;
+    private GridThreadMassSystem gridThreadMassSystem;
     private Ball ball;
     private Cutter cutter;
     private PShape cutterShape;
@@ -32,19 +34,18 @@ public class ClothAirDrag extends PApplet {
         disableQueasyCam = false;
         cutterShape = loadShape("Sword_2.obj");
         
-        gridSpringMassSystem = new GridSpringMassSystem(
+        gridThreadMassSystem = new GridThreadMassSystem(
                 this,
                 30, 30,
                 30,
                 5, 300, 1500f, loadImage("aladdin-s-carpet.jpeg"),
                 1f, -20, -40f, -30f,
                 ((i, j, m, n) -> (j == 0)),
-                GridSpringMassSystem.Layout.ZX);
-        
-//        gridSpringMassSystem.addSkipNodes();
+                GridThreadMassSystem.Layout.ZX);
+//        gridThreadMassSystem.addSkipNodes();
 
-        gridSpringMassSystem.air = new AmbientAir(0.08f, 0.08f, Vec3.of(0, 0, 1), 0);
-        ball = new Ball(this, 1, 30, Vec3.of(50, 90, 0), Vec3.of(255, 255, 0));
+        gridThreadMassSystem.air = new Air(0.08f, 0.08f, Vec3.of(0, 0, 1), 0);
+        ball = new Ball(this, 1, 30, Vec3.of(50, 90, 0), Vec3.of(255, 255, 0), true);
     }
 
     private void drawOrigin() {
@@ -57,7 +58,7 @@ public class ClothAirDrag extends PApplet {
     		if(cutter == null) {
     			cutter = new Cutter(this.cutterShape, queasyCam);
     		}
-    		gridSpringMassSystem.updateCutter(cutter);
+    		gridThreadMassSystem.updateCutter(cutter);
     	}
     	if(disableQueasyCam) {
     		queasyCam.controllable = false;
@@ -68,7 +69,7 @@ public class ClothAirDrag extends PApplet {
         // update
         try {
             for (int i = 0; i < 100; ++i) {
-                gridSpringMassSystem.update(ball,0.006f);
+                gridThreadMassSystem.update(ball,0.006f);
                 ball.update(0.006f);
             }
         } catch (Exception e) {
@@ -78,23 +79,22 @@ public class ClothAirDrag extends PApplet {
         
         // draw
         background(0);
-        gridSpringMassSystem.draw();
+        gridThreadMassSystem.draw();
         ball.draw();
-        drawOrigin();
         if(cutterActive && cutter!=null) {
         	cutter.draw(this);
         }
         long draw = millis();
 
-        surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms" + " wind : " + gridSpringMassSystem.air.windSpeed);
+        surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms" + " wind : " + gridThreadMassSystem.air.windSpeed);
     }
 
     public void keyPressed() {
         if (key == '=') {
-            gridSpringMassSystem.air.increaseSpeed(1f);
+            gridThreadMassSystem.air.increaseSpeed(1f);
         }
         if (key == '-') {
-            gridSpringMassSystem.air.decreaseSpeed(1f);
+            gridThreadMassSystem.air.decreaseSpeed(1f);
         }
         if (key == 'x') {
             if(!cutterActive) {
@@ -113,7 +113,7 @@ public class ClothAirDrag extends PApplet {
     }
 
     static public void main(String[] passedArgs) {
-        String[] appletArgs = new String[]{"ClothAirDrag"};
+        String[] appletArgs = new String[]{"demos.SwordCutCloth"};
         if (passedArgs != null) {
             PApplet.main(concat(appletArgs, passedArgs));
         } else {

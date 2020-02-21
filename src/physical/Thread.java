@@ -3,32 +3,32 @@ package physical;
 import linalg.Vec3;
 import processing.core.PApplet;
 
-public class Spring {
+public class Thread {
     private PApplet parent;
     private float restLength;
     private float forceConstant;
     private float dampConstant;
-    private SpringMass m1;
-    private SpringMass m2;
-    private boolean broken = false;
+    private PointMass m1;
+    private PointMass m2;
+    private boolean isBroken = false;
 
-    public Spring(PApplet parent, float restLength, float forceConstant, float dampConstant, SpringMass m1, SpringMass m2) {
+    public Thread(PApplet parent, float restLength, float forceConstant, float dampConstant, PointMass m1, PointMass m2) {
         this.parent = parent;
         this.restLength = restLength;
         this.forceConstant = forceConstant;
         this.dampConstant = dampConstant;
         this.m1 = m1;
         this.m2 = m2;
-        m1.springs.add(this);
-        m2.springs.add(this);
+        m1.threads.add(this);
+        m2.threads.add(this);
     }
 
-    public Vec3 forceOn(SpringMass m) throws Exception {
-        if (this.broken) {
+    public Vec3 forceOn(PointMass m) throws Exception {
+        if (this.isBroken) {
             return Vec3.zero();
         }
         Vec3 lengthVector = Vec3.zero();
-        SpringMass mOther = m;
+        PointMass mOther = m;
         if (m.id == m1.id) {
             // m1 requested force
             lengthVector = m2.position.minus(m1.position);
@@ -46,33 +46,34 @@ public class Spring {
         Vec3 springForce = Vec3.zero();
         float extension = springLength - restLength;
         if (extension > 10) {
-            for (Spring s : m1.springs) {
+            for (Thread s : m1.threads) {
                 s.setBroken(true);
             }
             m1.setIsBroken(true);
-            for (Spring s : m2.springs) {
+            for (Thread s : m2.threads) {
                 s.setBroken(true);
             }
             m2.setIsBroken(true);
         }
         if (extension > 0) {
-            springForce = forceDir.scale(forceConstant * (extension));
+            springForce.plusAccumulate(forceDir.scale(forceConstant * extension));
         }
-        Vec3 dampForce = forceDir.scale(-1 * dampConstant * (m.velocity.dot(forceDir) - mOther.velocity.dot(forceDir)));
-        return springForce.plus(dampForce);
+        // dampening force along spring
+        springForce.plusAccumulate(forceDir.scale(-1 * dampConstant * (m.velocity.dot(forceDir) - mOther.velocity.dot(forceDir))));
+        return springForce;
     }
 
     public void draw() {
-        parent.strokeWeight(2);
-        if (this.broken) {
+        if (this.isBroken) {
             parent.stroke(255, 0, 0, 255);
+            return;
         } else {
-            parent.stroke(0, 255, 0, 255);
+            parent.stroke(255);
         }
         parent.line(m1.position.x, m1.position.y, m1.position.z, m2.position.x, m2.position.y, m2.position.z);
     }
 
     public void setBroken(boolean isBroken) {
-        this.broken = isBroken;
+        this.isBroken = isBroken;
     }
 }

@@ -7,7 +7,7 @@ import processing.core.PConstants;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpringMass {
+public class PointMass {
     public static Vec3 gravity = Vec3.of(0, .5, 0);
     private static int nextId = 1;
     private static final float ballFrictionConstant = 0.7f;
@@ -21,17 +21,17 @@ public class SpringMass {
     final PApplet parent;
     final int id;
     float mass;
-    Vec3 position;
-    Vec3 velocity;
-    Vec3 acceleration;
+    public Vec3 position;
+    public Vec3 velocity;
+    public Vec3 acceleration;
     boolean isFixed;
-    private boolean isBroken = false;
-    List<Spring> springs = new ArrayList<>();
+    boolean isBroken = false;
+    List<Thread> threads = new ArrayList<>();
     Vec3 dragForce = Vec3.zero();
     private boolean isBurning;
     private int dragForceCount = 0;
 
-    public SpringMass(PApplet parent, float mass, Vec3 position, Vec3 velocity, Vec3 acceleration, boolean isFixed) {
+    public PointMass(PApplet parent, float mass, Vec3 position, Vec3 velocity, Vec3 acceleration, boolean isFixed) {
         this.parent = parent;
         this.id = nextId();
         this.mass = mass;
@@ -39,6 +39,7 @@ public class SpringMass {
         this.velocity = velocity;
         this.acceleration = acceleration;
         this.isFixed = isFixed;
+        this.isBurning = false;
     }
 
     public void update() throws Exception {
@@ -46,19 +47,20 @@ public class SpringMass {
             return;
         }
         // Calculate all forces
-        Vec3 totalSpringForce = Vec3.zero();
-        for (Spring spring : springs) {
-            totalSpringForce = totalSpringForce.plus(spring.forceOn(this));
+        Vec3 totalForce1 = Vec3.zero();
+        for (Thread thread : threads) {
+            totalForce1.plusAccumulate(thread.forceOn(this));
         }
-        Vec3 weight = gravity.scale(mass);
-        Vec3 totalForce = totalSpringForce.plus(weight);
+        // Weight
+        totalForce1.plusAccumulate(gravity.scale(mass));
+        // Air drag
         if (dragForceCount > 0) {
-            totalForce = totalForce.plus(dragForce.scale(1f / dragForceCount));
+            totalForce1.plusAccumulate(dragForce.scale(1f / dragForceCount));
         }
-        // reset to 0 for the next iteration.
+        // Reset to 0 for the next iteration.
         this.resetDragForce();
         // F = ma
-        acceleration = totalForce.scale(1 / mass);
+        acceleration = totalForce1.scale(1 / mass);
     }
 
     public void update(Ball ball) throws Exception {
@@ -66,19 +68,54 @@ public class SpringMass {
             return;
         }
         // Calculate all forces
-        Vec3 totalSpringForce = Vec3.zero();
-        for (Spring spring : springs) {
-            totalSpringForce.plusAccumulate(spring.forceOn(this));
+        Vec3 totalForce = Vec3.zero();
+        for (Thread thread : threads) {
+            totalForce.plusAccumulate(thread.forceOn(this));
         }
-        Vec3 weight = gravity.scale(mass);
-        Vec3 totalForce = totalSpringForce.plus(weight);
+        // Weight
+        totalForce.plusAccumulate(gravity.scale(mass));
+        // Air drag
+        if (dragForceCount > 0) {
+            totalForce.plusAccumulate(dragForce.scale(1f / dragForceCount));
+        }
+        // Reset to 0 for the next iteration.
+        this.resetDragForce();
+
+        // Ball Interaction
+        ballInteraction(ball, totalForce);
+
+        // F = ma
+        acceleration = totalForce.scale(1 / mass);
+    }
+
+    public void update(List<Ball> balls) throws Exception {
+        if (isFixed || isBroken) {
+            return;
+        }
+        // Calculate all forces
+        Vec3 totalForce = Vec3.zero();
+        for (Thread thread : threads) {
+            totalForce.plusAccumulate(thread.forceOn(this));
+        }
+        // Weight
+        totalForce.plusAccumulate(gravity.scale(mass));
+        // Air drag
         if (dragForceCount > 0) {
             totalForce.plusAccumulate(dragForce.scale(1f / dragForceCount));
         }
         // reset to 0 for the next iteration.
         this.resetDragForce();
 
-        // Mass user controlled ball interaction
+        // Ball Interaction
+        for (Ball ball : balls) {
+            ballInteraction(ball, totalForce);
+        }
+
+        // F = ma
+        acceleration = totalForce.scale(1 / mass);
+    }
+
+    private void ballInteraction(Ball ball, Vec3 totalForce) {
         Vec3 ballToMass = position.minus(ball.position);
         if (ballToMass.abs() <= ball.radius + 1) {
             // Helpful unit vectors
@@ -86,16 +123,14 @@ public class SpringMass {
             Vec3 massToBallUnit = ballToMassUnit.scale(-1);
             // Ball is paused => It exerts enough normal force on mass to cancel the normal component of total force
             Vec3 totalForceAlongNormalDir = massToBallUnit.scale(massToBallUnit.dot(totalForce));
-            totalForce = totalForce.minus(totalForceAlongNormalDir);
+            totalForce.minusAccumulate(totalForceAlongNormalDir);
             ball.accumulateSpringMassForce(totalForceAlongNormalDir);
             // Force along tangent is reduced due to friction
-            totalForce = totalForce.scale(ballFrictionConstant);
+            totalForce.scaleAccumulate(ballFrictionConstant);
             // Mass should not be inside ball and velocity along the normal should be 0
             position = ball.position.plus(ballToMassUnit.scale(ball.radius + 1));
             velocity.minusAccumulate(ballToMassUnit.scale(ballToMassUnit.dot(velocity)));
         }
-        // F = ma
-        acceleration = totalForce.scale(1 / mass);
     }
 
     public void eularianIntegrate(float dt) {
@@ -105,15 +140,15 @@ public class SpringMass {
         position.plusAccumulate(velocity.scale(dt));
         velocity.plusAccumulate(acceleration.scale(dt));
     }
-    
+
     public void secondOrderIntegrate(float dt) {
         if (isBroken) {
             return;
         }
-        position.plusAccumulate(velocity.scale(dt).plus(acceleration.scale(0.5f*dt*dt)));
+        position.plusAccumulate(velocity.scale(dt).plus(acceleration.scale(0.5f * dt * dt)));
         velocity.plusAccumulate(acceleration.scale(dt));
     }
-    
+
     public void draw() {
         if (!this.isFixed) {
             parent.pushMatrix();
@@ -141,10 +176,6 @@ public class SpringMass {
     public void addDragForce(Vec3 force) {
         this.dragForce.plusAccumulate(force);
         this.dragForceCount += 1;
-    }
-
-    public boolean getIsBroken() {
-        return this.isBroken;
     }
 
     public void setIsBroken(boolean isBroken) {

@@ -52,10 +52,6 @@ public class Cutter {
 		return (distanceToSegment(v, a, b) <= collisionRadius); 
 	}
 	
-	public void update(QueasyCam queasyCam, GridSpringMassSystem gridSpringMassSystem) {
-		
-	}
-	
 	public void draw(PApplet p) {
 		p.pushMatrix();
 		p.translate(position.x, position.y, position.z);
