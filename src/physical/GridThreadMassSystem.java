@@ -221,7 +221,7 @@ public class GridThreadMassSystem {
                 PointMass sMass1 = pointMasses.get(i).get(j);
                 PointMass sMass2 = pointMasses.get(i + 1).get(j);
 
-                if (sMass1.getIsBroken() || sMass2.getIsBroken()) {
+                if (sMass1.isBroken || sMass2.isBroken) {
                     parent.endShape();
                     parent.beginShape(PConstants.TRIANGLE_STRIP);
                     parent.texture(this.clothTexture);
@@ -238,6 +238,9 @@ public class GridThreadMassSystem {
             }
             parent.endShape();
         }
+//        for (Thread t: threads) {
+//            t.draw();
+//        }
     }
 
     public void startBurning() {

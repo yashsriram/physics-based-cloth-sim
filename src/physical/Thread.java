@@ -64,9 +64,9 @@ public class Thread {
     }
 
     public void draw() {
-        parent.strokeWeight(2);
         if (this.isBroken) {
             parent.stroke(255, 0, 0, 255);
+            return;
         } else {
             parent.stroke(255);
         }

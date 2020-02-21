@@ -25,7 +25,7 @@ public class PointMass {
     public Vec3 velocity;
     public Vec3 acceleration;
     boolean isFixed;
-    private boolean isBroken = false;
+    boolean isBroken = false;
     List<Thread> threads = new ArrayList<>();
     Vec3 dragForce = Vec3.zero();
     private boolean isBurning;
@@ -107,7 +107,7 @@ public class PointMass {
         this.resetDragForce();
 
         // Ball Interaction
-        for (Ball ball: balls) {
+        for (Ball ball : balls) {
             ballInteraction(ball, totalForce);
         }
 
@@ -176,10 +176,6 @@ public class PointMass {
     public void addDragForce(Vec3 force) {
         this.dragForce.plusAccumulate(force);
         this.dragForceCount += 1;
-    }
-
-    public boolean getIsBroken() {
-        return this.isBroken;
     }
 
     public void setIsBroken(boolean isBroken) {
