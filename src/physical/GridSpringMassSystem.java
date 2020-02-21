@@ -198,7 +198,12 @@ public class GridSpringMassSystem {
     }
 
     public void draw() {
-        parent.noStroke();
+        drawTexturedCloth();
+//    	drawSpringMatrix();
+    }
+
+    private void drawTexturedCloth() {
+    	parent.noStroke();
         parent.noFill();
         parent.textureMode(PConstants.NORMAL);
         for (int i = 0; i < m - 1; ++i) {
@@ -225,12 +230,35 @@ public class GridSpringMassSystem {
             }
             parent.endShape();
         }
-    }
+	}
 
-    public void startBurning() {
+	private void drawSpringMatrix() {
+		parent.strokeWeight(2);
+		parent.stroke(255);
+		for(Spring s: springs) {
+			s.draw();
+		}
+	}
+
+	public void startBurning() {
         int start_i = 0;
         int start_j = n;
         SpringMass sMass = springMasses.get(start_i).get(start_j);
         sMass.setIsBurning(true);
     }
+
+	public void updateCutter(Cutter cutter) {
+		SpringMass s = null;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+	            s = springMasses.get(i).get(j);
+	            if(cutter.isTouching(s.position)) {
+	            	for (Spring spring : s.springs) {
+	                    spring.setBroken(true);
+	                }
+	            	s.setIsBroken(true);
+	            }
+            }
+        }
+	}
 }
