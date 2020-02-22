@@ -11,7 +11,8 @@ import processing.core.PVector;
 
 class SkyDiver {
     final PApplet parent;
-    GridThreadMassSystem gridThreadMassSystem;
+    Air air;
+    GridThreadPointMassSystem gridThreadPointMassSystem;
     PointMass payload;
     PShape payloadShape;
     Thread thread1;
@@ -23,9 +24,10 @@ class SkyDiver {
     final float restLenGrid = 4;
     final float extensionFactor = 1f;
 
-    public SkyDiver(PApplet parent, Vec3 initialPayloadPosition, PShape payloadShape) {
+    public SkyDiver(PApplet parent, Vec3 initialPayloadPosition, PShape payloadShape, Air air) {
         this.parent = parent;
         this.payloadShape = payloadShape;
+        this.air = air;
 
         PointMass.gravity = Vec3.of(0, .25, 0);
         payload = new PointMass(
@@ -39,13 +41,13 @@ class SkyDiver {
     }
 
     public void update(Ball ball) throws Exception {
-        gridThreadMassSystem.update(ball, 0.006f);
+        gridThreadPointMassSystem.update(ball, 0.006f);
         payload.update();
         payload.secondOrderIntegrate(0.006f);
     }
 
     public void draw() {
-        gridThreadMassSystem.draw();
+        gridThreadPointMassSystem.draw();
         drawPayload();
         thread1.draw();
         thread2.draw();
@@ -61,7 +63,8 @@ class SkyDiver {
     }
 
     public void newParachute() {
-        gridThreadMassSystem = new GridThreadMassSystem(
+        // Add parachute
+        gridThreadPointMassSystem = new GridThreadPointMassSystem(
                 parent,
                 M, N,
                 10,
@@ -71,16 +74,19 @@ class SkyDiver {
                 payload.position.y,
                 payload.position.z - (N * restLenGrid * extensionFactor) / 2,
                 (i, j, m, n) -> (false),
-                GridThreadMassSystem.Layout.ZX);
-        gridThreadMassSystem.air = new Air(0.05f, 0.5f, Vec3.of(0, -1, 0), 0);
+                GridThreadPointMassSystem.Layout.ZX);
 
-        PointMass c1 = gridThreadMassSystem.pointMasses.get(0).get(0);
-        PointMass c2 = gridThreadMassSystem.pointMasses.get(0).get(N - 1);
-        PointMass c3 = gridThreadMassSystem.pointMasses.get(M - 1).get(0);
-        PointMass c4 = gridThreadMassSystem.pointMasses.get(M - 1).get(N - 1);
+        // Add air
+        gridThreadPointMassSystem.air = air;
 
+        // Get corners
+        PointMass c1 = gridThreadPointMassSystem.pointMasses.get(0).get(0);
+        PointMass c2 = gridThreadPointMassSystem.pointMasses.get(0).get(N - 1);
+        PointMass c3 = gridThreadPointMassSystem.pointMasses.get(M - 1).get(0);
+        PointMass c4 = gridThreadPointMassSystem.pointMasses.get(M - 1).get(N - 1);
+
+        // Connect payload and corners with threads
         float restLen = payload.position.minus(c1.position).abs() + 5;
-
         thread1 = new Thread(parent, restLen, 20, 1000f, payload, c1);
         thread2 = new Thread(parent, restLen, 20, 1000f, payload, c2);
         thread3 = new Thread(parent, restLen, 20, 1000f, payload, c3);
@@ -100,6 +106,7 @@ public class Parachutes extends PApplet {
     public static final int HEIGHT = 800;
 
     private QueasyCam queasyCam;
+    private Air air;
     private SkyDiver skyDiver;
     Ball ball;
 
@@ -110,12 +117,17 @@ public class Parachutes extends PApplet {
 
     public void setup() {
         surface.setTitle("Processing");
+
         queasyCam = new QueasyCam(this);
-        PShape skyDiver = loadShape("mario/Mario.obj");
-        skyDiver.rotateX(PConstants.PI / 2);
-        skyDiver.rotateY(-PConstants.PI / 2);
-        skyDiver.scale(10f);
-        this.skyDiver = new SkyDiver(this, Vec3.of(100, 0, 0), skyDiver);
+
+        air = new Air(0.05f, 0.5f, Vec3.of(0, -1, 0), 0);
+
+        PShape skyDiverShape = loadShape("mario/Mario.obj");
+        skyDiverShape.rotateX(PConstants.PI / 2);
+        skyDiverShape.rotateY(-PConstants.PI / 2);
+        skyDiverShape.scale(10f);
+        skyDiver = new SkyDiver(this, Vec3.of(100, 0, 0), skyDiverShape, air);
+
         ball = new Ball(
                 this,
                 1,
@@ -127,15 +139,14 @@ public class Parachutes extends PApplet {
     }
 
     public void draw() {
-        PVector aim = queasyCam.getAim(100);
-        ball.position = Vec3.of(aim.x, aim.y, aim.z);
 
         long start = millis();
         // update
+        PVector aim = queasyCam.getAim(100);
+        ball.update(Vec3.of(aim.x, aim.y, aim.z));
         try {
             for (int i = 0; i < 100; ++i) {
                 skyDiver.update(ball);
-//                ball.update(0.006f);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -147,15 +158,15 @@ public class Parachutes extends PApplet {
         skyDiver.draw();
         long draw = millis();
 
-        surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms" + " wind: " + skyDiver.gridThreadMassSystem.air.windSpeed);
+        surface.setTitle("Processing - wind: " + air.windSpeed + " FPS: " + Math.round(frameRate) + " Draw: " + (draw - update) + "ms Update: " + (update - start) + "ms");
     }
 
     public void keyPressed() {
         if (key == '=') {
-            skyDiver.gridThreadMassSystem.air.increaseSpeed(0.2f);
+            skyDiver.gridThreadPointMassSystem.air.increaseSpeed(0.2f);
         }
         if (key == '-') {
-            skyDiver.gridThreadMassSystem.air.decreaseSpeed(0.2f);
+            skyDiver.gridThreadPointMassSystem.air.decreaseSpeed(0.2f);
         }
         if (key == 'p') {
             skyDiver.newParachute();

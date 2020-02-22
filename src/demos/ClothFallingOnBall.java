@@ -4,7 +4,7 @@ import camera.QueasyCam;
 import linalg.Vec3;
 import physical.Air;
 import physical.Ball;
-import physical.GridThreadMassSystem;
+import physical.GridThreadPointMassSystem;
 import processing.core.PApplet;
 
 public class ClothFallingOnBall extends PApplet {
@@ -14,7 +14,7 @@ public class ClothFallingOnBall extends PApplet {
     private QueasyCam queasyCam;
     private Ball ball;
 
-    private GridThreadMassSystem gridThreadMassSystem;
+    private GridThreadPointMassSystem gridThreadPointMassSystem;
 
     public void settings() {
         size(WIDTH, HEIGHT, P3D);
@@ -24,15 +24,15 @@ public class ClothFallingOnBall extends PApplet {
         surface.setTitle("Processing");
         queasyCam = new QueasyCam(this);
 
-        gridThreadMassSystem = new GridThreadMassSystem(
+        gridThreadPointMassSystem = new GridThreadPointMassSystem(
                 this,
                 30, 30,
                 10,
                 2, 500, 1000f, loadImage("aladdin-s-carpet.jpeg"),
                 1f, -100, 10f, -30f,
                 (i, j, m, n) -> (false),
-                GridThreadMassSystem.Layout.ZX);
-        gridThreadMassSystem.air = new Air(0.08f, 0.08f, Vec3.of(0, 0, 1), 0);
+                GridThreadPointMassSystem.Layout.ZX);
+        gridThreadPointMassSystem.air = new Air(0.08f, 0.08f, Vec3.of(0, 0, 1), 0);
 
         ball = new Ball(this, 1, 20, Vec3.of(-70, 70, 0), Vec3.of(255, 255, 0), true);
     }
@@ -43,7 +43,7 @@ public class ClothFallingOnBall extends PApplet {
         // update
         try {
             for (int i = 0; i < 140; ++i) {
-                gridThreadMassSystem.update(ball, 0.002f);
+                gridThreadPointMassSystem.update(ball, 0.002f);
                 ball.update(0.002f);
             }
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class ClothFallingOnBall extends PApplet {
         long update = millis();
         // draw
         background(0);
-        gridThreadMassSystem.draw();
+        gridThreadPointMassSystem.draw();
         ball.draw();
         long draw = millis();
 

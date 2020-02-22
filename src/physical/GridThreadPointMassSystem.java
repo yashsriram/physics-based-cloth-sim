@@ -9,7 +9,7 @@ import processing.core.PConstants;
 import processing.core.PImage;
 
 
-public class GridThreadMassSystem {
+public class GridThreadPointMassSystem {
     public interface FixedMassDecider {
         boolean isFixed(int i, int j, int m, int n);
     }
@@ -32,14 +32,14 @@ public class GridThreadMassSystem {
 
     public Air air = null;
 
-    public GridThreadMassSystem(PApplet parent,
-                                int m, int n,
-                                float mass,
-                                float restLength, float forceConstant, float dampConstant,
-                                PImage clothTexture,
-                                float extensionFactor, float offsetX, float offsetY, float offsetZ,
-                                FixedMassDecider fixedMassDecider,
-                                Layout layout) {
+    public GridThreadPointMassSystem(PApplet parent,
+                                     int m, int n,
+                                     float mass,
+                                     float restLength, float forceConstant, float dampConstant,
+                                     PImage clothTexture,
+                                     float extensionFactor, float offsetX, float offsetY, float offsetZ,
+                                     FixedMassDecider fixedMassDecider,
+                                     Layout layout) {
         this.parent = parent;
         this.m = m;
         this.n = n;

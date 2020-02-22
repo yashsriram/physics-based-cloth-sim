@@ -4,7 +4,7 @@ import camera.QueasyCam;
 import linalg.Vec3;
 import physical.Air;
 import physical.Ball;
-import physical.GridThreadMassSystem;
+import physical.GridThreadPointMassSystem;
 import processing.core.PApplet;
 
 import java.util.ArrayList;
@@ -75,7 +75,7 @@ public class BallsFallingOnCloth extends PApplet {
     private QueasyCam queasyCam;
     private BallSystem ballSystem;
 
-    private GridThreadMassSystem gridThreadMassSystem;
+    private GridThreadPointMassSystem gridThreadPointMassSystem;
 
     public void settings() {
         size(WIDTH, HEIGHT, P3D);
@@ -85,7 +85,7 @@ public class BallsFallingOnCloth extends PApplet {
         surface.setTitle("Processing");
         queasyCam = new QueasyCam(this);
 
-        gridThreadMassSystem = new GridThreadMassSystem(
+        gridThreadPointMassSystem = new GridThreadPointMassSystem(
                 this,
                 30, 30,
                 6,
@@ -97,9 +97,9 @@ public class BallsFallingOnCloth extends PApplet {
                                 || (j % 3 == 0 && i == m - 1)
                                 || (i % 3 == 0 && j == n - 1)
                 ),
-                GridThreadMassSystem.Layout.ZX);
+                GridThreadPointMassSystem.Layout.ZX);
 
-        gridThreadMassSystem.air = new Air(0.02f, 0.4f, Vec3.of(0, 0, 1), 0);
+        gridThreadPointMassSystem.air = new Air(0.02f, 0.4f, Vec3.of(0, 0, 1), 0);
 
         Ball.userControlVelocity = 5;
         ballSystem = new BallSystem(this);
@@ -112,7 +112,7 @@ public class BallsFallingOnCloth extends PApplet {
         try {
             for (int i = 0; i < 140; ++i) {
                 ballSystem.clearForce();
-                gridThreadMassSystem.update(ballSystem.balls, 0.0035f);
+                gridThreadPointMassSystem.update(ballSystem.balls, 0.0035f);
                 ballSystem.update(0.0035f);
             }
         } catch (Exception e) {
@@ -121,7 +121,7 @@ public class BallsFallingOnCloth extends PApplet {
         long update = millis();
         // draw
         background(0);
-        gridThreadMassSystem.draw();
+        gridThreadPointMassSystem.draw();
         ballSystem.draw();
         long draw = millis();
 

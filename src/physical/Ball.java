@@ -6,15 +6,20 @@ import processing.core.PApplet;
 public class Ball {
     public static float userControlVelocity = 1;
     public static Vec3 gravity = Vec3.of(0, .5, 0);
+
     final PApplet parent;
-    float mass;
+
     public float radius;
     final Vec3 initialPosition;
     public Vec3 position;
     public Vec3 velocity;
-    Vec3 color;
-    boolean isPaused;
+
+    float mass;
     Vec3 externalForces;
+
+    Vec3 color;
+
+    boolean isPaused;
 
     public Ball(PApplet parent, float mass, float radius, Vec3 position, Vec3 color, boolean isPaused) {
         this.parent = parent;
@@ -26,6 +31,10 @@ public class Ball {
         this.color = color;
         this.isPaused = isPaused;
         this.externalForces = Vec3.zero();
+    }
+
+    public void update(Vec3 position) {
+        this.position = position;
     }
 
     public void update(float dt) {
