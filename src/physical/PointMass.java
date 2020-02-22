@@ -10,7 +10,6 @@ import java.util.List;
 public class PointMass {
     public static Vec3 gravity = Vec3.of(0, .5, 0);
     private static int nextId = 1;
-    private static final float ballFrictionConstant = 0.7f;
 
     private static int nextId() {
         int id = nextId;
@@ -126,7 +125,7 @@ public class PointMass {
             totalForce.minusAccumulate(totalForceAlongNormalDir);
             ball.accumulateSpringMassForce(totalForceAlongNormalDir);
             // Force along tangent is reduced due to friction
-            totalForce.scaleAccumulate(ballFrictionConstant);
+            totalForce.scaleAccumulate(Ball.ballFrictionConstant);
             // Mass should not be inside ball and velocity along the normal should be 0
             position = ball.position.plus(ballToMassUnit.scale(ball.radius + 1));
             velocity.minusAccumulate(ballToMassUnit.scale(ballToMassUnit.dot(velocity)));

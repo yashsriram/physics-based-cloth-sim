@@ -19,8 +19,8 @@ class SkyDiver {
     Thread thread2;
     Thread thread3;
     Thread thread4;
-    final int M = 20;
-    final int N = 20;
+    final int M = 13;
+    final int N = 30;
     final float restLenGrid = 4;
     final float extensionFactor = 1f;
 

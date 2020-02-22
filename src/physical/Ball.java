@@ -4,6 +4,7 @@ import linalg.Vec3;
 import processing.core.PApplet;
 
 public class Ball {
+    public static final float ballFrictionConstant = 0.7f;
     public static float userControlVelocity = 1;
     public static Vec3 gravity = Vec3.of(0, .5, 0);
 
