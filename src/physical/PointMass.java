@@ -166,6 +166,23 @@ public class PointMass {
         }
     }
 
+    public void draw2D() {
+        if (this.isFixed) {
+            parent.fill(150);
+            parent.stroke(150);
+            parent.beginShape(PConstants.QUAD);
+            parent.vertex(position.x + 3, position.y);
+            parent.vertex(position.x - 3, position.y);
+            parent.vertex(position.x - 3, position.y);
+            parent.vertex(position.x + 3, position.y);
+            parent.endShape(PConstants.CLOSE);
+        } else {
+            parent.pushMatrix();
+            parent.circle(position.x, position.y, 1);
+            parent.popMatrix();
+        }
+    }
+
     public void resetDragForce() {
         this.dragForce = Vec3.zero();
         this.dragForceCount = 0;

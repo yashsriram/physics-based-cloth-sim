@@ -60,7 +60,7 @@ Rendering
 
 Additional Features
 - [x] (10) Two-way coupling object-simulation coupling (e.g., cloth moves a ball)
-- [ ] (10) Integrate 2D rigid body sphere-sphere interactions for several spheres
+- [x] (10) Integrate 2D rigid body sphere-sphere interactions for several spheres
 - [x] (20) Integrate 3D rigid body sphere-sphere interactions for several spheres
 - [ ] (20) Combine (3D) rotational rigid body dynamics with another simulation
 

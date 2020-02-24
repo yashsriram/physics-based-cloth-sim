@@ -97,6 +97,14 @@ public class Ball {
         parent.popMatrix();
     }
 
+    public void draw2D() {
+        parent.pushMatrix();
+        parent.noStroke();
+        parent.fill(color.x, color.y, color.z);
+        parent.circle(position.x, position.y, radius);
+        parent.popMatrix();
+    }
+
     public void accumulateSpringMassForce(Vec3 force) {
         externalForces.plusAccumulate(force);
     }
