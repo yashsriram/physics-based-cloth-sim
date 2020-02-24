@@ -30,8 +30,8 @@ public class BallFallingOnCloth extends PApplet {
                 this,
                 30, 30,
                 6,
-                5, 500, 1000f, loadImage("aladdin-s-carpet.jpeg"),
-                1.05f, -100, 30f, -30f,
+                5, 700, 500f, loadImage("aladdin-s-carpet.jpeg"),
+                1f, -100, 30f, -30f,
                 (i, j, m, n) -> (
                         (i == 0 && j % 3 == 0)
                                 || (j == 0 && i % 3 == 0)
@@ -40,7 +40,7 @@ public class BallFallingOnCloth extends PApplet {
                 GridThreadPointMassSystem.Layout.ZX);
         gridThreadPointMassSystem.air = new Air(0f, 0.4f, Vec3.of(0, 0, 1), 0);
 
-        ball = new Ball(this, 100, 10, Vec3.of(-70, 0, 0), Vec3.of(255, 255, 0), true);
+        ball = new Ball(this, 200, 10, Vec3.of(-70, 0, 0), Vec3.of(255, 255, 0), true);
         Ball.userControlVelocity = 5;
     }
 
@@ -48,10 +48,10 @@ public class BallFallingOnCloth extends PApplet {
         long start = millis();
         // update
         try {
-            for (int i = 0; i < 140; ++i) {
+            for (int i = 0; i < 120; ++i) {
                 ball.clearExternalForces();
-                gridThreadPointMassSystem.update(ball, 0.002f);
-                ball.update(0.002f);
+                gridThreadPointMassSystem.update(ball, 0.004f);
+                ball.update(0.004f);
             }
         } catch (Exception e) {
             e.printStackTrace();
