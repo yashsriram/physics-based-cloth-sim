@@ -54,19 +54,9 @@ Cloth Performance Benchmarks (cumulative)
 If your cloth moves slowly you will get no credit for performance benchmarks
 
 General Features
-Integrator
-- [x] (5) Eulerian (1st order)
-- [ ] (5) Higher-order Explicit (e.g., Midpoint, RK4, Lax–Wendroff)
-- [ ] (10) Implicit Integrator
-- [ ] (5) Compare two or more integration methods in terms of speed & stability
 
 Rendering
 - [x] (10) Textured simulated objects (e.g., textured cloth)
-
-Acceleration
-- [ ] (5) Thread-parallel implementation (must document performance gain)
-- [ ] (10) SIMD / GPU implementation (must document performance gain)
-- [ ] (20) Spatial-data structure – must show a performance improvement
 
 Additional Features
 - [x] (10) Two-way coupling object-simulation coupling (e.g., cloth moves a ball)
@@ -88,17 +78,23 @@ Water/Fluid Simulation
 - [ ] (30) 2D Eulerian fluid simulation (e.g. Stam GDC ’03)
 - [ ] (50) 3D Eulerian fluid simulation
 
+Integrator
+- [x] (5) Eulerian (1st order)
+- [ ] (5) Higher-order Explicit (e.g., Midpoint, RK4, Lax–Wendroff)
+- [ ] (10) Implicit Integrator
+- [ ] (5) Compare two or more integration methods in terms of speed & stability
+
+Acceleration
+- [ ] (5) Thread-parallel implementation (must document performance gain)
+- [ ] (10) SIMD / GPU implementation (must document performance gain)
+- [ ] (20) Spatial-data structure – must show a performance improvement
+
 2D Water/Fluid Performance Benchmarks (cumulative)
 - [ ] (5) 50x50 Shallow Water Sim. at 20 FPS
 - [ ] (5) 100x100 Shallow Water Sim. at 30 FPS
 - [ ] (5) 100x100 Eulerian Fluid at 20 FPS
 - [ ] (5) 200x200 Eulerian Fluid at 30 FPS
 If your water moves slowly you will get no credit for performance benchmarks
-
-Hair Simulation
-- [ ] (20) 2D hair simulation (can’t miss collisions between strands)
-- [ ] (20) 3D hair simulation (can’t miss collisions between strands) [cumulative over 2D]
-- [ ] (10) Angle-based dynamics (must document effect)
 
 Deformable Objects
 - [ ] (20) 2D deformable objects (must show rotational effects)
@@ -107,6 +103,11 @@ Deformable Objects
 Rigid-Body Dynamics w/ Rotation
 - [ ] (30) Make 2D rotational rigid body dynamics simulation (10+ non-circle objects)
 - [ ] (60) Make 3D rotational rigid body dynamics simulation (5+ non-sphere objects)
+
+Hair Simulation
+- [ ] (20) 2D hair simulation (can’t miss collisions between strands)
+- [ ] (20) 3D hair simulation (can’t miss collisions between strands) [cumulative over 2D]
+- [ ] (10) Angle-based dynamics (must document effect)
 
 More things to simulate
 - [ ] (30) Physical simulated (polyphonic) music instrument with user interaction
@@ -164,6 +165,7 @@ both points on its own and might increase your performance benchmarks). You may
 also want to try texturing the cloth to look more visually interesting. Once you have
 Eulerian integration working, you may want to try midpoint (or RK4) to see if you
 can get a larger timestep.
+
 Advanced Cloth [various points]
 A-level (85-100% of the relevant features’ points):
 The cloth moves with smooth, natural, real-time motion. The simulation scenario is
@@ -179,5 +181,3 @@ The motion of the cloth is different from the first cloth simulation, but not in
 which showcases the new features very clearly (e.g., in one simulation the cloth falls
 horizontally, the other vertically). Or the features added look somewhat unnatural
 in the way the interact with the cloth.
-
-
