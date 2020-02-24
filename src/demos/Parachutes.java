@@ -1,7 +1,7 @@
 package demos;
 
 import camera.QueasyCam;
-import linalg.Vec3;
+import math.Vec3;
 import physical.Thread;
 import physical.*;
 import processing.core.PApplet;

@@ -1,7 +1,7 @@
 package physical;
 
 import camera.QueasyCam;
-import linalg.Vec3;
+import math.Vec3;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PShape;

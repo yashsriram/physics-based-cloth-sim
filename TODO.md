@@ -26,11 +26,12 @@ Demo ideas
     - [x] Ball falling on cloth
     - [x] Balls falling on cloth
     - [x] Air drag vs no air drag
-    - [x] Wind tear
+    - [x] Wind tear (with and without skip nodes, with several fixed point configurations)
     - [x] Cloth falling on ball
     - [x] Skip nodes vs no skip nodes
     - [ ] Parachutes and burning cloth using sphere
     - [ ] Tear cloth by sword
+    - [ ] Compare integrators
 
 Bugs
 - [x] separate acc calc and pos, vel updates in grid and series systems

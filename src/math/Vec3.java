@@ -1,4 +1,4 @@
-package linalg;
+package math;
 
 public class Vec3 {
     public float x, y, z;

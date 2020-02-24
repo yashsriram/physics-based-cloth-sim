@@ -1,6 +1,6 @@
 package physical;
 
-import linalg.Vec3;
+import math.Vec3;
 
 public class Air {
     float frictionCoefficient;

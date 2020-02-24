@@ -3,7 +3,7 @@ package physical;
 import java.util.ArrayList;
 import java.util.List;
 
-import linalg.Vec3;
+import math.Vec3;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
@@ -185,7 +185,6 @@ public class GridThreadPointMassSystem {
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
 	            PointMass s = pointMasses.get(i).get(j);
-//	            s.eularianIntegrate(dt);
 	            s.secondOrderIntegrate(dt);
             }
         }
@@ -202,7 +201,6 @@ public class GridThreadPointMassSystem {
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
 	            PointMass s = pointMasses.get(i).get(j);
-//	            s.eularianIntegrate(dt);
                 s.secondOrderIntegrate(dt);
             }
         }

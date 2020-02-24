@@ -1,6 +1,6 @@
 package physical;
 
-import linalg.Vec3;
+import math.Vec3;
 import processing.core.PApplet;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class SeriesThreadMassSystem {
             s.update();
         }
         for (PointMass s : pointMasses) {
-            s.eularianIntegrate(dt);
+            s.firstOrderIntegrate(dt);
         }
     }
 

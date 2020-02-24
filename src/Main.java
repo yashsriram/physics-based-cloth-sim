@@ -1,5 +1,5 @@
 import camera.QueasyCam;
-import linalg.Vec3;
+import math.Vec3;
 import physical.Ground;
 import physical.RigidBody;
 import processing.core.PApplet;

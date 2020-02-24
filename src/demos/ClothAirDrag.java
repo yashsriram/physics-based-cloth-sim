@@ -1,7 +1,7 @@
 package demos;
 
 import camera.QueasyCam;
-import linalg.Vec3;
+import math.Vec3;
 import physical.Air;
 import physical.Ball;
 import physical.GridThreadPointMassSystem;

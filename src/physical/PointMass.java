@@ -1,6 +1,7 @@
 package physical;
 
-import linalg.Vec3;
+import math.Integrator;
+import math.Vec3;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
@@ -132,20 +133,18 @@ public class PointMass {
         }
     }
 
-    public void eularianIntegrate(float dt) {
+    public void firstOrderIntegrate(float dt) {
         if (isBroken) {
             return;
         }
-        position.plusAccumulate(velocity.scale(dt));
-        velocity.plusAccumulate(acceleration.scale(dt));
+        Integrator.firstOrder(position, velocity, acceleration, dt);
     }
 
     public void secondOrderIntegrate(float dt) {
         if (isBroken) {
             return;
         }
-        position.plusAccumulate(velocity.scale(dt).plus(acceleration.scale(0.5f * dt * dt)));
-        velocity.plusAccumulate(acceleration.scale(dt));
+        Integrator.secondOrder(position, velocity, acceleration, dt);
     }
 
     public void draw() {

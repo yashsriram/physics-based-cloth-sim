@@ -1,7 +1,7 @@
 package demos;
 
 import camera.LiamCam;
-import linalg.Vec3;
+import math.Vec3;
 import physical.SeriesThreadMassSystem;
 import physical.PointMass;
 import processing.core.PApplet;
