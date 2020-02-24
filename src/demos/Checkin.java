@@ -27,11 +27,11 @@ public class Checkin extends PApplet {
         surface.setTitle("Processing");
         liamCam = new LiamCam(this);
         PointMass.gravity = Vec3.of(0, 5, 0);
-        seriesThreadMassSystem1 = new SeriesThreadMassSystem(this, Vec3.of(-60, -60, -200), 4, 120, 20, 200, 30f);
-        seriesThreadMassSystem2 = new SeriesThreadMassSystem(this, Vec3.of(-30, -60, -200), 4, 60, 20, 200, 30f);
-        seriesThreadMassSystem3 = new SeriesThreadMassSystem(this, Vec3.of(0, -60, -200), 4, 10, 20, 200, 30f);
-        seriesThreadMassSystem4 = new SeriesThreadMassSystem(this, Vec3.of(30, -60, -200), 4, 60, 20, 200, 30f);
-        seriesThreadMassSystem5 = new SeriesThreadMassSystem(this, Vec3.of(60, -60, -200), 4, 120, 20, 200, 30f);
+        seriesThreadMassSystem1 = new SeriesThreadMassSystem(this, Vec3.of(-60, -60, -200), 4, 120, 20, 200, 30f, (i, m) -> i == 0);
+        seriesThreadMassSystem2 = new SeriesThreadMassSystem(this, Vec3.of(-30, -60, -200), 4, 60, 20, 200, 30f, (i, m) -> i == 0);
+        seriesThreadMassSystem3 = new SeriesThreadMassSystem(this, Vec3.of(0, -60, -200), 4, 10, 20, 200, 30f, (i, m) -> i == 0);
+        seriesThreadMassSystem4 = new SeriesThreadMassSystem(this, Vec3.of(30, -60, -200), 4, 60, 20, 200, 30f, (i, m) -> i == 0);
+        seriesThreadMassSystem5 = new SeriesThreadMassSystem(this, Vec3.of(60, -60, -200), 4, 120, 20, 200, 30f, (i, m) -> i == 0);
     }
 
     public void draw() {

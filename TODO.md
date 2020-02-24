@@ -1,7 +1,7 @@
 Physically-Based Simulation
 Due: Feb 27
-
 Check-In: Sunday, Feb 16
+
 Overview: Last assignment, we simulated fuzzy phenomena using dense systems of
 loosely interacting particles that followed some procedural set of rules for how they
 evolved over time. The goal of this assignment is to simulate various systems that

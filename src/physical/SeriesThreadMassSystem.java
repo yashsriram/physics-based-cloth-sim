@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SeriesThreadMassSystem {
+    public interface FixedMassDecider {
+        boolean isFixed(int i, int m);
+    }
+
     final PApplet parent;
     final List<Thread> threads = new ArrayList<>();
     final List<PointMass> pointMasses = new ArrayList<>();
@@ -14,18 +18,20 @@ public class SeriesThreadMassSystem {
     final float restLength;
     final float forceConstant;
     final float dampConstant;
+    final FixedMassDecider fixedMassDecider;
 
-    public SeriesThreadMassSystem(PApplet parent, Vec3 initialPoint, int numMasses, float mass, float restLength, float forceConstant, float dampConstant) {
+    public SeriesThreadMassSystem(PApplet parent, Vec3 initialPoint, int numMasses, float mass, float restLength, float forceConstant, float dampConstant, FixedMassDecider fixedMassDecider) {
         this.parent = parent;
         this.mass = mass;
         this.restLength = restLength;
         this.forceConstant = forceConstant;
         this.dampConstant = dampConstant;
+        this.fixedMassDecider = fixedMassDecider;
 
         int rdm = ((int) parent.random(5f) % 2 == 0) ? -1 : 1;
         Vec3 displacement = Vec3.of(20, 0, 0).scale(rdm);
         for (int i = 0; i < numMasses; ++i) {
-            boolean isFixed = i == 0;
+            boolean isFixed = fixedMassDecider.isFixed(i, numMasses);
             addMass(new PointMass(parent, mass, initialPoint.plus(displacement.scale(i)), Vec3.zero(), Vec3.zero(), isFixed));
         }
     }
