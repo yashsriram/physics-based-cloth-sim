@@ -24,19 +24,22 @@ public class ClothAirDrag extends PApplet {
         surface.setTitle("Processing");
         queasyCam = new QueasyCam(this);
         queasyCam.sensitivity = 2f;
+        resetSystem();
+    }
 
+    private void resetSystem() {
         gridThreadPointMassSystem = new GridThreadPointMassSystem(
                 this,
                 30, 30,
                 30,
-                5, 300, 1500f, loadImage("aladdin-s-carpet.jpeg"),
+                5, 300, 900f, loadImage("aladdin-s-carpet.jpeg"),
                 1f, -20, -40f, -30f,
                 ((i, j, m, n) -> (j == 0 && (i % 3 == 0 || i == m - 1))),
                 GridThreadPointMassSystem.Layout.ZX);
 
         gridThreadPointMassSystem.addSkipNodes();
 
-        gridThreadPointMassSystem.air = new Air(0.08f, 0.08f, Vec3.of(0, 0, 1), 0);
+        gridThreadPointMassSystem.air = new Air(0.06f, 0f, Vec3.of(0, 0, 1), 0);
         ball = new Ball(this, 1, 40, Vec3.of(50, 90, 0), Vec3.of(255, 255, 0), true);
     }
 
@@ -67,6 +70,9 @@ public class ClothAirDrag extends PApplet {
         }
         if (key == '-') {
             gridThreadPointMassSystem.air.decreaseSpeed(1f);
+        }
+        if (key == 'r') {
+            resetSystem();
         }
     }
 

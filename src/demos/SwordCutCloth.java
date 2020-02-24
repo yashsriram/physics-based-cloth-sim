@@ -44,15 +44,10 @@ public class SwordCutCloth extends PApplet {
                 GridThreadPointMassSystem.Layout.ZX);
 //        gridThreadMassSystem.addSkipNodes();
 
-        gridThreadPointMassSystem.air = new Air(0.08f, 0.08f, Vec3.of(0, 0, 1), 0);
+        gridThreadPointMassSystem.air = new Air(0.08f, 0f, Vec3.of(0, 0, 1), 0);
         ball = new Ball(this, 1, 30, Vec3.of(50, 90, 0), Vec3.of(255, 255, 0), true);
     }
 
-    private void drawOrigin() {
-    	stroke(255);
-    	sphere(5);
-    }
-    
     public void draw() {
     	if(cutterActive) {
     		if(cutter == null) {
@@ -69,8 +64,8 @@ public class SwordCutCloth extends PApplet {
         // update
         try {
             for (int i = 0; i < 100; ++i) {
-                gridThreadPointMassSystem.update(ball,0.006f);
-                ball.update(0.006f);
+                gridThreadPointMassSystem.update(ball,0.005f);
+                ball.update(0.005f);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -21,6 +21,19 @@ The thread(s) must be anchored at the top and allowed to dangle free on the bott
 Note, for the check-in, we only need the vertical threads – adding horizontal (cross)
 threads is optional, they will make the simulation less stable, so only try it second.
 
+Demo ideas
+- [ ] Ball falling on cloth
+- [ ] Balls falling on cloth
+- [ ] Air drag vs no air drag
+- [ ] Wind tear
+- [ ] Cloth falling on ball
+- [ ] Parachutes and burning cloth using sphere
+- [ ] Skip nodes vs no skip nodes
+- [ ] Tear cloth by sword
+
+Bugs
+- [ ] separate acc calc and pos, vel updates in grid and series systems
+
 Strongly Suggested Features
  - [x] (5) Realtime rendering (must document framerate)
  - [x] (5) 3D rendering, with user-controlled camera (must support first-person style)
