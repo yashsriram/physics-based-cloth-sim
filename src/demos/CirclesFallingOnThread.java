@@ -11,7 +11,7 @@ import java.util.List;
 public class CirclesFallingOnThread extends PApplet {
     private static class CircleSystem {
         final PApplet parent;
-        final List<Ball> balls = new ArrayList<>();
+        final List<Ball> circles = new ArrayList<>();
         final Vec3 center;
         final float radius;
         final float mass;
@@ -24,44 +24,38 @@ public class CirclesFallingOnThread extends PApplet {
         }
 
         public void clearForce() {
-            for (Ball ball : balls) {
-                ball.clearExternalForces();
+            for (Ball circles : circles) {
+                circles.clearExternalForces();
             }
         }
 
         public void update(float dt) {
-            for (Ball ball : balls) {
-                ball.update(dt);
+            for (Ball circle : circles) {
+                circle.update(dt);
             }
             // collision detection + response
-            for (int i = 0; i < balls.size() - 1; ++i) {
-                for (int j = i; j < balls.size(); ++j) {
-                    Ball ball1 = balls.get(i);
-                    Ball ball2 = balls.get(j);
-                    Vec3 normal = ball2.position.minus(ball1.position);
+            for (int i = 0; i < circles.size() - 1; ++i) {
+                for (int j = i; j < circles.size(); ++j) {
+                    Ball circle1 = circles.get(i);
+                    Ball circle2 = circles.get(j);
+                    Vec3 normal = circle2.position.minus(circle1.position);
                     Vec3 unitNormal = normal.unit();
                     // collision occurred
-                    if (normal.abs() < ball1.radius + ball2.radius) {
+                    if (normal.abs() < circle1.radius + circle2.radius) {
                         // calculate velocities along normals
-                        Vec3 ball1VelocityAlongNormal = unitNormal.scale(unitNormal.dot(ball1.velocity));
-                        Vec3 ball2VelocityAlongNormal = unitNormal.scale(unitNormal.dot(ball2.velocity));
+                        Vec3 circle1VelocityAlongNormal = unitNormal.scale(unitNormal.dot(circle1.velocity));
+                        Vec3 circle2VelocityAlongNormal = unitNormal.scale(unitNormal.dot(circle2.velocity));
                         // exchange the velocities along normals
-                        ball1.velocity.minusAccumulate(ball1VelocityAlongNormal).plusAccumulate(ball2VelocityAlongNormal);
-                        ball2.velocity.minusAccumulate(ball2VelocityAlongNormal).plusAccumulate(ball1VelocityAlongNormal);
+                        circle1.velocity.minusAccumulate(circle1VelocityAlongNormal).plusAccumulate(circle2VelocityAlongNormal);
+                        circle2.velocity.minusAccumulate(circle2VelocityAlongNormal).plusAccumulate(circle1VelocityAlongNormal);
                     }
                 }
             }
         }
 
         public void draw() {
-            for (Ball ball : balls) {
-                ball.draw();
-            }
-        }
-
-        public void draw2D() {
-            for (Ball ball : balls) {
-                ball.draw2D();
+            for (Ball circle : circles) {
+                circle.draw2D();
             }
             parent.rectMode(CENTER);
             parent.square(center.x, center.y, radius);
@@ -69,7 +63,7 @@ public class CirclesFallingOnThread extends PApplet {
 
         public void spawnBall(int n) {
             for (int i = 0; i < n; i++) {
-                balls.add(
+                circles.add(
                         new Ball(
                                 parent,
                                 mass,
@@ -130,7 +124,7 @@ public class CirclesFallingOnThread extends PApplet {
         try {
             for (int i = 0; i < 100; ++i) {
                 circleSystem.clearForce();
-                seriesThreadMassSystem.update(circleSystem.balls, 0.01f);
+                seriesThreadMassSystem.update(circleSystem.circles, 0.01f);
                 circleSystem.update(0.01f);
             }
         } catch (Exception e) {
@@ -140,10 +134,10 @@ public class CirclesFallingOnThread extends PApplet {
         // draw
         background(0);
         seriesThreadMassSystem.draw2D();
-        circleSystem.draw2D();
+        circleSystem.draw();
         long draw = millis();
 
-        surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms" + " #balls: " + 1);
+        surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " #balls: " + circleSystem.circles.size() + " Update: " + (update - start) + "ms" + " Draw " + (draw - update) + "ms");
     }
 
     public void keyPressed() {

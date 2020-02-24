@@ -101,7 +101,7 @@ public class Ball {
         parent.pushMatrix();
         parent.noStroke();
         parent.fill(color.x, color.y, color.z);
-        parent.circle(position.x, position.y, radius);
+        parent.circle(position.x, position.y, radius * 2f);
         parent.popMatrix();
     }
 
