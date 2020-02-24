@@ -32,7 +32,7 @@ Demo ideas
 - [ ] Tear cloth by sword
 
 Bugs
-- [ ] separate acc calc and pos, vel updates in grid and series systems
+- [x] separate acc calc and pos, vel updates in grid and series systems
 
 Strongly Suggested Features
  - [x] (5) Realtime rendering (must document framerate)

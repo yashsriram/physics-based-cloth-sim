@@ -9,99 +9,98 @@ import processing.core.PConstants;
 import processing.core.PShape;
 import processing.core.PVector;
 
-class SkyDiver {
-    final PApplet parent;
-    Air air;
-    GridThreadPointMassSystem gridThreadPointMassSystem;
-    PointMass payload;
-    PShape payloadShape;
-    Thread thread1;
-    Thread thread2;
-    Thread thread3;
-    Thread thread4;
-    final int M = 13;
-    final int N = 30;
-    final float restLenGrid = 4;
-    final float extensionFactor = 1f;
-
-    public SkyDiver(PApplet parent, Vec3 initialPayloadPosition, PShape payloadShape, Air air) {
-        this.parent = parent;
-        this.payloadShape = payloadShape;
-        this.air = air;
-
-        PointMass.gravity = Vec3.of(0, .25, 0);
-        payload = new PointMass(
-                parent,
-                100,
-                initialPayloadPosition,
-                Vec3.zero(),
-                Vec3.zero(),
-                false);
-        newParachute();
-    }
-
-    public void update(Ball ball) throws Exception {
-        gridThreadPointMassSystem.update(ball, 0.006f);
-        payload.update();
-        payload.secondOrderIntegrate(0.006f);
-    }
-
-    public void draw() {
-        gridThreadPointMassSystem.draw();
-        drawPayload();
-        thread1.draw();
-        thread2.draw();
-        thread3.draw();
-        thread4.draw();
-    }
-
-    private void drawPayload() {
-        parent.pushMatrix();
-        parent.translate(payload.position.x, payload.position.y, payload.position.z);
-        parent.shape(payloadShape);
-        parent.popMatrix();
-    }
-
-    public void newParachute() {
-        // Add parachute
-        gridThreadPointMassSystem = new GridThreadPointMassSystem(
-                parent,
-                M, N,
-                10,
-                restLenGrid, 50, 100f, parent.loadImage("parachute.jpg"),
-                extensionFactor,
-                payload.position.x - (M * restLenGrid * extensionFactor) / 2,
-                payload.position.y,
-                payload.position.z - (N * restLenGrid * extensionFactor) / 2,
-                (i, j, m, n) -> (false),
-                GridThreadPointMassSystem.Layout.ZX);
-
-        // Add air
-        gridThreadPointMassSystem.air = air;
-
-        // Get corners
-        PointMass c1 = gridThreadPointMassSystem.pointMasses.get(0).get(0);
-        PointMass c2 = gridThreadPointMassSystem.pointMasses.get(0).get(N - 1);
-        PointMass c3 = gridThreadPointMassSystem.pointMasses.get(M - 1).get(0);
-        PointMass c4 = gridThreadPointMassSystem.pointMasses.get(M - 1).get(N - 1);
-
-        // Connect payload and corners with threads
-        float restLen = payload.position.minus(c1.position).abs() + 5;
-        thread1 = new Thread(parent, restLen, 20, 1000f, payload, c1);
-        thread2 = new Thread(parent, restLen, 20, 1000f, payload, c2);
-        thread3 = new Thread(parent, restLen, 20, 1000f, payload, c3);
-        thread4 = new Thread(parent, restLen, 20, 1000f, payload, c4);
-    }
-
-    public void breakParachute() {
-        thread1.setBroken(true);
-        thread2.setBroken(true);
-        thread3.setBroken(true);
-        thread4.setBroken(true);
-    }
-}
-
 public class Parachutes extends PApplet {
+    private static class SkyDiver {
+        final PApplet parent;
+        Air air;
+        GridThreadPointMassSystem gridThreadPointMassSystem;
+        PointMass payload;
+        PShape payloadShape;
+        Thread thread1;
+        Thread thread2;
+        Thread thread3;
+        Thread thread4;
+        final int M = 13;
+        final int N = 30;
+        final float restLenGrid = 4;
+        final float extensionFactor = 1f;
+
+        public SkyDiver(PApplet parent, Vec3 initialPayloadPosition, PShape payloadShape, Air air) {
+            this.parent = parent;
+            this.payloadShape = payloadShape;
+            this.air = air;
+
+            PointMass.gravity = Vec3.of(0, .25, 0);
+            payload = new PointMass(
+                    parent,
+                    100,
+                    initialPayloadPosition,
+                    Vec3.zero(),
+                    Vec3.zero(),
+                    false);
+            newParachute();
+        }
+
+        public void update(Ball ball) throws Exception {
+            gridThreadPointMassSystem.update(ball, 0.006f);
+            payload.update();
+            payload.secondOrderIntegrate(0.006f);
+        }
+
+        public void draw() {
+            gridThreadPointMassSystem.draw();
+            drawPayload();
+            thread1.draw();
+            thread2.draw();
+            thread3.draw();
+            thread4.draw();
+        }
+
+        private void drawPayload() {
+            parent.pushMatrix();
+            parent.translate(payload.position.x, payload.position.y, payload.position.z);
+            parent.shape(payloadShape);
+            parent.popMatrix();
+        }
+
+        public void newParachute() {
+            // Add parachute
+            gridThreadPointMassSystem = new GridThreadPointMassSystem(
+                    parent,
+                    M, N,
+                    10,
+                    restLenGrid, 50, 100f, parent.loadImage("parachute.jpg"),
+                    extensionFactor,
+                    payload.position.x - (M * restLenGrid * extensionFactor) / 2,
+                    payload.position.y,
+                    payload.position.z - (N * restLenGrid * extensionFactor) / 2,
+                    (i, j, m, n) -> (false),
+                    GridThreadPointMassSystem.Layout.ZX);
+
+            // Add air
+            gridThreadPointMassSystem.air = air;
+
+            // Get corners
+            PointMass c1 = gridThreadPointMassSystem.pointMasses.get(0).get(0);
+            PointMass c2 = gridThreadPointMassSystem.pointMasses.get(0).get(N - 1);
+            PointMass c3 = gridThreadPointMassSystem.pointMasses.get(M - 1).get(0);
+            PointMass c4 = gridThreadPointMassSystem.pointMasses.get(M - 1).get(N - 1);
+
+            // Connect payload and corners with threads
+            float restLen = payload.position.minus(c1.position).abs() + 5;
+            thread1 = new Thread(parent, restLen, 20, 1000f, payload, c1);
+            thread2 = new Thread(parent, restLen, 20, 1000f, payload, c2);
+            thread3 = new Thread(parent, restLen, 20, 1000f, payload, c3);
+            thread4 = new Thread(parent, restLen, 20, 1000f, payload, c4);
+        }
+
+        public void breakParachute() {
+            thread1.setBroken(true);
+            thread2.setBroken(true);
+            thread3.setBroken(true);
+            thread4.setBroken(true);
+        }
+    }
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
 

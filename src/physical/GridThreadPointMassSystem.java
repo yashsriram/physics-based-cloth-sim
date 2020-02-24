@@ -174,18 +174,6 @@ public class GridThreadPointMassSystem {
         mass3.addDragForce(dragForce);
     }
 
-    public void update(float dt) throws Exception {
-        addDragForces();
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-	            PointMass s = pointMasses.get(i).get(j);
-	            s.update();
-//	            s.eularianIntegrate(dt);
-	            s.secondOrderIntegrate(dt);
-            }
-        }
-    }
-
     public void update(Ball ball, float dt) throws Exception {
         addDragForces();
         for (int i = 0; i < m; i++) {
@@ -209,8 +197,13 @@ public class GridThreadPointMassSystem {
             for (int j = 0; j < n; j++) {
 	            PointMass s = pointMasses.get(i).get(j);
 	            s.update(balls);
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+	            PointMass s = pointMasses.get(i).get(j);
 //	            s.eularianIntegrate(dt);
-	            s.secondOrderIntegrate(dt);
+                s.secondOrderIntegrate(dt);
             }
         }
     }

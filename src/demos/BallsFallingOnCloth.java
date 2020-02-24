@@ -5,76 +5,85 @@ import linalg.Vec3;
 import physical.Air;
 import physical.Ball;
 import physical.GridThreadPointMassSystem;
+import physical.PointMass;
 import processing.core.PApplet;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class BallSystem {
-    final PApplet parent;
-    final List<Ball> balls = new ArrayList<>();
+public class BallsFallingOnCloth extends PApplet {
+    private static class BallSystem {
+        final PApplet parent;
+        final List<Ball> balls = new ArrayList<>();
+        final Vec3 center;
+        final float radius;
+        final float mass;
 
-    public BallSystem(PApplet parent) {
-        this.parent = parent;
-        spawnBall();
-    }
-
-    public void clearForce() {
-        for (Ball ball : balls) {
-            ball.clearExternalForces();
+        public BallSystem(PApplet parent, Vec3 center, float radius, float mass) {
+            this.parent = parent;
+            this.center = center;
+            this.radius = radius;
+            this.mass = mass;
+            spawnBall(3);
         }
-    }
 
-    public void update(float dt) {
-        for (Ball ball : balls) {
-            ball.update(dt);
+        public void clearForce() {
+            for (Ball ball : balls) {
+                ball.clearExternalForces();
+            }
         }
-        // collision detection + response
-        int numBalls = balls.size();
-        for (int i = 0; i < numBalls - 1; ++i) {
-            for (int j = i; j < numBalls; ++j) {
-                Ball ball1 = balls.get(i);
-                Ball ball2 = balls.get(j);
-                Vec3 normal = ball2.position.minus(ball1.position);
-                Vec3 unitNormal = normal.unit();
-                // collision occurred
-                if (normal.abs() < ball1.radius + ball2.radius) {
-                    // calculate velocities along normals
-                    Vec3 ball1VelocityAlongNormal = unitNormal.scale(unitNormal.dot(ball1.velocity));
-                    Vec3 ball2VelocityAlongNormal = unitNormal.scale(unitNormal.dot(ball2.velocity));
-                    // exchange the velocities along normals
-                    ball1.velocity.minusAccumulate(ball1VelocityAlongNormal).plusAccumulate(ball2VelocityAlongNormal);
-                    ball2.velocity.minusAccumulate(ball2VelocityAlongNormal).plusAccumulate(ball1VelocityAlongNormal);
+
+        public void update(float dt) {
+            for (Ball ball : balls) {
+                ball.update(dt);
+            }
+            // collision detection + response
+            for (int i = 0; i < balls.size() - 1; ++i) {
+                for (int j = i; j < balls.size(); ++j) {
+                    Ball ball1 = balls.get(i);
+                    Ball ball2 = balls.get(j);
+                    Vec3 normal = ball2.position.minus(ball1.position);
+                    Vec3 unitNormal = normal.unit();
+                    // collision occurred
+                    if (normal.abs() < ball1.radius + ball2.radius) {
+                        // calculate velocities along normals
+                        Vec3 ball1VelocityAlongNormal = unitNormal.scale(unitNormal.dot(ball1.velocity));
+                        Vec3 ball2VelocityAlongNormal = unitNormal.scale(unitNormal.dot(ball2.velocity));
+                        // exchange the velocities along normals
+                        ball1.velocity.minusAccumulate(ball1VelocityAlongNormal).plusAccumulate(ball2VelocityAlongNormal);
+                        ball2.velocity.minusAccumulate(ball2VelocityAlongNormal).plusAccumulate(ball1VelocityAlongNormal);
+                    }
                 }
+            }
+        }
+
+        public void draw() {
+            for (Ball ball : balls) {
+                ball.draw();
+            }
+        }
+
+        public void spawnBall(int n) {
+            for (int i = 0; i < n; i++) {
+                balls.add(
+                        new Ball(
+                                parent,
+                                mass,
+                                radius,
+                                Vec3.of(center.x, center.y - 20 * radius + i * (2 * radius + 1), center.z),
+                                Vec3.of(128).plusAccumulate(Vec3.sampleOnSphere(128)),
+                                false
+                        )
+                );
             }
         }
     }
 
-    public void draw() {
-        for (Ball ball : balls) {
-            ball.draw();
-        }
-    }
-
-    public void spawnBall() {
-        balls.add(
-                new Ball(
-                        parent, 5, 6,
-                        Vec3.of(-40, -80, 0),
-                        Vec3.of(128).plusAccumulate(Vec3.sampleOnSphere(128)),
-                        false
-                )
-        );
-    }
-}
-
-public class BallsFallingOnCloth extends PApplet {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
 
     private QueasyCam queasyCam;
     private BallSystem ballSystem;
-
     private GridThreadPointMassSystem gridThreadPointMassSystem;
 
     public void settings() {
@@ -84,13 +93,19 @@ public class BallsFallingOnCloth extends PApplet {
     public void setup() {
         surface.setTitle("Processing");
         queasyCam = new QueasyCam(this);
+        resetSystem();
+    }
 
+    private void resetSystem() {
+        int M = 30;
+        int N = 30;
+        float restLen = 5f;
         gridThreadPointMassSystem = new GridThreadPointMassSystem(
                 this,
-                30, 30,
-                6,
-                4, 300, 1000f, loadImage("aladdin-s-carpet.jpeg"),
-                1f, -100, 30f, -60f,
+                M, N,
+                10,
+                restLen, 300, 300f, loadImage("aladdin-s-carpet.jpeg"),
+                1f, -80, 30f, -M * restLen / 2,
                 (i, j, m, n) -> (
                         (j == 0 && i % 3 == 0)
                                 || (j % 3 == 0 && i == 0)
@@ -101,8 +116,15 @@ public class BallsFallingOnCloth extends PApplet {
 
         gridThreadPointMassSystem.air = new Air(0.02f, 0.4f, Vec3.of(0, 0, 1), 0);
 
+        PointMass c1 = gridThreadPointMassSystem.pointMasses.get(0).get(0);
+        PointMass c2 = gridThreadPointMassSystem.pointMasses.get(0).get(N - 1);
+        PointMass c3 = gridThreadPointMassSystem.pointMasses.get(M - 1).get(0);
+        PointMass c4 = gridThreadPointMassSystem.pointMasses.get(M - 1).get(N - 1);
+
+        Vec3 center = c1.position.plus(c2.position).plus(c3.position).plus(c4.position).scale(0.25f);
+
         Ball.userControlVelocity = 5;
-        ballSystem = new BallSystem(this);
+        ballSystem = new BallSystem(this, center, 6, 5);
     }
 
     public void draw() {
@@ -110,10 +132,10 @@ public class BallsFallingOnCloth extends PApplet {
         long start = millis();
         // update
         try {
-            for (int i = 0; i < 140; ++i) {
+            for (int i = 0; i < 60; ++i) {
                 ballSystem.clearForce();
-                gridThreadPointMassSystem.update(ballSystem.balls, 0.0035f);
-                ballSystem.update(0.0035f);
+                gridThreadPointMassSystem.update(ballSystem.balls, 0.01f);
+                ballSystem.update(0.01f);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,7 +152,10 @@ public class BallsFallingOnCloth extends PApplet {
 
     public void keyPressed() {
         if (key == 'n') {
-            ballSystem.spawnBall();
+            ballSystem.spawnBall(3);
+        }
+        if (key == 'r') {
+            resetSystem();
         }
     }
 

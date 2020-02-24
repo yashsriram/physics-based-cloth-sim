@@ -40,6 +40,8 @@ public class SeriesThreadMassSystem {
     public void update(float dt) throws Exception {
         for (PointMass s : pointMasses) {
             s.update();
+        }
+        for (PointMass s : pointMasses) {
             s.eularianIntegrate(dt);
         }
     }
