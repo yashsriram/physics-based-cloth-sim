@@ -22,14 +22,15 @@ Note, for the check-in, we only need the vertical threads – adding horizontal 
 threads is optional, they will make the simulation less stable, so only try it second.
 
 Demo ideas
-- [ ] Ball falling on cloth
-- [ ] Balls falling on cloth
-- [ ] Air drag vs no air drag
-- [ ] Wind tear
-- [ ] Cloth falling on ball
-- [ ] Parachutes and burning cloth using sphere
-- [ ] Skip nodes vs no skip nodes
-- [ ] Tear cloth by sword
+- [ ] Cloth
+    - [x] Ball falling on cloth
+    - [x] Balls falling on cloth
+    - [x] Air drag vs no air drag
+    - [x] Wind tear
+    - [x] Cloth falling on ball
+    - [x] Skip nodes vs no skip nodes
+    - [ ] Parachutes and burning cloth using sphere
+    - [ ] Tear cloth by sword
 
 Bugs
 - [x] separate acc calc and pos, vel updates in grid and series systems
