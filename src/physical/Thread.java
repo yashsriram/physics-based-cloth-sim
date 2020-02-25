@@ -10,7 +10,7 @@ public class Thread {
     private float dampConstant;
     private PointMass m1;
     private PointMass m2;
-    private boolean isBroken = false;
+    private boolean isBroken;
 
     public Thread(PApplet parent, float restLength, float forceConstant, float dampConstant, PointMass m1, PointMass m2) {
         this.parent = parent;
@@ -19,6 +19,7 @@ public class Thread {
         this.dampConstant = dampConstant;
         this.m1 = m1;
         this.m2 = m2;
+        this.isBroken = false;
         m1.threads.add(this);
         m2.threads.add(this);
     }
@@ -61,6 +62,20 @@ public class Thread {
         // dampening force along spring
         springForce.plusAccumulate(forceDir.scale(-1 * dampConstant * (m.velocity.dot(forceDir) - mOther.velocity.dot(forceDir))));
         return springForce;
+    }
+
+    public PointMass getOther(PointMass m) throws Exception {
+        PointMass mOther;
+        if (m.id == m1.id) {
+            // m1 requested force
+            mOther = m2;
+        } else if (m.id == m2.id) {
+            // m2 requested force
+            mOther = m1;
+        } else {
+            throw new Exception("Force requested on unrelated spring mass");
+        }
+        return mOther;
     }
 
     public void draw() {

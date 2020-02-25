@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PointMass {
+    public static float breakingTemperature = 800;
+    public static float selfIgniteTemperature = 400;
+    public static float onContactTemperature = 1000;
+    public static float temperatureTransferRate = 0.0001f;
+    public static float selfIgniteRate = 0.005f;
     public static Vec3 gravity = Vec3.of(0, .5, 0);
     private static int nextId = 1;
 
@@ -25,11 +30,12 @@ public class PointMass {
     public Vec3 velocity;
     public Vec3 acceleration;
     boolean isFixed;
-    boolean isBroken = false;
+    boolean isBroken;
     List<Thread> threads = new ArrayList<>();
     Vec3 dragForce = Vec3.zero();
-    private boolean isBurning;
-    private int dragForceCount = 0;
+    private float temperature;
+    private float dT;
+    private int dragForceCount;
 
     public PointMass(PApplet parent, float mass, Vec3 position, Vec3 velocity, Vec3 acceleration, boolean isFixed) {
         this.parent = parent;
@@ -39,7 +45,9 @@ public class PointMass {
         this.velocity = velocity;
         this.acceleration = acceleration;
         this.isFixed = isFixed;
-        this.isBurning = false;
+        this.isBroken = false;
+        this.temperature = 0;
+        this.dragForceCount = 0;
     }
 
     public void update() throws Exception {
@@ -115,7 +123,7 @@ public class PointMass {
         acceleration = totalForce.scale(1 / mass);
     }
 
-    private void ballInteraction(Ball ball, Vec3 totalForce) {
+    private boolean ballInteraction(Ball ball, Vec3 totalForce) {
         Vec3 ballToMass = position.minus(ball.position);
         if (ballToMass.abs() <= ball.radius + 1) {
             // Helpful unit vectors
@@ -130,7 +138,9 @@ public class PointMass {
             // Mass should not be inside ball and velocity along the normal should be 0
             position = ball.position.plus(ballToMassUnit.scale(ball.radius + 1));
             velocity.minusAccumulate(ballToMassUnit.scale(ballToMassUnit.dot(velocity)));
+            return true;
         }
+        return false;
     }
 
     public void firstOrderIntegrate(float dt) {
@@ -147,14 +157,54 @@ public class PointMass {
         Integrator.secondOrder(position, velocity, acceleration, dt);
     }
 
+    public void updateWithBurnCheck(Ball ball) throws Exception {
+        if (isFixed) {
+            return;
+        }
+        // Calculate all forces
+        Vec3 totalForce = Vec3.zero();
+        dT = 0;
+        for (Thread thread : threads) {
+            totalForce.plusAccumulate(thread.forceOn(this));
+            PointMass neighbour = thread.getOther(this);
+            dT += neighbour.temperature - temperature;
+        }
+        dT = dT * temperatureTransferRate;
+        // Weight
+        totalForce.plusAccumulate(gravity.scale(mass));
+        // Air drag
+        if (dragForceCount > 0) {
+            totalForce.plusAccumulate(dragForce.scale(1f / dragForceCount));
+        }
+        // Reset to 0 for the next iteration.
+        this.resetDragForce();
+
+        // Ball Interaction
+        boolean isInContact = ballInteraction(ball, totalForce);
+        if (isInContact) {
+            temperature = onContactTemperature;
+        }
+
+        // F = ma
+        acceleration = totalForce.scale(1 / mass);
+    }
+
+    public void updateTemperature() {
+        if (temperature >= breakingTemperature) {
+            for (Thread thread : threads) {
+                thread.setBroken(true);
+            }
+            isBroken = true;
+            return;
+        }
+        if (temperature >= selfIgniteTemperature) {
+            temperature += temperature * selfIgniteRate;
+        }
+        temperature += dT;
+    }
+
     public void draw() {
-        if (!this.isFixed) {
-            parent.pushMatrix();
-            parent.stroke(80, 204, 133);
-            parent.translate(position.x, position.y, position.z);
-            parent.sphere(2);
-            parent.popMatrix();
-        } else {
+        if (isFixed) {
             parent.fill(150);
             parent.stroke(150);
             parent.beginShape(PConstants.QUAD);
@@ -163,6 +213,12 @@ public class PointMass {
             parent.vertex(position.x - 3, position.y, position.z - 3);
             parent.vertex(position.x + 3, position.y, position.z - 3);
             parent.endShape(PConstants.CLOSE);
+        } else {
+            parent.pushMatrix();
+            parent.fill(temperature / breakingTemperature * 255, 0, 0);
+            parent.translate(position.x, position.y, position.z);
+            parent.box(2);
+            parent.popMatrix();
         }
     }
 
@@ -197,8 +253,7 @@ public class PointMass {
         this.isBroken = isBroken;
     }
 
-    public void setIsBurning(boolean isBurning) {
-        this.isBurning = isBurning;
+    public void setTemperature(int temperature) {
+        this.temperature = temperature;
     }
-
 }

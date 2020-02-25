@@ -206,6 +206,23 @@ public class GridThreadPointMassSystem {
         }
     }
 
+    public void updateWithBurnCheck(Ball ball, float dt) throws Exception {
+        addDragForces();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                PointMass s = pointMasses.get(i).get(j);
+                s.updateWithBurnCheck(ball);
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                PointMass s = pointMasses.get(i).get(j);
+                s.secondOrderIntegrate(dt);
+                s.updateTemperature();
+            }
+        }
+    }
+
     public void draw() {
         drawTexturedCloth();
 //    	drawSpringMatrix();
@@ -249,10 +266,4 @@ public class GridThreadPointMassSystem {
         }
     }
 
-    public void startBurning() {
-        int start_i = 0;
-        int start_j = n;
-        PointMass sMass = pointMasses.get(start_i).get(start_j);
-        sMass.setIsBurning(true);
-    }
 }
