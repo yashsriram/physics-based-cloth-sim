@@ -1,6 +1,7 @@
 package physical;
 
-import linalg.Vec3;
+import math.Integrator;
+import math.Vec3;
 import processing.core.PApplet;
 import processing.core.PMatrix3D;
 
@@ -31,13 +32,8 @@ public class RigidBody {
     }
 
     public void update(float dt) {
-        firstOrderIntegration(dt);
-    }
-
-    private void firstOrderIntegration(float dt) {
         // translation
-        position.plusAccumulate(velocity.scale(dt));
-        velocity.plusAccumulate(acceleration.scale(dt));
+        Integrator.firstOrder(position, velocity, acceleration, dt);
 
         // orientation
         Vec3 angularVelocityDir = angularVelocity.unit();

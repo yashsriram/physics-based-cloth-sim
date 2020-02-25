@@ -1,6 +1,6 @@
 package physical;
 
-import linalg.Vec3;
+import math.Vec3;
 import processing.core.PApplet;
 
 public class Thread {
@@ -71,6 +71,16 @@ public class Thread {
             parent.stroke(255);
         }
         parent.line(m1.position.x, m1.position.y, m1.position.z, m2.position.x, m2.position.y, m2.position.z);
+    }
+
+    public void draw2D() {
+        if (this.isBroken) {
+            parent.stroke(255, 0, 0, 255);
+            return;
+        } else {
+            parent.stroke(255);
+        }
+        parent.line(m1.position.x, m1.position.y, m2.position.x, m2.position.y);
     }
 
     public void setBroken(boolean isBroken) {

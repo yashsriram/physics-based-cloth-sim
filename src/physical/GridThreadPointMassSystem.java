@@ -3,7 +3,7 @@ package physical;
 import java.util.ArrayList;
 import java.util.List;
 
-import linalg.Vec3;
+import math.Vec3;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PImage;
@@ -174,25 +174,17 @@ public class GridThreadPointMassSystem {
         mass3.addDragForce(dragForce);
     }
 
-    public void update(float dt) throws Exception {
-        addDragForces();
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-	            PointMass s = pointMasses.get(i).get(j);
-	            s.update();
-//	            s.eularianIntegrate(dt);
-	            s.secondOrderIntegrate(dt);
-            }
-        }
-    }
-
     public void update(Ball ball, float dt) throws Exception {
         addDragForces();
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
 	            PointMass s = pointMasses.get(i).get(j);
 	            s.update(ball);
-//	            s.eularianIntegrate(dt);
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+	            PointMass s = pointMasses.get(i).get(j);
 	            s.secondOrderIntegrate(dt);
             }
         }
@@ -204,8 +196,12 @@ public class GridThreadPointMassSystem {
             for (int j = 0; j < n; j++) {
 	            PointMass s = pointMasses.get(i).get(j);
 	            s.update(balls);
-//	            s.eularianIntegrate(dt);
-	            s.secondOrderIntegrate(dt);
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+	            PointMass s = pointMasses.get(i).get(j);
+                s.secondOrderIntegrate(dt);
             }
         }
     }

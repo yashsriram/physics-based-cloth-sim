@@ -1,6 +1,7 @@
 package physical;
 
-import linalg.Vec3;
+import math.Integrator;
+import math.Vec3;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
@@ -132,20 +133,18 @@ public class PointMass {
         }
     }
 
-    public void eularianIntegrate(float dt) {
+    public void firstOrderIntegrate(float dt) {
         if (isBroken) {
             return;
         }
-        position.plusAccumulate(velocity.scale(dt));
-        velocity.plusAccumulate(acceleration.scale(dt));
+        Integrator.firstOrder(position, velocity, acceleration, dt);
     }
 
     public void secondOrderIntegrate(float dt) {
         if (isBroken) {
             return;
         }
-        position.plusAccumulate(velocity.scale(dt).plus(acceleration.scale(0.5f * dt * dt)));
-        velocity.plusAccumulate(acceleration.scale(dt));
+        Integrator.secondOrder(position, velocity, acceleration, dt);
     }
 
     public void draw() {
@@ -164,6 +163,23 @@ public class PointMass {
             parent.vertex(position.x - 3, position.y, position.z - 3);
             parent.vertex(position.x + 3, position.y, position.z - 3);
             parent.endShape(PConstants.CLOSE);
+        }
+    }
+
+    public void draw2D() {
+        if (this.isFixed) {
+            parent.fill(150);
+            parent.stroke(150);
+            parent.beginShape(PConstants.QUAD);
+            parent.vertex(position.x + 3, position.y);
+            parent.vertex(position.x - 3, position.y);
+            parent.vertex(position.x - 3, position.y);
+            parent.vertex(position.x + 3, position.y);
+            parent.endShape(PConstants.CLOSE);
+        } else {
+            parent.pushMatrix();
+            parent.circle(position.x, position.y, 1);
+            parent.popMatrix();
         }
     }
 

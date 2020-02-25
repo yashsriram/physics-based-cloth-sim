@@ -1,6 +1,7 @@
 package physical;
 
-import linalg.Vec3;
+import math.Integrator;
+import math.Vec3;
 import processing.core.PApplet;
 
 public class Ball {
@@ -42,22 +43,22 @@ public class Ball {
         if (parent.keyPressed) {
             switch (parent.key) {
                 case '4':
-                    eularianIntegrate(Vec3.of(0, 0, -userControlVelocity), dt);
+                    firstOrder(Vec3.of(0, 0, -userControlVelocity), dt);
                     break;
                 case '6':
-                    eularianIntegrate(Vec3.of(0, 0, userControlVelocity), dt);
+                    firstOrder(Vec3.of(0, 0, userControlVelocity), dt);
                     break;
                 case '5':
-                    eularianIntegrate(Vec3.of(-userControlVelocity, 0, 0), dt);
+                    firstOrder(Vec3.of(-userControlVelocity, 0, 0), dt);
                     break;
                 case '8':
-                    eularianIntegrate(Vec3.of(userControlVelocity, 0, 0), dt);
+                    firstOrder(Vec3.of(userControlVelocity, 0, 0), dt);
                     break;
                 case '7':
-                    eularianIntegrate(Vec3.of(0, userControlVelocity, 0), dt);
+                    firstOrder(Vec3.of(0, userControlVelocity, 0), dt);
                     break;
                 case '9':
-                    eularianIntegrate(Vec3.of(0, -userControlVelocity, 0), dt);
+                    firstOrder(Vec3.of(0, -userControlVelocity, 0), dt);
                     break;
                 case 'r':
                     position = initialPosition;
@@ -73,18 +74,17 @@ public class Ball {
             }
         }
         if (!isPaused) {
-            eularianIntegrate(dt);
+            firstOrder(dt);
         }
     }
 
-    private void eularianIntegrate(float dt) {
-        position.plusAccumulate(velocity.scale(dt));
+    private void firstOrder(float dt) {
         Vec3 totalForce = externalForces.plus(gravity.scale(mass));
         Vec3 acceleration = totalForce.scale(1 / mass);
-        velocity.plusAccumulate(acceleration.scale(dt));
+        Integrator.firstOrder(position, velocity, acceleration, dt);
     }
 
-    private void eularianIntegrate(Vec3 instantaneousVelocity, float dt) {
+    private void firstOrder(Vec3 instantaneousVelocity, float dt) {
         position.plusAccumulate(instantaneousVelocity.scale(dt));
     }
 
@@ -94,6 +94,14 @@ public class Ball {
         parent.fill(color.x, color.y, color.z);
         parent.translate(position.x, position.y, position.z);
         parent.sphere(radius);
+        parent.popMatrix();
+    }
+
+    public void draw2D() {
+        parent.pushMatrix();
+        parent.noStroke();
+        parent.fill(color.x, color.y, color.z);
+        parent.circle(position.x, position.y, radius * 2f);
         parent.popMatrix();
     }
 
