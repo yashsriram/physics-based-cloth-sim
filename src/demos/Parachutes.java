@@ -42,7 +42,7 @@ public class Parachutes extends PApplet {
         }
 
         public void update(Ball ball) throws Exception {
-            gridThreadPointMassSystem.update(ball, 0.006f);
+            gridThreadPointMassSystem.updateWithBurnCheck(ball, 0.006f);
             payload.update();
             payload.secondOrderIntegrate(0.006f);
         }
@@ -132,7 +132,7 @@ public class Parachutes extends PApplet {
                 1,
                 5,
                 this.skyDiver.payload.position.plus(Vec3.of(0, 0, 100)),
-                Vec3.of(255, 255, 0),
+                Vec3.of(255, 0, 0),
                 true
         );
     }
