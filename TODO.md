@@ -78,17 +78,6 @@ Water/Fluid Simulation
 - [ ] (30) 2D Eulerian fluid simulation (e.g. Stam GDC ’03)
 - [ ] (50) 3D Eulerian fluid simulation
 
-Integrator
-- [x] (5) Eulerian (1st order)
-- [ ] (5) Higher-order Explicit (e.g., Midpoint, RK4, Lax–Wendroff)
-- [ ] (10) Implicit Integrator
-- [ ] (5) Compare two or more integration methods in terms of speed & stability
-
-Acceleration
-- [ ] (5) Thread-parallel implementation (must document performance gain)
-- [ ] (10) SIMD / GPU implementation (must document performance gain)
-- [ ] (20) Spatial-data structure – must show a performance improvement
-
 2D Water/Fluid Performance Benchmarks (cumulative)
 - [ ] (5) 50x50 Shallow Water Sim. at 20 FPS
 - [ ] (5) 100x100 Shallow Water Sim. at 30 FPS
@@ -99,6 +88,17 @@ If your water moves slowly you will get no credit for performance benchmarks
 Deformable Objects
 - [ ] (20) 2D deformable objects (must show rotational effects)
 - [ ] (10) 3D deformable objects (must show rotational effects) [cumulative over 2D]
+
+Integrator
+- [x] (5) Eulerian (1st order)
+- [ ] (5) Higher-order Explicit (e.g., Midpoint, RK4, Lax–Wendroff)
+- [ ] (10) Implicit Integrator
+- [ ] (5) Compare two or more integration methods in terms of speed & stability
+
+Acceleration
+- [ ] (5) Thread-parallel implementation (must document performance gain)
+- [ ] (10) SIMD / GPU implementation (must document performance gain)
+- [ ] (20) Spatial-data structure – must show a performance improvement
 
 Rigid-Body Dynamics w/ Rotation
 - [ ] (30) Make 2D rotational rigid body dynamics simulation (10+ non-circle objects)
