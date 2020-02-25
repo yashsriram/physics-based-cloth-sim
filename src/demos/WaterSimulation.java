@@ -1,15 +1,11 @@
 package demos;
 
-import java.util.ArrayList;
-
 import camera.QueasyCam;
-import linalg.Vec3;
-import physical.Air;
-import physical.Ball;
-import physical.GridThreadPointMassSystem;
+import math.Vec3;
 import physical.WaterColumn;
 import processing.core.PApplet;
-import processing.core.PConstants;
+
+import java.util.ArrayList;
 
 public class WaterSimulation extends PApplet {
     public static final int WIDTH = 800;

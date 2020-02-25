@@ -1,10 +1,7 @@
 package physical;
 
-import linalg.Vec3;
 import processing.core.PApplet;
-import processing.core.PConstants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class WaterColumn {
