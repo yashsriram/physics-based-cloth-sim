@@ -16,22 +16,22 @@ public class Cutter {
     private float yEular;
     private float zEular;
     private PShape shape;
-    private boolean underKeyboardControl;
+    private boolean isPaused;
 
     public Cutter(PApplet parent, PShape shape, QueasyCam cam) {
         this.parent = parent;
         this.shape = shape;
         this.position = cam.getAim(100);
         this.cam = cam;
-        this.underKeyboardControl = false;
+        this.isPaused = false;
         this.xEular = 0;
         this.yEular = PConstants.PI;
         this.zEular = -PConstants.PI / 2;
     }
 
     public void update() {
-        if (!underKeyboardControl) {
-            this.position.set(cam.getAim(100));
+        if (!isPaused) {
+            this.position.set(cam.getAim(100)).add(0, 20, 0);
             final PVector right = cam.getRight();
             this.xEular = (float) Math.atan2(right.x, right.z) - PConstants.PI;
         }
@@ -110,7 +110,7 @@ public class Cutter {
     }
 
     public void toggleIsPaused() {
-        underKeyboardControl = !underKeyboardControl;
+        isPaused = !isPaused;
     }
 
     private boolean isTouching(Vec3 v) {
@@ -150,7 +150,7 @@ public class Cutter {
     }
 
     public void moveCutter(char key) {
-        if (!underKeyboardControl) {
+        if (!isPaused) {
             return;
         }
         float dx = 1f;

@@ -29,6 +29,15 @@ public class SwordCutCloth extends PApplet {
         queasyCam = new QueasyCam(this);
         queasyCam.speed = 2f;
 
+        resetSystem();
+        ball = new Ball(this, 1, 30, Vec3.of(50, 90, 0), Vec3.of(255, 255, 0), true);
+
+        PShape cutterShape = loadShape("Sword_2.obj");
+        cutterShape.scale(10);
+        cutter = new Cutter(this, cutterShape, queasyCam);
+    }
+
+    public void resetSystem() {
         gridThreadPointMassSystem = new GridThreadPointMassSystem(
                 this,
                 30, 30,
@@ -39,21 +48,9 @@ public class SwordCutCloth extends PApplet {
                 GridThreadPointMassSystem.Layout.ZX);
 
         gridThreadPointMassSystem.air = new Air(0.08f, 0f, Vec3.of(0, 0, 1), 0);
-
-        ball = new Ball(this, 1, 30, Vec3.of(50, 90, 0), Vec3.of(255, 255, 0), true);
-
-        PShape cutterShape = loadShape("Sword_2.obj");
-        cutterShape.scale(10);
-        cutter = new Cutter(this, cutterShape, queasyCam);
     }
 
     public void draw() {
-        if (keyPressed) {
-            if ((key == 'w' || key == 's' || key == 'a' || key == 'd' || key == 'q' || key == 'e')) {
-                cutter.moveCutter(key);
-            }
-        }
-
         long start = millis();
         // update
         try {
@@ -86,6 +83,9 @@ public class SwordCutCloth extends PApplet {
         }
         if (key == 'x') {
             cutter.toggleIsPaused();
+        }
+        if (key == 'r') {
+            resetSystem();
         }
     }
 
