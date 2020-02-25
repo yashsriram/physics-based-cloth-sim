@@ -29,8 +29,8 @@ Demo ideas
     - [x] Wind tear (with and without skip nodes, with several fixed point configurations)
     - [x] Cloth falling on ball
     - [x] Skip nodes vs no skip nodes
+    - [x] Tear cloth by sword
     - [ ] Parachutes and burning cloth using sphere
-    - [ ] Tear cloth by sword
     - [ ] Compare integrators
 
 Bugs
@@ -39,7 +39,7 @@ Bugs
 Strongly Suggested Features
  - [x] (5) Realtime rendering (must document framerate)
  - [x] (5) 3D rendering, with user-controlled camera (must support first-person style)
- - [ ] (5) Real-time user interaction with system
+ - [x] (5) Real-time user interaction with system
 
 Cloth-Object Interaction (1-way coupling object-to-cloth) [up to 40 points]
  - [x] (10) 2D Mass-spring cloth simulation
@@ -67,7 +67,7 @@ Additional Features
 Advanced Cloth
 - [x] (5) Billowing/blowing wind effect simulated with aerodynamic drag
 - [x] (5) Skip nodes spring/threads to stiffen cloth (must show comparison)
-- [ ] (10) Tear-able cloth.
+- [x] (10) Tear-able cloth.
 - [ ] (15) Burnable cloth (should have particle effects for full credit)
 - [ ] (20) Self-collision in cloth
 - [ ] (40) Finite Element Method (FEM)-based cloth simulation
