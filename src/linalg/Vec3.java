@@ -100,4 +100,15 @@ public class Vec3 {
         this.y = c.y;
         this.z = c.z;
     }
+
+	public void minus(float x, float y, float z1) {
+		this.x -= x;
+		this.y -= y;
+		this.z -= z1;
+	}
+	public void plus(float x, float y, float z) {
+		this.x += x;
+		this.y += y;
+		this.z += z;
+	}
 }
