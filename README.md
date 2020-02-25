@@ -16,6 +16,7 @@
 - To execute the **full cloth simulation** run this command next `java -cp "bin/;jars/*" Main`
 - To execute any **demo simulation** run this command `java -cp "bin/;jars/*" demos.<simulation>`
 
-# Libraries used
+# Things used
 - Queasy cam
 - Cam written by Liam Tyler
+- https://stackoverflow.com/a/36425155/4031302 for distance from point to line segment

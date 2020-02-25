@@ -18,9 +18,6 @@ public class SwordCutCloth extends PApplet {
     private GridThreadPointMassSystem gridThreadPointMassSystem;
     private Ball ball;
     private Cutter cutter;
-    private PShape cutterShape;
-	private boolean cutterActive;
-	private boolean disableQueasyCam;
 
     public void settings() {
         size(WIDTH, HEIGHT, P3D);
@@ -28,12 +25,10 @@ public class SwordCutCloth extends PApplet {
 
     public void setup() {
         surface.setTitle("Processing");
+
         queasyCam = new QueasyCam(this);
-        queasyCam.sensitivity = 2f;
-        cutterActive = false;
-        disableQueasyCam = false;
-        cutterShape = loadShape("Sword_2.obj");
-        
+        queasyCam.speed = 2f;
+
         gridThreadPointMassSystem = new GridThreadPointMassSystem(
                 this,
                 30, 30,
@@ -42,43 +37,41 @@ public class SwordCutCloth extends PApplet {
                 1f, -20, -40f, -30f,
                 ((i, j, m, n) -> (j == 0)),
                 GridThreadPointMassSystem.Layout.ZX);
-//        gridThreadMassSystem.addSkipNodes();
 
         gridThreadPointMassSystem.air = new Air(0.08f, 0f, Vec3.of(0, 0, 1), 0);
+
         ball = new Ball(this, 1, 30, Vec3.of(50, 90, 0), Vec3.of(255, 255, 0), true);
+
+        PShape cutterShape = loadShape("Sword_2.obj");
+        cutterShape.scale(10);
+        cutter = new Cutter(this, cutterShape, queasyCam);
     }
 
     public void draw() {
-    	if(cutterActive) {
-    		if(cutter == null) {
-    			cutter = new Cutter(this.cutterShape, queasyCam);
-    		}
-    		gridThreadPointMassSystem.updateCutter(cutter);
-    	}
-    	if(disableQueasyCam) {
-    		queasyCam.controllable = false;
-    		disableQueasyCam = false;
-    	}
-    	
+        if (keyPressed) {
+            if ((key == 'w' || key == 's' || key == 'a' || key == 'd' || key == 'q' || key == 'e')) {
+                cutter.moveCutter(key);
+            }
+        }
+
         long start = millis();
         // update
         try {
+            cutter.update();
             for (int i = 0; i < 100; ++i) {
-                gridThreadPointMassSystem.update(ball,0.005f);
+                gridThreadPointMassSystem.update(ball, 0.005f);
                 ball.update(0.005f);
             }
+            cutter.cut(gridThreadPointMassSystem);
         } catch (Exception e) {
             e.printStackTrace();
         }
         long update = millis();
-        
         // draw
         background(0);
         gridThreadPointMassSystem.draw();
         ball.draw();
-        if(cutterActive && cutter!=null) {
-        	cutter.draw(this);
-        }
+        cutter.draw();
         long draw = millis();
 
         surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms" + " wind : " + gridThreadPointMassSystem.air.windSpeed);
@@ -92,18 +85,7 @@ public class SwordCutCloth extends PApplet {
             gridThreadPointMassSystem.air.decreaseSpeed(1f);
         }
         if (key == 'x') {
-            if(!cutterActive) {
-            	cutterActive = true;
-            	disableQueasyCam = true;
-            }else {
-            	disableQueasyCam = false;
-            	queasyCam.controllable = true;
-            	cutterActive = false;
-            }
-        }
-        if(cutterActive && (key=='w' || key=='s' || key=='a' || key=='d'
-        						 || key=='q' || key=='e') ) {
-        	cutter.moveCutter(key);
+            cutter.toggleIsPaused();
         }
     }
 
