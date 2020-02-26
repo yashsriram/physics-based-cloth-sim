@@ -173,7 +173,7 @@ public class GridThreadPointMassSystem {
         mass2.addDragForce(dragForce);
         mass3.addDragForce(dragForce);
     }
-
+    
     public void update(Ball ball, float dt) throws Exception {
         addDragForces();
         for (int i = 0; i < m; i++) {
@@ -185,7 +185,36 @@ public class GridThreadPointMassSystem {
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 PointMass s = pointMasses.get(i).get(j);
-                s.secondOrderIntegrate(dt);
+                s.firstOrderIntegrate(dt);
+            }
+        }
+    }
+
+    public void updateSecondOrder(Ball ball, float dt) throws Exception {
+        addDragForces();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                PointMass s = pointMasses.get(i).get(j);
+                s.update(ball);
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                PointMass s = pointMasses.get(i).get(j);
+                s.secondOrderHalfStep(dt);
+            }
+        }
+        
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                PointMass s = pointMasses.get(i).get(j);
+                s.update(ball);
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                PointMass s = pointMasses.get(i).get(j);
+                s.secondOrderFullStep(dt);
             }
         }
     }
@@ -201,7 +230,7 @@ public class GridThreadPointMassSystem {
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 PointMass s = pointMasses.get(i).get(j);
-                s.secondOrderIntegrate(dt);
+                s.firstOrderIntegrate(dt);
             }
         }
     }
@@ -217,7 +246,7 @@ public class GridThreadPointMassSystem {
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 PointMass s = pointMasses.get(i).get(j);
-                s.secondOrderIntegrate(dt);
+                s.firstOrderIntegrate(dt);
                 s.updateTemperature();
             }
         }

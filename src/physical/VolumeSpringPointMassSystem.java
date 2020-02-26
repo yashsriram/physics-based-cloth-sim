@@ -151,7 +151,7 @@ public class VolumeSpringPointMassSystem {
             for (int j = 0; j < n; j++) {
                 for (int k = 0; k < o; ++k) {
                     PointMass s = pointMasses.get(i).get(j).get(k);
-                    s.secondOrderIntegrate(dt);
+                    s.firstOrderIntegrate(dt);
                 }
             }
         }
@@ -175,7 +175,7 @@ public class VolumeSpringPointMassSystem {
             for (int j = 0; j < n; j++) {
                 for (int k = 0; k < o; ++k) {
                     PointMass s = pointMasses.get(i).get(j).get(k);
-                    s.secondOrderIntegrate(dt);
+                    s.firstOrderIntegrate(dt);
                 }
             }
         }

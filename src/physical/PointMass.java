@@ -150,11 +150,18 @@ public class PointMass {
         Integrator.firstOrder(position, velocity, acceleration, dt);
     }
 
-    public void secondOrderIntegrate(float dt) {
+    public void secondOrderHalfStep(float dt) {
         if (isBroken) {
             return;
         }
-        Integrator.secondOrder(position, velocity, acceleration, dt);
+        Integrator.secondOrderHalfStep(position, velocity, acceleration, dt);
+    }
+    
+    public void secondOrderFullStep(float dt) {
+        if (isBroken) {
+            return;
+        }
+        Integrator.secondOrderFullStep(position, velocity, acceleration, dt);
     }
 
     public void updateWithBurnCheck(Ball ball) throws Exception {

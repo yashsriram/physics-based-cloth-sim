@@ -44,7 +44,7 @@ public class Parachutes extends PApplet {
         public void update(Ball ball) throws Exception {
             gridThreadPointMassSystem.updateWithBurnCheck(ball, 0.006f);
             payload.update();
-            payload.secondOrderIntegrate(0.006f);
+            payload.firstOrderIntegrate(0.006f);
         }
 
         public void draw() {

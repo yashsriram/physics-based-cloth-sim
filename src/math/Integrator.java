@@ -11,8 +11,13 @@ public class Integrator {
         velocity.plusAccumulate(acceleration.scale(dt));
     }
 
-    public static void secondOrder(Vec3 position, Vec3 velocity, Vec3 acceleration, float dt) {
-        position.plusAccumulate(velocity.scale(dt).plus(acceleration.scale(0.5f * dt * dt)));
-        velocity.plusAccumulate(acceleration.scale(dt));
+    public static void secondOrderHalfStep(Vec3 position, Vec3 velocity, Vec3 acceleration, float dt) {
+    	position.plusAccumulate(velocity.scale(dt/2));
+        velocity.plusAccumulate(acceleration.scale(dt/2));
     }
+
+	public static void secondOrderFullStep(Vec3 position, Vec3 velocity, Vec3 acceleration, float dt) {
+		position.plusAccumulate(velocity.scale(dt));
+        velocity.plusAccumulate(acceleration.scale(dt));
+	}
 }
