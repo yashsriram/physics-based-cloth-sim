@@ -6,17 +6,18 @@ import physical.Ball;
 import physical.Ground;
 import physical.VolumeSpringPointMassSystem;
 import processing.core.PApplet;
-import processing.core.PVector;
 
-public class DeformableObject extends PApplet {
+import java.util.ArrayList;
+import java.util.List;
+
+public class DeformableObjectAndBalls extends PApplet {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
 
     private QueasyCam queasyCam;
     private VolumeSpringPointMassSystem volumeSpringPointMassSystem;
-    private Ball ball;
+    private List<Ball> balls = new ArrayList<>();
     private Ground ground;
-    private boolean isBallFixedToCam;
 
     public void settings() {
         size(WIDTH, HEIGHT, P3D);
@@ -25,24 +26,24 @@ public class DeformableObject extends PApplet {
     public void setup() {
         surface.setTitle("Processing");
         queasyCam = new QueasyCam(this);
-        queasyCam.sensitivity = 1f;
-        queasyCam.speed = 2f;
+        queasyCam.sensitivity = 2f;
         ground = new Ground(this,
                 Vec3.of(0, 100, 0), Vec3.of(0, 0, 1), Vec3.of(1, 0, 0),
                 400, 400,
                 loadImage("ground.jpg"));
-        ball = new Ball(this, 10, 12, Vec3.of(4, 75, 0), Vec3.of(255, 255, 0), true);
-        isBallFixedToCam = false;
+        balls.add(new Ball(this, 10, 12, Vec3.of(10, -75, 10), Vec3.of(128, 0, 0), true));
+        balls.add(new Ball(this, 10, 12, Vec3.of(20, 0, 50), Vec3.of(128, 128, 0), true));
+        balls.add(new Ball(this, 10, 12, Vec3.of(20, 0, 75), Vec3.of(0, 128, 0), true));
         resetSystem();
     }
 
     private void resetSystem() {
         volumeSpringPointMassSystem = new VolumeSpringPointMassSystem(
                 this,
-                4, 10, 4,
+                4, 4, 10,
                 200,
                 10, 250, 250f,
-                0.9f, 0, -50, 0,
+                0.9f, 0, -150, 0,
                 ((i, j, k, m, n, o) -> false)
         );
     }
@@ -50,13 +51,9 @@ public class DeformableObject extends PApplet {
     public void draw() {
         long start = millis();
         // update
-        if (isBallFixedToCam) {
-            PVector aim = queasyCam.getAim(150);
-            ball.update(Vec3.of(aim.x , aim.y, aim.z));
-        }
         try {
             for (int i = 0; i < 300; ++i) {
-                volumeSpringPointMassSystem.update(ball, ground, 0.003f);
+                volumeSpringPointMassSystem.update(balls, ground, 0.003f);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,7 +62,9 @@ public class DeformableObject extends PApplet {
         // draw
         background(0);
         volumeSpringPointMassSystem.draw();
-        ball.draw();
+        for (Ball b: balls) {
+            b.draw();
+        };
         ground.draw();
         long draw = millis();
 
@@ -76,13 +75,10 @@ public class DeformableObject extends PApplet {
         if (key == 'r') {
             resetSystem();
         }
-        if (key == 'p') {
-            isBallFixedToCam = !isBallFixedToCam;
-        }
     }
 
     static public void main(String[] passedArgs) {
-        String[] appletArgs = new String[]{"demos.DeformableObject"};
+        String[] appletArgs = new String[]{"demos.DeformableObjectAndBalls"};
         if (passedArgs != null) {
             PApplet.main(concat(appletArgs, passedArgs));
         } else {

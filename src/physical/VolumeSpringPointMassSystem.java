@@ -151,6 +151,30 @@ public class VolumeSpringPointMassSystem {
         }
     }
 
+    public void update(List<Ball> balls, Ground ground, float dt) throws Exception {
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < o; ++k) {
+                    PointMass s = pointMasses.get(i).get(j).get(k);
+                    s.update(balls);
+                    s.acceleration.plusAccumulate(s.velocity.scale(-0.1f));
+                    if (s.position.y >= ground.center.y) {
+                        s.position.y = ground.center.y - 0.1f;
+                        s.velocity.y = -Math.abs(s.velocity.y);
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < o; ++k) {
+                    PointMass s = pointMasses.get(i).get(j).get(k);
+                    s.secondOrderIntegrate(dt);
+                }
+            }
+        }
+    }
+
     public void draw() {
         parent.strokeWeight(2);
         parent.stroke(255);

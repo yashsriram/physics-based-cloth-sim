@@ -123,7 +123,7 @@ public class BallsFallingOnCloth extends PApplet {
 
         Vec3 center = c1.position.plus(c2.position).plus(c3.position).plus(c4.position).scale(0.25f);
 
-        Ball.userControlVelocity = 5;
+        Ball.manualSpeed = 5;
         ballSystem = new BallSystem(this, center, 6, 5);
     }
 

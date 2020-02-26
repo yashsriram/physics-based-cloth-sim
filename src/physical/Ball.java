@@ -6,7 +6,7 @@ import processing.core.PApplet;
 
 public class Ball {
     public static final float ballFrictionConstant = 0.7f;
-    public static float userControlVelocity = 1;
+    public static float manualSpeed = 1;
     public static Vec3 gravity = Vec3.of(0, .5, 0);
 
     final PApplet parent;
@@ -43,22 +43,22 @@ public class Ball {
         if (parent.keyPressed) {
             switch (parent.key) {
                 case '4':
-                    firstOrder(Vec3.of(0, 0, -userControlVelocity), dt);
+                    firstOrder(Vec3.of(0, 0, -manualSpeed), dt);
                     break;
                 case '6':
-                    firstOrder(Vec3.of(0, 0, userControlVelocity), dt);
+                    firstOrder(Vec3.of(0, 0, manualSpeed), dt);
                     break;
                 case '5':
-                    firstOrder(Vec3.of(-userControlVelocity, 0, 0), dt);
+                    firstOrder(Vec3.of(-manualSpeed, 0, 0), dt);
                     break;
                 case '8':
-                    firstOrder(Vec3.of(userControlVelocity, 0, 0), dt);
+                    firstOrder(Vec3.of(manualSpeed, 0, 0), dt);
                     break;
                 case '7':
-                    firstOrder(Vec3.of(0, userControlVelocity, 0), dt);
+                    firstOrder(Vec3.of(0, manualSpeed, 0), dt);
                     break;
                 case '9':
-                    firstOrder(Vec3.of(0, -userControlVelocity, 0), dt);
+                    firstOrder(Vec3.of(0, -manualSpeed, 0), dt);
                     break;
                 case 'r':
                     position = initialPosition;
