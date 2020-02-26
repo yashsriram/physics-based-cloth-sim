@@ -107,7 +107,8 @@ public class Parachutes extends PApplet {
     private QueasyCam queasyCam;
     private Air air;
     private SkyDiver skyDiver;
-    Ball ball;
+    private Ball ball;
+    private float aimDist = 100;
 
 
     public void settings() {
@@ -119,7 +120,9 @@ public class Parachutes extends PApplet {
 
         queasyCam = new QueasyCam(this);
 
-        air = new Air(0.05f, 0.5f, Vec3.of(0, -1, 0), 0);
+        air = new Air(0.05f, 0.3f, Vec3.of(0, -1, 0), 0);
+
+        PointMass.temperatureTransferRate = 0.002f;
 
         PShape skyDiverShape = loadShape("mario/Mario.obj");
         skyDiverShape.rotateX(PConstants.PI / 2);
@@ -138,10 +141,18 @@ public class Parachutes extends PApplet {
     }
 
     public void draw() {
-
+        if (keyPressed) {
+            if (key == '1') {
+                aimDist += 3;
+            } else if (key == '2') {
+                aimDist -= 3;
+            } else if (key == '3') {
+                aimDist = 100;
+            }
+        }
         long start = millis();
         // update
-        PVector aim = queasyCam.getAim(100);
+        PVector aim = queasyCam.getAim(aimDist);
         ball.update(Vec3.of(aim.x, aim.y, aim.z));
         try {
             for (int i = 0; i < 100; ++i) {
@@ -152,7 +163,7 @@ public class Parachutes extends PApplet {
         }
         long update = millis();
         // draw
-        background(0);
+        background(135, 206, 235);
         ball.draw();
         skyDiver.draw();
         long draw = millis();

@@ -9,7 +9,7 @@ import physical.VolumeSpringPointMassSystem;
 import processing.core.PApplet;
 import processing.core.PShape;
 
-public class DeformableObject extends PApplet {
+public class DeformableObjectAndSword extends PApplet {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
 
@@ -40,14 +40,13 @@ public class DeformableObject extends PApplet {
     }
 
     private void resetSystem() {
-        volumeSpringPointMassSystem = new VolumeSpringPointMassSystem(
+        volumeSpringPointMassSystem = VolumeSpringPointMassSystem.of(
                 this,
                 4, 10, 4,
                 200,
                 10, 250, 250f,
                 0.9f, 0, -50, 0,
                 loadImage("jelly-blue.jpg"),
-                loadImage("jelly-green.jpg"),
                 ((i, j, k, m, n, o) -> false)
         );
     }
@@ -86,7 +85,7 @@ public class DeformableObject extends PApplet {
     }
 
     static public void main(String[] passedArgs) {
-        String[] appletArgs = new String[]{"demos.DeformableObject"};
+        String[] appletArgs = new String[]{"demos.DeformableObjectAndSword"};
         if (passedArgs != null) {
             PApplet.main(concat(appletArgs, passedArgs));
         } else {
