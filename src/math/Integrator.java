@@ -16,17 +16,14 @@ public class Integrator {
         velocity.plusAccumulate(acceleration.scale(dt/2));
     }
 
-	public static void secondOrderFullStep(Vec3 position, Vec3 velocity, Vec3 acceleration,
-										   Vec3 positionOld, Vec3 velocityOld, Vec3 accelerationOld,
-										   float dt) {
-		velocity.set(velocityOld);
-		velocity.plusAccumulate(acceleration.scale(dt));
-		
-		// Set to value at the beginning of half time step
-		position.set(positionOld);
-		// Update for full time step with the derivative at midpoint.
+	public static void secondOrderFullStep(Vec3 positionMidpoint, Vec3 velocityMidpoint, Vec3 accelerationMidpoint,
+										   Vec3 positionOld, Vec3 velocityOld, float dt) {
+		positionMidpoint.set( positionOld.plus(velocityMidpoint.scale(dt)) );
+		velocityMidpoint.set( velocityOld.plus(accelerationMidpoint.scale(dt)) );
+	}
+	
+	public static void secondOrderFullStep(Vec3 position, Vec3 velocity, Vec3 acceleration, float dt) {
 		position.plusAccumulate(velocity.scale(dt));
-		
-		acceleration.set(accelerationOld);
+        velocity.plusAccumulate(acceleration.scale(dt));
 	}
 }

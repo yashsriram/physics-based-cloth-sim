@@ -38,7 +38,6 @@ public class PointMass {
     private int dragForceCount;
 	private Vec3 positionOld;
 	private Vec3 velocityOld;
-	private Vec3 accelerationOld;
 
     public PointMass(PApplet parent, float mass, Vec3 position, Vec3 velocity, Vec3 acceleration, boolean isFixed) {
         this.parent = parent;
@@ -159,7 +158,6 @@ public class PointMass {
         }
         positionOld = position.copy();
         velocityOld = velocity.copy();
-        accelerationOld = acceleration.copy();
         Integrator.secondOrderHalfStep(position, velocity, acceleration, dt);
     }
     
@@ -167,9 +165,7 @@ public class PointMass {
         if (isBroken) {
             return;
         }
-        if(positionOld != null && velocityOld != null) {
-        	Integrator.secondOrderFullStep(position, velocity, acceleration, positionOld, velocityOld, accelerationOld, dt);
-        }
+    	Integrator.secondOrderFullStep(position, velocity, acceleration, dt);
     }
 
     public void updateWithBurnCheck(Ball ball) throws Exception {
