@@ -31,6 +31,7 @@ public class Ground {
     public void draw() {
         parent.pushMatrix();
         parent.beginShape(PConstants.QUAD);
+        parent.textureMode(PConstants.IMAGE);
         parent.texture(texture);
         parent.vertex(ul.x, ul.y, ul.z, 0, 0);
         parent.vertex(ll.x, ll.y, ll.z, 0, texture.height);

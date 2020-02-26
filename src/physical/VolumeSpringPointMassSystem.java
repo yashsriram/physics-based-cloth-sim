@@ -2,6 +2,8 @@ package physical;
 
 import math.Vec3;
 import processing.core.PApplet;
+import processing.core.PConstants;
+import processing.core.PImage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +26,14 @@ public class VolumeSpringPointMassSystem {
     final float forceConstant;
     final float dampConstant;
 
+    final PImage texture;
+
     public VolumeSpringPointMassSystem(PApplet parent,
                                        int m, int n, int o,
                                        float mass,
                                        float restLength, float forceConstant, float dampConstant,
                                        float extensionFactor, float offsetX, float offsetY, float offsetZ,
+                                       PImage texture,
                                        FixedMassDecider fixedMassDecider) {
         this.parent = parent;
         this.m = m;
@@ -38,6 +43,7 @@ public class VolumeSpringPointMassSystem {
         this.restLength = restLength;
         this.forceConstant = forceConstant;
         this.dampConstant = dampConstant;
+        this.texture = texture;
 
         for (int i = 0; i < m; ++i) {
             List<List<PointMass>> verticalSlice = new ArrayList<>();
@@ -176,6 +182,167 @@ public class VolumeSpringPointMassSystem {
     }
 
     public void draw() {
+        drawTexture();
+    }
+
+    private void drawTexture() {
+        parent.noStroke();
+        parent.noFill();
+        parent.textureMode(PConstants.NORMAL);
+
+        for (int i = 0; i < m - 1; ++i) {
+            parent.beginShape(PConstants.TRIANGLE_STRIP);
+            parent.texture(texture);
+            for (int j = 0; j < n; ++j) {
+                PointMass m1 = pointMasses.get(i).get(j).get(0);
+                PointMass m2 = pointMasses.get(i + 1).get(j).get(0);
+
+                if (m1.isBroken || m2.isBroken) {
+                    parent.endShape();
+                    parent.beginShape(PConstants.TRIANGLE_STRIP);
+                    parent.texture(texture);
+                    continue;
+                }
+                Vec3 pos1 = m1.position;
+                float u1 = PApplet.map(i, 0, m - 1, 0, 1);
+                float v = PApplet.map(j, 0, n - 1, 0, 1);
+                parent.vertex(pos1.x, pos1.y, pos1.z, u1, v);
+
+                Vec3 pos2 = m2.position;
+                float u2 = PApplet.map(i + 1, 0, m - 1, 0, 1);
+                parent.vertex(pos2.x, pos2.y, pos2.z, u2, v);
+            }
+            parent.endShape();
+        }
+
+        for (int i = 0; i < m - 1; ++i) {
+            parent.beginShape(PConstants.TRIANGLE_STRIP);
+            parent.texture(texture);
+            for (int j = 0; j < n; ++j) {
+                PointMass m1 = pointMasses.get(i).get(j).get(o - 1);
+                PointMass m2 = pointMasses.get(i + 1).get(j).get(o - 1);
+
+                if (m1.isBroken || m2.isBroken) {
+                    parent.endShape();
+                    parent.beginShape(PConstants.TRIANGLE_STRIP);
+                    parent.texture(texture);
+                    continue;
+                }
+                Vec3 pos1 = m1.position;
+                float u1 = PApplet.map(i, 0, m - 1, 0, 1);
+                float v = PApplet.map(j, 0, n - 1, 0, 1);
+                parent.vertex(pos1.x, pos1.y, pos1.z, u1, v);
+
+                Vec3 pos2 = m2.position;
+                float u2 = PApplet.map(i + 1, 0, m - 1, 0, 1);
+                parent.vertex(pos2.x, pos2.y, pos2.z, u2, v);
+            }
+            parent.endShape();
+        }
+
+        for (int j = 0; j < n - 1; ++j) {
+            parent.beginShape(PConstants.TRIANGLE_STRIP);
+            parent.texture(texture);
+            for (int k = 0; k < o; ++k) {
+                PointMass m1 = pointMasses.get(0).get(j).get(k);
+                PointMass m2 = pointMasses.get(0).get(j + 1).get(k);
+
+                if (m1.isBroken || m2.isBroken) {
+                    parent.endShape();
+                    parent.beginShape(PConstants.TRIANGLE_STRIP);
+                    parent.texture(texture);
+                    continue;
+                }
+                Vec3 pos1 = m1.position;
+                float u1 = PApplet.map(j, 0, n - 1, 0, 1);
+                float v = PApplet.map(k, 0, o - 1, 0, 1);
+                parent.vertex(pos1.x, pos1.y, pos1.z, u1, v);
+
+                Vec3 pos2 = m2.position;
+                float u2 = PApplet.map(j + 1, 0, n - 1, 0, 1);
+                parent.vertex(pos2.x, pos2.y, pos2.z, u2, v);
+            }
+            parent.endShape();
+        }
+
+        for (int j = 0; j < n - 1; ++j) {
+            parent.beginShape(PConstants.TRIANGLE_STRIP);
+            parent.texture(texture);
+            for (int k = 0; k < o; ++k) {
+                PointMass m1 = pointMasses.get(m - 1).get(j).get(k);
+                PointMass m2 = pointMasses.get(m - 1).get(j + 1).get(k);
+
+                if (m1.isBroken || m2.isBroken) {
+                    parent.endShape();
+                    parent.beginShape(PConstants.TRIANGLE_STRIP);
+                    parent.texture(texture);
+                    continue;
+                }
+                Vec3 pos1 = m1.position;
+                float u1 = PApplet.map(j, 0, n - 1, 0, 1);
+                float v = PApplet.map(k, 0, o - 1, 0, 1);
+                parent.vertex(pos1.x, pos1.y, pos1.z, u1, v);
+
+                Vec3 pos2 = m2.position;
+                float u2 = PApplet.map(j + 1, 0, n - 1, 0, 1);
+                parent.vertex(pos2.x, pos2.y, pos2.z, u2, v);
+            }
+            parent.endShape();
+        }
+
+        for (int k = 0; k < o - 1; ++k) {
+            parent.beginShape(PConstants.TRIANGLE_STRIP);
+            parent.texture(texture);
+            for (int i = 0; i < m; ++i) {
+                PointMass m1 = pointMasses.get(i).get(0).get(k);
+                PointMass m2 = pointMasses.get(i).get(0).get(k + 1);
+
+                if (m1.isBroken || m2.isBroken) {
+                    parent.endShape();
+                    parent.beginShape(PConstants.TRIANGLE_STRIP);
+                    parent.texture(texture);
+                    continue;
+                }
+                Vec3 pos1 = m1.position;
+                float u1 = PApplet.map(k, 0, o - 1, 0, 1);
+                float v = PApplet.map(i, 0, m - 1, 0, 1);
+                parent.vertex(pos1.x, pos1.y, pos1.z, u1, v);
+
+                Vec3 pos2 = m2.position;
+                float u2 = PApplet.map(k + 1, 0, o - 1, 0, 1);
+                parent.vertex(pos2.x, pos2.y, pos2.z, u2, v);
+            }
+            parent.endShape();
+        }
+
+        for (int k = 0; k < o - 1; ++k) {
+            parent.beginShape(PConstants.TRIANGLE_STRIP);
+            parent.texture(texture);
+            for (int i = 0; i < m; ++i) {
+                PointMass m1 = pointMasses.get(i).get(n - 1).get(k);
+                PointMass m2 = pointMasses.get(i).get(n - 1).get(k + 1);
+
+                if (m1.isBroken || m2.isBroken) {
+                    parent.endShape();
+                    parent.beginShape(PConstants.TRIANGLE_STRIP);
+                    parent.texture(texture);
+                    continue;
+                }
+                Vec3 pos1 = m1.position;
+                float u1 = PApplet.map(k, 0, o - 1, 0, 1);
+                float v = PApplet.map(i, 0, m - 1, 0, 1);
+                parent.vertex(pos1.x, pos1.y, pos1.z, u1, v);
+
+                Vec3 pos2 = m2.position;
+                float u2 = PApplet.map(k + 1, 0, o - 1, 0, 1);
+                parent.vertex(pos2.x, pos2.y, pos2.z, u2, v);
+            }
+            parent.endShape();
+        }
+
+    }
+
+    private void drawSkeleton() {
         parent.strokeWeight(2);
         parent.stroke(255);
         for (Thread s : springs) {

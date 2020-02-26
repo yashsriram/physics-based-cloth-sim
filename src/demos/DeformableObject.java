@@ -31,7 +31,7 @@ public class DeformableObject extends PApplet {
                 Vec3.of(0, 100, 0), Vec3.of(0, 0, 1), Vec3.of(1, 0, 0),
                 400, 400,
                 loadImage("ground.jpg"));
-        ball = new Ball(this, 10, 12, Vec3.of(4, 75, 0), Vec3.of(255, 255, 0), true);
+        ball = new Ball(this, 10, 12, Vec3.of(4, 75, 0), Vec3.of(255, 255, 255), true);
         isBallFixedToCam = false;
         resetSystem();
     }
@@ -43,6 +43,7 @@ public class DeformableObject extends PApplet {
                 200,
                 10, 250, 250f,
                 0.9f, 0, -50, 0,
+                loadImage("jelly-blue.jpg"),
                 ((i, j, k, m, n, o) -> false)
         );
     }
@@ -51,7 +52,7 @@ public class DeformableObject extends PApplet {
         long start = millis();
         // update
         if (isBallFixedToCam) {
-            PVector aim = queasyCam.getAim(150);
+            PVector aim = queasyCam.getAim(200);
             ball.update(Vec3.of(aim.x , aim.y, aim.z));
         }
         try {
