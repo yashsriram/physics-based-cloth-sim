@@ -29,6 +29,19 @@ public class Thread {
         m2.threads.add(this);
     }
 
+    public Thread(PApplet parent, float forceConstant, float dampConstant, PointMass m1, PointMass m2, Mode mode) {
+        this.parent = parent;
+        this.restLength = m1.position.minus(m2.position).abs();
+        this.forceConstant = forceConstant;
+        this.dampConstant = dampConstant;
+        this.m1 = m1;
+        this.m2 = m2;
+        this.isBroken = false;
+        this.mode = mode;
+        m1.threads.add(this);
+        m2.threads.add(this);
+    }
+
     public Vec3 forceOn(PointMass m) throws Exception {
         if (this.isBroken) {
             return Vec3.zero();

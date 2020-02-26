@@ -28,9 +28,8 @@ public class Ground {
         this.texture = texture;
     }
 
-    public void render() {
+    public void draw() {
         parent.pushMatrix();
-        parent.translate(0, center.y, 0);
         parent.beginShape(PConstants.QUAD);
         parent.texture(texture);
         parent.vertex(ul.x, ul.y, ul.z, 0, 0);
