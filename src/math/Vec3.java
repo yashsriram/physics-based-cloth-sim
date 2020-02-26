@@ -111,4 +111,14 @@ public class Vec3 {
 		this.y += y;
 		this.z += z;
 	}
+
+	public Vec3 copy() {
+		return new Vec3(this.x, this.y, this.z);
+	}
+
+	public void set(Vec3 vector) {
+		this.x = vector.x;
+		this.y = vector.y;
+		this.z = vector.z;
+	}
 }
