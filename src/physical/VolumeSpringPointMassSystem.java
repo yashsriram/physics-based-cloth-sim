@@ -26,14 +26,16 @@ public class VolumeSpringPointMassSystem {
     final float forceConstant;
     final float dampConstant;
 
-    final PImage texture;
+    final PImage texture1;
+    final PImage texture2;
 
     public VolumeSpringPointMassSystem(PApplet parent,
                                        int m, int n, int o,
                                        float mass,
                                        float restLength, float forceConstant, float dampConstant,
                                        float extensionFactor, float offsetX, float offsetY, float offsetZ,
-                                       PImage texture,
+                                       PImage texture1,
+                                       PImage texture2,
                                        FixedMassDecider fixedMassDecider) {
         this.parent = parent;
         this.m = m;
@@ -43,7 +45,8 @@ public class VolumeSpringPointMassSystem {
         this.restLength = restLength;
         this.forceConstant = forceConstant;
         this.dampConstant = dampConstant;
-        this.texture = texture;
+        this.texture1 = texture1;
+        this.texture2 = texture2;
 
         for (int i = 0; i < m; ++i) {
             List<List<PointMass>> verticalSlice = new ArrayList<>();
@@ -192,7 +195,7 @@ public class VolumeSpringPointMassSystem {
 
         for (int i = 0; i < m - 1; ++i) {
             parent.beginShape(PConstants.TRIANGLE_STRIP);
-            parent.texture(texture);
+            parent.texture(texture1);
             for (int j = 0; j < n; ++j) {
                 PointMass m1 = pointMasses.get(i).get(j).get(0);
                 PointMass m2 = pointMasses.get(i + 1).get(j).get(0);
@@ -200,7 +203,7 @@ public class VolumeSpringPointMassSystem {
                 if (m1.isBroken || m2.isBroken) {
                     parent.endShape();
                     parent.beginShape(PConstants.TRIANGLE_STRIP);
-                    parent.texture(texture);
+                    parent.texture(texture1);
                     continue;
                 }
                 Vec3 pos1 = m1.position;
@@ -217,7 +220,7 @@ public class VolumeSpringPointMassSystem {
 
         for (int i = 0; i < m - 1; ++i) {
             parent.beginShape(PConstants.TRIANGLE_STRIP);
-            parent.texture(texture);
+            parent.texture(texture1);
             for (int j = 0; j < n; ++j) {
                 PointMass m1 = pointMasses.get(i).get(j).get(o - 1);
                 PointMass m2 = pointMasses.get(i + 1).get(j).get(o - 1);
@@ -225,7 +228,7 @@ public class VolumeSpringPointMassSystem {
                 if (m1.isBroken || m2.isBroken) {
                     parent.endShape();
                     parent.beginShape(PConstants.TRIANGLE_STRIP);
-                    parent.texture(texture);
+                    parent.texture(texture1);
                     continue;
                 }
                 Vec3 pos1 = m1.position;
@@ -242,7 +245,7 @@ public class VolumeSpringPointMassSystem {
 
         for (int j = 0; j < n - 1; ++j) {
             parent.beginShape(PConstants.TRIANGLE_STRIP);
-            parent.texture(texture);
+            parent.texture(texture2);
             for (int k = 0; k < o; ++k) {
                 PointMass m1 = pointMasses.get(0).get(j).get(k);
                 PointMass m2 = pointMasses.get(0).get(j + 1).get(k);
@@ -250,7 +253,7 @@ public class VolumeSpringPointMassSystem {
                 if (m1.isBroken || m2.isBroken) {
                     parent.endShape();
                     parent.beginShape(PConstants.TRIANGLE_STRIP);
-                    parent.texture(texture);
+                    parent.texture(texture2);
                     continue;
                 }
                 Vec3 pos1 = m1.position;
@@ -267,7 +270,7 @@ public class VolumeSpringPointMassSystem {
 
         for (int j = 0; j < n - 1; ++j) {
             parent.beginShape(PConstants.TRIANGLE_STRIP);
-            parent.texture(texture);
+            parent.texture(texture1);
             for (int k = 0; k < o; ++k) {
                 PointMass m1 = pointMasses.get(m - 1).get(j).get(k);
                 PointMass m2 = pointMasses.get(m - 1).get(j + 1).get(k);
@@ -275,7 +278,7 @@ public class VolumeSpringPointMassSystem {
                 if (m1.isBroken || m2.isBroken) {
                     parent.endShape();
                     parent.beginShape(PConstants.TRIANGLE_STRIP);
-                    parent.texture(texture);
+                    parent.texture(texture1);
                     continue;
                 }
                 Vec3 pos1 = m1.position;
@@ -292,7 +295,7 @@ public class VolumeSpringPointMassSystem {
 
         for (int k = 0; k < o - 1; ++k) {
             parent.beginShape(PConstants.TRIANGLE_STRIP);
-            parent.texture(texture);
+            parent.texture(texture1);
             for (int i = 0; i < m; ++i) {
                 PointMass m1 = pointMasses.get(i).get(0).get(k);
                 PointMass m2 = pointMasses.get(i).get(0).get(k + 1);
@@ -300,7 +303,7 @@ public class VolumeSpringPointMassSystem {
                 if (m1.isBroken || m2.isBroken) {
                     parent.endShape();
                     parent.beginShape(PConstants.TRIANGLE_STRIP);
-                    parent.texture(texture);
+                    parent.texture(texture1);
                     continue;
                 }
                 Vec3 pos1 = m1.position;
@@ -317,7 +320,7 @@ public class VolumeSpringPointMassSystem {
 
         for (int k = 0; k < o - 1; ++k) {
             parent.beginShape(PConstants.TRIANGLE_STRIP);
-            parent.texture(texture);
+            parent.texture(texture1);
             for (int i = 0; i < m; ++i) {
                 PointMass m1 = pointMasses.get(i).get(n - 1).get(k);
                 PointMass m2 = pointMasses.get(i).get(n - 1).get(k + 1);
@@ -325,7 +328,7 @@ public class VolumeSpringPointMassSystem {
                 if (m1.isBroken || m2.isBroken) {
                     parent.endShape();
                     parent.beginShape(PConstants.TRIANGLE_STRIP);
-                    parent.texture(texture);
+                    parent.texture(texture1);
                     continue;
                 }
                 Vec3 pos1 = m1.position;

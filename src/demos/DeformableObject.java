@@ -44,6 +44,7 @@ public class DeformableObject extends PApplet {
                 10, 250, 250f,
                 0.9f, 0, -50, 0,
                 loadImage("jelly-blue.jpg"),
+                loadImage("jelly-green.jpg"),
                 ((i, j, k, m, n, o) -> false)
         );
     }
