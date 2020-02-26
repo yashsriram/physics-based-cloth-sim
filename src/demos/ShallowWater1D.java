@@ -106,20 +106,20 @@ public class ShallowWater1D extends PApplet {
     void updateLoop() {
         float dt = 0.01f;
         float g = 1f;
-        float damp = 0.1f;
+        float damp = 0.05f;
 
         // Half step
         for (int i = 0; i < numColumns - 1; i++) {
             WaterColumn w1 = waterColumns.get(i);
             WaterColumn w2 = waterColumns.get(i + 1);
 
-            w1.midpointHeight = (w1.height + w2.height) / 2f;
-            w1.midpointHeight += -(dt / 2f) * (w1.momentum - w2.momentum) / dz;
+            w1.midpointHeightZ = (w1.height + w2.height) / 2f;
+            w1.midpointHeightZ += -(dt / 2f) * (w1.momentumZ - w2.momentumZ) / dz;
 
-            w1.midpointMomentum = (w1.momentum + w2.momentum) / 2f;
-            w1.midpointMomentum += -(dt / 2f) * (
-                    sq(w2.momentum) / w2.height
-                            - sq(w1.momentum) / w1.height
+            w1.midpointZMomentum_alongZ = (w1.momentumZ + w2.momentumZ) / 2f;
+            w1.midpointZMomentum_alongZ += -(dt / 2f) * (
+                    sq(w2.momentumZ) / w2.height
+                            - sq(w1.momentumZ) / w1.height
                             + 0.5f * g * sq(w2.height)
                             - 0.5f * g * sq(w1.height)
             ) / dz;
@@ -130,16 +130,16 @@ public class ShallowWater1D extends PApplet {
             WaterColumn w1 = waterColumns.get(i);
             WaterColumn w2 = waterColumns.get(i + 1);
 
-            w2.height += -dt * (w2.midpointMomentum - w1.midpointMomentum) / dz;
-            w2.momentum += -dt * (
-                    +sq(w2.midpointMomentum) / w2.midpointHeight
-                            - sq(w1.midpointMomentum) / w1.midpointHeight
-                            + 0.5 * g * sq(w2.midpointHeight)
-                            - 0.5 * g * sq(w1.midpointHeight)
+            w2.height += -dt * (w2.midpointZMomentum_alongZ - w1.midpointZMomentum_alongZ) / dz;
+            w2.momentumZ += -dt * (
+                    +sq(w2.midpointZMomentum_alongZ) / w2.midpointHeightZ
+                            - sq(w1.midpointZMomentum_alongZ) / w1.midpointHeightZ
+                            + 0.5 * g * sq(w2.midpointHeightZ)
+                            - 0.5 * g * sq(w1.midpointHeightZ)
             ) / dz;
 
             // Damping
-            w2.momentum += -dt * damp * w2.momentum / dz;
+            w2.momentumZ += -dt * damp * w2.momentumZ;
         }
 
         // Boundary columns
@@ -151,8 +151,8 @@ public class ShallowWater1D extends PApplet {
         // Boundary conditions (reflective)
         w0.height = w1.height;
         w_1.height = w_2.height;
-        w0.momentum = -w1.momentum;
-        w_1.momentum = -w_2.momentum;
+        w0.momentumZ = -w1.momentumZ;
+        w_1.momentumZ = -w_2.momentumZ;
     }
 
     public void draw() {
