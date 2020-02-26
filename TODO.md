@@ -22,16 +22,18 @@ Note, for the check-in, we only need the vertical threads – adding horizontal 
 threads is optional, they will make the simulation less stable, so only try it second.
 
 Demo ideas
-- [ ] Cloth
+- [x] Cloth
     - [x] Ball falling on cloth
     - [x] Balls falling on cloth
+    - [x] Circles falling on thread
     - [x] Air drag vs no air drag
     - [x] Wind tear (with and without skip nodes, with several fixed point configurations)
     - [x] Cloth falling on ball
     - [x] Skip nodes vs no skip nodes
     - [x] Tear cloth by sword
     - [x] Parachutes and burning cloth using sphere
-    - [ ] Compare integrators
+    - [x] Burnable cloth
+    - [x] Compare integrators
 
 Bugs
 - [x] separate acc calc and pos, vel updates in grid and series systems
@@ -75,9 +77,9 @@ Deformable Objects
 
 Integrator
 - [x] (5) Eulerian (1st order)
-- [ ] (5) Higher-order Explicit (e.g., Midpoint, RK4, Lax–Wendroff)
+- [x] (5) Higher-order Explicit (e.g., Midpoint, RK4, Lax–Wendroff)
+- [x] (5) Compare two or more integration methods in terms of speed & stability
 - [ ] (10) Implicit Integrator
-- [ ] (5) Compare two or more integration methods in terms of speed & stability
 
 Water/Fluid Simulation
 - [x] (10) 1D Water surface, with shallow water equation

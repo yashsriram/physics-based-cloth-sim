@@ -7,7 +7,7 @@ import physical.Ball;
 import physical.GridThreadPointMassSystem;
 import processing.core.PApplet;
 
-public class ClothMidpointIntegrator extends PApplet {
+public class ClothIntegratorComparision extends PApplet {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
 
@@ -15,7 +15,7 @@ public class ClothMidpointIntegrator extends PApplet {
 
     private GridThreadPointMassSystem gridThreadPointMassSystem;
     private Ball ball;
-	private boolean secondOrder = false;
+    private boolean secondOrder = false;
 
     public void settings() {
         size(WIDTH, HEIGHT, P3D);
@@ -46,19 +46,17 @@ public class ClothMidpointIntegrator extends PApplet {
         long start = millis();
         // update
         try {
-        	float dt = 0.006f;
-        	if(secondOrder) {
-        		dt = 0.01f;
-        		for (int i = 0; i < 40; ++i) {
-        			gridThreadPointMassSystem.updateSecondOrder(ball, dt);
-        		}
-        		ball.update(dt);
-        	}else {
-        		for (int i = 0; i < 90; ++i) {
-        			gridThreadPointMassSystem.update(ball, dt);
-        		}
-        		ball.update(dt);
-        	}
+            float dt = 0.012f;
+            if (secondOrder) {
+                for (int i = 0; i < 90; ++i) {
+                    gridThreadPointMassSystem.updateSecondOrder(ball, dt);
+                }
+            } else {
+                for (int i = 0; i < 90; ++i) {
+                    gridThreadPointMassSystem.update(ball, dt);
+                }
+            }
+            ball.update(dt);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,7 +67,7 @@ public class ClothMidpointIntegrator extends PApplet {
         ball.draw();
         long draw = millis();
 
-        surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms" + " wind : " + gridThreadPointMassSystem.air.windSpeed);
+        surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms" + " wind : " + gridThreadPointMassSystem.air.windSpeed + " integrator: " + (secondOrder ? "second-order" : "first-order"));
     }
 
     public void keyPressed() {
@@ -88,7 +86,7 @@ public class ClothMidpointIntegrator extends PApplet {
     }
 
     static public void main(String[] passedArgs) {
-        String[] appletArgs = new String[]{"demos.ClothMidpointIntegrator"};
+        String[] appletArgs = new String[]{"demos.ClothIntegratorComparision"};
         if (passedArgs != null) {
             PApplet.main(concat(appletArgs, passedArgs));
         } else {

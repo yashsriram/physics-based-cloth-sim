@@ -24,6 +24,7 @@ public class ClothAirDrag extends PApplet {
         surface.setTitle("Processing");
         queasyCam = new QueasyCam(this);
         queasyCam.sensitivity = 2f;
+        ball = new Ball(this, 1, 40, Vec3.of(50, 90, 0), Vec3.of(255, 255, 0), true);
         resetSystem();
     }
 
@@ -40,16 +41,15 @@ public class ClothAirDrag extends PApplet {
         gridThreadPointMassSystem.addSkipNodes();
 
         gridThreadPointMassSystem.air = new Air(0.06f, 0f, Vec3.of(0, 0, 1), 0);
-        ball = new Ball(this, 1, 40, Vec3.of(50, 90, 0), Vec3.of(255, 255, 0), true);
     }
 
     public void draw() {
         long start = millis();
         // update
         try {
-            for (int i = 0; i < 90; ++i) {
-                gridThreadPointMassSystem.update(ball, 0.006f);
-                ball.update(0.006f);
+            for (int i = 0; i < 40; ++i) {
+                gridThreadPointMassSystem.updateSecondOrder(ball, 0.01f);
+                ball.update(0.01f);
             }
         } catch (Exception e) {
             e.printStackTrace();

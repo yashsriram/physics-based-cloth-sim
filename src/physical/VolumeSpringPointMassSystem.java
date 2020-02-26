@@ -29,14 +29,47 @@ public class VolumeSpringPointMassSystem {
     final PImage texture1;
     final PImage texture2;
 
-    public VolumeSpringPointMassSystem(PApplet parent,
-                                       int m, int n, int o,
-                                       float mass,
-                                       float restLength, float forceConstant, float dampConstant,
-                                       float extensionFactor, float offsetX, float offsetY, float offsetZ,
-                                       PImage texture1,
-                                       PImage texture2,
-                                       FixedMassDecider fixedMassDecider) {
+    public static VolumeSpringPointMassSystem of(PApplet parent,
+                                                 int m, int n, int o,
+                                                 float mass,
+                                                 float restLength, float forceConstant, float dampConstant,
+                                                 float extensionFactor, float offsetX, float offsetY, float offsetZ,
+                                                 PImage texture1,
+                                                 PImage texture2,
+                                                 FixedMassDecider fixedMassDecider) {
+        return new VolumeSpringPointMassSystem(parent,
+                m, n, o,
+                mass,
+                restLength, forceConstant, dampConstant,
+                extensionFactor, offsetX, offsetY, offsetZ,
+                texture1,
+                texture2, fixedMassDecider);
+    }
+
+    public static VolumeSpringPointMassSystem of(PApplet parent,
+                                                 int m, int n, int o,
+                                                 float mass,
+                                                 float restLength, float forceConstant, float dampConstant,
+                                                 float extensionFactor, float offsetX, float offsetY, float offsetZ,
+                                                 PImage texture1,
+                                                 FixedMassDecider fixedMassDecider) {
+        return new VolumeSpringPointMassSystem(parent,
+                m, n, o,
+                mass,
+                restLength, forceConstant, dampConstant,
+                extensionFactor, offsetX, offsetY, offsetZ,
+                texture1,
+                texture1, fixedMassDecider);
+    }
+
+    private VolumeSpringPointMassSystem(PApplet parent,
+                                        int m, int n, int o,
+                                        float mass,
+                                        float restLength, float forceConstant, float dampConstant,
+                                        float extensionFactor, float offsetX, float offsetY, float offsetZ,
+                                        PImage texture1,
+                                        PImage texture2,
+                                        FixedMassDecider fixedMassDecider) {
         this.parent = parent;
         this.m = m;
         this.n = n;
@@ -195,7 +228,7 @@ public class VolumeSpringPointMassSystem {
 
         for (int i = 0; i < m - 1; ++i) {
             parent.beginShape(PConstants.TRIANGLE_STRIP);
-            parent.texture(texture1);
+            parent.texture(texture2);
             for (int j = 0; j < n; ++j) {
                 PointMass m1 = pointMasses.get(i).get(j).get(0);
                 PointMass m2 = pointMasses.get(i + 1).get(j).get(0);
@@ -203,7 +236,7 @@ public class VolumeSpringPointMassSystem {
                 if (m1.isBroken || m2.isBroken) {
                     parent.endShape();
                     parent.beginShape(PConstants.TRIANGLE_STRIP);
-                    parent.texture(texture1);
+                    parent.texture(texture2);
                     continue;
                 }
                 Vec3 pos1 = m1.position;

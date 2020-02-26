@@ -39,7 +39,7 @@ public class ClothFallingOnBall extends PApplet {
                 1f, -70, 10f, -M * restLen / 2,
                 (i, j, m, n) -> (false),
                 GridThreadPointMassSystem.Layout.ZX);
-        gridThreadPointMassSystem.air = new Air(0.08f, 0.04f, Vec3.of(0, 0, 1), 0);
+        gridThreadPointMassSystem.air = new Air(0.05f, 0f, Vec3.of(0, 0, 1), 0);
 
         PointMass c1 = gridThreadPointMassSystem.pointMasses.get(0).get(0);
         PointMass c2 = gridThreadPointMassSystem.pointMasses.get(0).get(N - 1);

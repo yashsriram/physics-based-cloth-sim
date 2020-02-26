@@ -38,7 +38,7 @@ public class DeformableObjectAndBalls extends PApplet {
     }
 
     private void resetSystem() {
-        volumeSpringPointMassSystem = new VolumeSpringPointMassSystem(
+        volumeSpringPointMassSystem = VolumeSpringPointMassSystem.of(
                 this,
                 4, 4, 8,
                 200,
