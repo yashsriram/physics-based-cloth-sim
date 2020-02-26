@@ -3,10 +3,11 @@ package demos;
 import camera.QueasyCam;
 import math.Vec3;
 import physical.Ball;
+import physical.Cutter;
 import physical.Ground;
 import physical.VolumeSpringPointMassSystem;
 import processing.core.PApplet;
-import processing.core.PVector;
+import processing.core.PShape;
 
 public class DeformableObject extends PApplet {
     public static final int WIDTH = 800;
@@ -15,8 +16,8 @@ public class DeformableObject extends PApplet {
     private QueasyCam queasyCam;
     private VolumeSpringPointMassSystem volumeSpringPointMassSystem;
     private Ball ball;
+    private Cutter cutter;
     private Ground ground;
-    private boolean isBallFixedToCam;
 
     public void settings() {
         size(WIDTH, HEIGHT, P3D);
@@ -32,7 +33,9 @@ public class DeformableObject extends PApplet {
                 400, 400,
                 loadImage("ground.jpg"));
         ball = new Ball(this, 10, 12, Vec3.of(4, 75, 0), Vec3.of(255, 255, 255), true);
-        isBallFixedToCam = false;
+        PShape cutterShape = loadShape("Sword_2.obj");
+        cutterShape.scale(10);
+        cutter = new Cutter(this, cutterShape, queasyCam);
         resetSystem();
     }
 
@@ -52,14 +55,12 @@ public class DeformableObject extends PApplet {
     public void draw() {
         long start = millis();
         // update
-        if (isBallFixedToCam) {
-            PVector aim = queasyCam.getAim(200);
-            ball.update(Vec3.of(aim.x , aim.y, aim.z));
-        }
         try {
+            cutter.update();
             for (int i = 0; i < 300; ++i) {
                 volumeSpringPointMassSystem.update(ball, ground, 0.003f);
             }
+            cutter.cut(volumeSpringPointMassSystem);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,6 +70,7 @@ public class DeformableObject extends PApplet {
         volumeSpringPointMassSystem.draw();
         ball.draw();
         ground.draw();
+        cutter.draw();
         long draw = millis();
 
         surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms");
@@ -78,8 +80,8 @@ public class DeformableObject extends PApplet {
         if (key == 'r') {
             resetSystem();
         }
-        if (key == 'p') {
-            isBallFixedToCam = !isBallFixedToCam;
+        if (key == 'x') {
+            cutter.toggleIsPaused();
         }
     }
 
