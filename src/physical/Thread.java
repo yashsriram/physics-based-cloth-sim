@@ -4,6 +4,9 @@ import math.Vec3;
 import processing.core.PApplet;
 
 public class Thread {
+    public enum Mode {
+        THREAD, SPRING
+    }
     private PApplet parent;
     private float restLength;
     private float forceConstant;
@@ -11,6 +14,7 @@ public class Thread {
     private PointMass m1;
     private PointMass m2;
     private boolean isBroken;
+    private Mode mode;
 
     public Thread(PApplet parent, float restLength, float forceConstant, float dampConstant, PointMass m1, PointMass m2) {
         this.parent = parent;
@@ -20,6 +24,20 @@ public class Thread {
         this.m1 = m1;
         this.m2 = m2;
         this.isBroken = false;
+        this.mode = Mode.THREAD;
+        m1.threads.add(this);
+        m2.threads.add(this);
+    }
+
+    public Thread(PApplet parent, float forceConstant, float dampConstant, PointMass m1, PointMass m2, Mode mode) {
+        this.parent = parent;
+        this.restLength = m1.position.minus(m2.position).abs();
+        this.forceConstant = forceConstant;
+        this.dampConstant = dampConstant;
+        this.m1 = m1;
+        this.m2 = m2;
+        this.isBroken = false;
+        this.mode = mode;
         m1.threads.add(this);
         m2.threads.add(this);
     }
@@ -44,7 +62,6 @@ public class Thread {
         float springLength = lengthVector.abs();
         Vec3 forceDir = lengthVector.unit();
         // spring on compression does not exert force
-        Vec3 springForce = Vec3.zero();
         float extension = springLength - restLength;
         if (extension > 10) {
             for (Thread s : m1.threads) {
@@ -56,7 +73,12 @@ public class Thread {
             }
             m2.setIsBroken(true);
         }
-        if (extension > 0) {
+        Vec3 springForce = Vec3.zero();
+        if (mode == Mode.THREAD) {
+            if (extension > 0) {
+                springForce.plusAccumulate(forceDir.scale(forceConstant * extension));
+            }
+        } else if (mode == Mode.SPRING) {
             springForce.plusAccumulate(forceDir.scale(forceConstant * extension));
         }
         // dampening force along spring

@@ -41,7 +41,7 @@ public class BallFallingOnCloth extends PApplet {
         gridThreadPointMassSystem.air = new Air(0f, 0.4f, Vec3.of(0, 0, 1), 0);
 
         ball = new Ball(this, 200, 10, Vec3.of(-70, 0, 0), Vec3.of(255, 255, 0), true);
-        Ball.userControlVelocity = 5;
+        Ball.manualSpeed = 5;
     }
 
     public void draw() {

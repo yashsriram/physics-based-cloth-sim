@@ -43,7 +43,7 @@ public class Main extends PApplet {
         long update = millis();
         // draw
         background(0);
-        ground.render();
+        ground.draw();
         rigidBody.draw();
         long draw = millis();
 
