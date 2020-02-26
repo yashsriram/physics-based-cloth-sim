@@ -32,18 +32,19 @@ public class DeformableObjectAndBalls extends PApplet {
                 400, 400,
                 loadImage("ground.jpg"));
         balls.add(new Ball(this, 10, 12, Vec3.of(10, -75, 10), Vec3.of(128, 0, 0), true));
-        balls.add(new Ball(this, 10, 12, Vec3.of(20, 0, 50), Vec3.of(128, 128, 0), true));
-        balls.add(new Ball(this, 10, 12, Vec3.of(20, 0, 75), Vec3.of(0, 128, 0), true));
+        balls.add(new Ball(this, 10, 12, Vec3.of(20, 0, 40), Vec3.of(128, 128, 0), true));
+        balls.add(new Ball(this, 10, 12, Vec3.of(10, 10, 75), Vec3.of(0, 128, 0), true));
         resetSystem();
     }
 
     private void resetSystem() {
         volumeSpringPointMassSystem = new VolumeSpringPointMassSystem(
                 this,
-                4, 4, 10,
+                4, 4, 8,
                 200,
                 10, 250, 250f,
                 0.9f, 0, -150, 0,
+                loadImage("jelly-blue.jpg"),
                 loadImage("jelly-green.jpg"),
                 ((i, j, k, m, n, o) -> false)
         );

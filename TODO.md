@@ -30,7 +30,7 @@ Demo ideas
     - [x] Cloth falling on ball
     - [x] Skip nodes vs no skip nodes
     - [x] Tear cloth by sword
-    - [ ] Parachutes and burning cloth using sphere
+    - [x] Parachutes and burning cloth using sphere
     - [ ] Compare integrators
 
 Bugs
@@ -62,18 +62,25 @@ Additional Features
 - [x] (10) Two-way coupling object-simulation coupling (e.g., cloth moves a ball)
 - [x] (10) Integrate 2D rigid body sphere-sphere interactions for several spheres
 - [x] (20) Integrate 3D rigid body sphere-sphere interactions for several spheres
-- [ ] (20) Combine (3D) rotational rigid body dynamics with another simulation
 
 Advanced Cloth
 - [x] (5) Billowing/blowing wind effect simulated with aerodynamic drag
 - [x] (5) Skip nodes spring/threads to stiffen cloth (must show comparison)
 - [x] (10) Tear-able cloth.
 - [ ] (15) Burnable cloth (should have particle effects for full credit)
-- [ ] (20) Self-collision in cloth
-- [ ] (40) Finite Element Method (FEM)-based cloth simulation
+
+Deformable Objects
+- [x] (20) 2D deformable objects (must show rotational effects)
+- [x] (10) 3D deformable objects (must show rotational effects) [cumulative over 2D]
+
+Integrator
+- [x] (5) Eulerian (1st order)
+- [ ] (5) Higher-order Explicit (e.g., Midpoint, RK4, Lax–Wendroff)
+- [ ] (10) Implicit Integrator
+- [ ] (5) Compare two or more integration methods in terms of speed & stability
 
 Water/Fluid Simulation
-- [ ] (10) 1D Water surface, with shallow water equation
+- [x] (10) 1D Water surface, with shallow water equation
 - [ ] (10) 2D Water surface, with shallow water equation [cumulative over 1D]
 - [ ] (30) 2D Eulerian fluid simulation (e.g. Stam GDC ’03)
 - [ ] (50) 3D Eulerian fluid simulation
@@ -85,15 +92,10 @@ Water/Fluid Simulation
 - [ ] (5) 200x200 Eulerian Fluid at 30 FPS
 If your water moves slowly you will get no credit for performance benchmarks
 
-Deformable Objects
-- [ ] (20) 2D deformable objects (must show rotational effects)
-- [ ] (10) 3D deformable objects (must show rotational effects) [cumulative over 2D]
-
-Integrator
-- [x] (5) Eulerian (1st order)
-- [ ] (5) Higher-order Explicit (e.g., Midpoint, RK4, Lax–Wendroff)
-- [ ] (10) Implicit Integrator
-- [ ] (5) Compare two or more integration methods in terms of speed & stability
+# Future work
+Advanced cloth
+- [ ] (20) Self-collision in cloth
+- [ ] (40) Finite Element Method (FEM)-based cloth simulation
 
 Acceleration
 - [ ] (5) Thread-parallel implementation (must document performance gain)
@@ -103,6 +105,7 @@ Acceleration
 Rigid-Body Dynamics w/ Rotation
 - [ ] (30) Make 2D rotational rigid body dynamics simulation (10+ non-circle objects)
 - [ ] (60) Make 3D rotational rigid body dynamics simulation (5+ non-sphere objects)
+- [ ] (20) Combine (3D) rotational rigid body dynamics with another simulation
 
 Hair Simulation
 - [ ] (20) 2D hair simulation (can’t miss collisions between strands)

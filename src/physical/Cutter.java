@@ -8,7 +8,6 @@ import processing.core.PShape;
 import processing.core.PVector;
 
 public class Cutter {
-
     private PApplet parent;
     private QueasyCam cam;
     private PVector position;
@@ -104,6 +103,22 @@ public class Cutter {
                         spring.setBroken(true);
                     }
                     mass.setIsBroken(true);
+                }
+            }
+        }
+    }
+
+    public void cut(VolumeSpringPointMassSystem system) {
+        for (int i = 0; i < system.m; i++) {
+            for (int j = 0; j < system.n; j++) {
+                for (int k = 0; k < system.o; k++) {
+                    PointMass mass = system.pointMasses.get(i).get(j).get(k);
+                    if (isTouching(mass.position)) {
+                        for (Thread spring : mass.threads) {
+                            spring.setBroken(true);
+                        }
+                        mass.setIsBroken(true);
+                    }
                 }
             }
         }
