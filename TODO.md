@@ -30,7 +30,7 @@ Demo ideas
     - [x] Cloth falling on ball
     - [x] Skip nodes vs no skip nodes
     - [x] Tear cloth by sword
-    - [ ] Parachutes and burning cloth using sphere
+    - [x] Parachutes and burning cloth using sphere
     - [ ] Compare integrators
 
 Bugs
@@ -73,7 +73,7 @@ Advanced Cloth
 - [ ] (40) Finite Element Method (FEM)-based cloth simulation
 
 Water/Fluid Simulation
-- [ ] (10) 1D Water surface, with shallow water equation
+- [x] (10) 1D Water surface, with shallow water equation
 - [ ] (10) 2D Water surface, with shallow water equation [cumulative over 1D]
 - [ ] (30) 2D Eulerian fluid simulation (e.g. Stam GDC ’03)
 - [ ] (50) 3D Eulerian fluid simulation
@@ -86,8 +86,8 @@ Water/Fluid Simulation
 If your water moves slowly you will get no credit for performance benchmarks
 
 Deformable Objects
-- [ ] (20) 2D deformable objects (must show rotational effects)
-- [ ] (10) 3D deformable objects (must show rotational effects) [cumulative over 2D]
+- [x] (20) 2D deformable objects (must show rotational effects)
+- [x] (10) 3D deformable objects (must show rotational effects) [cumulative over 2D]
 
 Integrator
 - [x] (5) Eulerian (1st order)
