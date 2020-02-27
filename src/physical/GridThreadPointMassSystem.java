@@ -32,6 +32,9 @@ public class GridThreadPointMassSystem {
 
     public Air air = null;
 
+    final List<FireParticle> fireParticles = new ArrayList<>();
+//    public final List<Integer> deadFireParticleIndices = new ArrayList<>();
+
     public GridThreadPointMassSystem(PApplet parent,
                                      int m, int n,
                                      float mass,
@@ -173,7 +176,7 @@ public class GridThreadPointMassSystem {
         mass2.addDragForce(dragForce);
         mass3.addDragForce(dragForce);
     }
-    
+
     public void update(Ball ball, float dt) throws Exception {
         addDragForces();
         for (int i = 0; i < m; i++) {
@@ -204,7 +207,7 @@ public class GridThreadPointMassSystem {
                 s.secondOrderHalfStep(dt);
             }
         }
-        
+
         addDragForces();
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
@@ -248,8 +251,44 @@ public class GridThreadPointMassSystem {
             for (int j = 0; j < n; j++) {
                 PointMass s = pointMasses.get(i).get(j);
                 s.firstOrderIntegrate(dt);
-                s.updateTemperature();
+                boolean isBrokenFirstTime = s.updateTemperature();
+                if (isBrokenFirstTime) {
+                    for (int k = 0; k < 10; k++) {
+                        fireParticles.add(
+                                new FireParticle(parent,
+                                        s.position.copy().plusAccumulate(Vec3.sampleOnSphere(4)),
+                                        s.velocity.copy().scaleAccumulate(0.1f).plusAccumulate(
+                                                        Vec3.of(parent.random(-1, 1),
+                                                                parent.random(-1, 0),
+                                                                parent.random(-1, 1))),
+                                        s.acceleration.copy().scaleAccumulate(0.1f).plusAccumulate(Vec3.of(0, -0.1, 0)),
+                                        8000));
+                    }
+                }
             }
+        }
+        for (FireParticle fireParticle : fireParticles) {
+            fireParticle.update(dt);
+        }
+//        deadFireParticleIndices.clear();
+//        for (int i = 0; i < fireParticles.size(); ++i) {
+//            FireParticle p = fireParticles.get(i);
+//            if (p.isDead) {
+//                deadFireParticleIndices.add(i);
+//                continue;
+//            }
+//            p.update(dt);
+//        }
+//        for (int i = deadFireParticleIndices.size() - 1; i >= 0; --i) {
+//            int index = deadFireParticleIndices.get(i);
+//            fireParticles.remove(index);
+//        }
+    }
+
+    public void drawWithFireParticles() {
+        drawTexturedCloth();
+        for (FireParticle p : fireParticles) {
+            p.draw();
         }
     }
 

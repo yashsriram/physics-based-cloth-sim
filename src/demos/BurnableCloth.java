@@ -49,7 +49,7 @@ public class BurnableCloth extends PApplet {
         PVector aim = queasyCam.getAim(100);
         ball.update(Vec3.of(aim.x, aim.y, aim.z));
         try {
-            for (int i = 0; i < 90; ++i) {
+            for (int i = 0; i < 100; ++i) {
                 system.updateWithBurnCheck(ball, 0.006f);
             }
         } catch (Exception e) {
@@ -58,7 +58,7 @@ public class BurnableCloth extends PApplet {
         long update = millis();
         // draw
         background(0);
-        system.draw();
+        system.drawWithFireParticles();
         ball.draw();
         long draw = millis();
 

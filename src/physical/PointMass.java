@@ -200,18 +200,22 @@ public class PointMass {
         acceleration = totalForce.scale(1 / mass);
     }
 
-    public void updateTemperature() {
+    public boolean updateTemperature() {
+        if (isBroken) {
+            return false;
+        }
         if (temperature >= breakingTemperature) {
             for (Thread thread : threads) {
                 thread.setBroken(true);
             }
             isBroken = true;
-            return;
+            return true;
         }
         if (temperature >= selfIgniteTemperature) {
             temperature += temperature * selfIgniteRate;
         }
         temperature += dT;
+        return false;
     }
 
     public void draw() {

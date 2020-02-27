@@ -48,7 +48,7 @@ public class Parachutes extends PApplet {
         }
 
         public void draw() {
-            gridThreadPointMassSystem.draw();
+            gridThreadPointMassSystem.drawWithFireParticles();
             drawPayload();
             thread1.draw();
             thread2.draw();
@@ -135,7 +135,7 @@ public class Parachutes extends PApplet {
                 1,
                 5,
                 this.skyDiver.payload.position.plus(Vec3.of(0, 0, 100)),
-                Vec3.of(255, 0, 0),
+                Vec3.of(255, 255, 255),
                 true
         );
     }
