@@ -69,7 +69,7 @@ Advanced Cloth
 - [x] (5) Billowing/blowing wind effect simulated with aerodynamic drag
 - [x] (5) Skip nodes spring/threads to stiffen cloth (must show comparison)
 - [x] (10) Tear-able cloth.
-- [ ] (15) Burnable cloth (should have particle effects for full credit)
+- [x] (15) Burnable cloth (should have particle effects for full credit)
 
 Deformable Objects
 - [x] (20) 2D deformable objects (must show rotational effects)
