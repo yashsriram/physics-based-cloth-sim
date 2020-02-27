@@ -4,6 +4,8 @@ import camera.QueasyCam;
 import math.Vec3;
 import physical.WaterColumn;
 import processing.core.PApplet;
+import processing.core.PConstants;
+import processing.core.PImage;
 
 import java.util.ArrayList;
 
@@ -13,11 +15,13 @@ public class ShallowWater2D extends PApplet {
 
     private QueasyCam queasyCam;
 
+    PImage waterTexture;
     ArrayList<ArrayList<WaterColumn>> waterColumns = new ArrayList<>();
     private int numColumns = 60;
     float lengthX = 200, lengthY = 60, lengthZ = 200;
     private float dz;
     private boolean isPlaying = false;
+	private boolean textureOn = false;
 
     public void settings() {
         size(WIDTH, HEIGHT, P3D);
@@ -28,39 +32,26 @@ public class ShallowWater2D extends PApplet {
         queasyCam = new QueasyCam(this);
         queasyCam.sensitivity = 2f;
 
+        ambientLight(255,255,255);
+        waterTexture = loadImage("water.jpg");
         float columnHeight = 20;
         float momentum = 0;
         dz = lengthZ / numColumns;
         for (int i = 0; i < numColumns; i++) {
-        	if (i < 10) {
-                columnHeight += 1;
-            }
-            if (i > 10 && i < 20) {
-                columnHeight -= 1;
-            }
-            if (i > 20) {
-                columnHeight = 20;
-            }
         	waterColumns.add(new ArrayList<WaterColumn>());
             for(int j=0; j<numColumns; j++) {
-            	waterColumns.get(i).add(new WaterColumn(this, columnHeight, momentum));
-            	if (j < 10) {
-                    columnHeight += 1;
-                }
-                if (j > 10 && j < 20) {
-                    columnHeight -= 1;
-                }
-                if (j > 20) {
-                    columnHeight = 20;
-                }
+            	if(i > 24 && i < 36 && j < 36 && j > 24) {
+            		waterColumns.get(i).add(new WaterColumn(this, 2*columnHeight, momentum));
+            	}else {
+            		waterColumns.get(i).add(new WaterColumn(this, columnHeight, momentum));
+            	}
             }
         }
     }
 
     void drawWaterTank() {
         pushMatrix();
-        stroke(255, 255);
-        sphere(2);
+        stroke(255);
         translate(0, lengthY, 0);
         fill(0, 0);
         box(lengthX, lengthY, lengthZ);
@@ -72,28 +63,49 @@ public class ShallowWater2D extends PApplet {
         float base = 1.5f * lengthY;
         float front = -numColumns / 2 * dz;
         
+        
         for (int i = 0; i < numColumns - 1; i++) {
-            for(int j=0; j <numColumns-1; j++) {
-            	WaterColumn column1 = waterColumns.get(i).get(j);
-//                WaterColumn columnZ = waterColumns.get(i + 1).get(j);
-//                WaterColumn columnX = waterColumns.get(i).get(j+1);
-                
-                float x = front + (j+0.5f)*dz;
-                float z = left + (i+0.5f)*dz;
-                float y = base - column1.height/2;
-                pushMatrix();
-                translate(x,y,z);
-                fill(0, 100, 255);
-                box(dz,column1.height,dz);
-                popMatrix();
+            beginShape(TRIANGLE_STRIP);
+            if(textureOn) {
+            	noFill();
+                noStroke();
+            	textureMode(PConstants.NORMAL);
+            	texture(waterTexture);
+            }else {
+            	fill(0, 80, 255);
+            	stroke(255);
             }
+            for(int j=0; j <numColumns - 1; j++) {
+            	WaterColumn column1 = waterColumns.get(i).get(j);
+                WaterColumn columnZ = waterColumns.get(i + 1).get(j);
+                
+                float x1 = front + j * dz;
+                float xZ = front + j * dz;
+                
+                float y1 = base - column1.height;
+                float yZ = base - columnZ.height;
+                
+                float z1 = left + i * dz;
+                float zZ = left + (i + 1) * dz;
+                if(textureOn) {
+	                float u = PApplet.map(j, 0, numColumns - 1, 0, 1);
+	                float v1 = PApplet.map(i, 0, numColumns - 1, 0, 1);
+	                float v2 = PApplet.map(i+1, 0, numColumns - 1, 0, 1);
+	                vertex(x1, y1, z1, u, v1);
+	                vertex(xZ, yZ, zZ, u, v2);
+                }else {
+                	vertex(x1, y1, z1);
+	                vertex(xZ, yZ, zZ);
+                }
+            }
+            endShape();
         }
     }
 
     void updateLoop() {
         float dt = 0.001f;
-        float g = 3f;
-        float damp = 0.2f;
+        float g = 1f;
+        float damp = 0.1f;
 
         // Half step
         for (int i = 0; i < numColumns; i++) {
@@ -151,22 +163,22 @@ public class ShallowWater2D extends PApplet {
 	            w1.height += -dt * (w1.midpointZMomentum_alongZ - w2.midpointZMomentum_alongZ) / dz;
 	            w1.height += -dt * (w1.midpointXMomentum_alongX - w3.midpointXMomentum_alongX) / dz;
 	            
-	            w1.momentumZ += -dt*( sq(w2.midpointZMomentum_alongZ) / w2.midpointHeightZ
-		                            - sq(w1.midpointZMomentum_alongZ) / w1.midpointHeightZ
-		                            + 0.5 * g * sq(w2.midpointHeightZ)
-		                            - 0.5 * g * sq(w1.midpointHeightZ)
+	            w1.momentumZ += -dt*( sq(w1.midpointZMomentum_alongZ) / w1.midpointHeightZ
+		                            - sq(w2.midpointZMomentum_alongZ) / w2.midpointHeightZ
+		                            + 0.5 * g * sq(w1.midpointHeightZ)
+		                            - 0.5 * g * sq(w2.midpointHeightZ)
             					  	) / dz;
-	            w1.momentumZ += -dt*( w3.midpointXMomentum_alongX * w3.midpointZMomentum_alongX / w3.midpointHeightX
-	            					- w1.midpointXMomentum_alongX * w1.midpointZMomentum_alongX / w1.midpointHeightX
+	            w1.momentumZ += -dt*( w1.midpointXMomentum_alongX * w1.midpointZMomentum_alongX / w1.midpointHeightX
+	            					- w3.midpointXMomentum_alongX * w3.midpointZMomentum_alongX / w3.midpointHeightX
 	            					) / dz;
 	            
-	            w1.momentumX += -dt*( sq(w3.midpointXMomentum_alongX) / w3.midpointHeightX
-			                        - sq(w1.midpointXMomentum_alongX) / w1.midpointHeightX
-			                        + 0.5 * g * sq(w3.midpointHeightX)
-			                        - 0.5 * g * sq(w1.midpointHeightX)
+	            w1.momentumX += -dt*( sq(w1.midpointXMomentum_alongX) / w1.midpointHeightX
+			                        - sq(w3.midpointXMomentum_alongX) / w3.midpointHeightX
+			                        + 0.5 * g * sq(w1.midpointHeightX)
+			                        - 0.5 * g * sq(w3.midpointHeightX)
 								  	) / dz;
-	            w1.momentumX += -dt*( w2.midpointXMomentum_alongZ * w2.midpointZMomentum_alongZ / w2.midpointHeightZ
-			    					- w1.midpointXMomentum_alongZ * w1.midpointZMomentum_alongZ / w1.midpointHeightZ
+	            w1.momentumX += -dt*( w1.midpointXMomentum_alongZ * w1.midpointZMomentum_alongZ / w1.midpointHeightZ
+			    					- w2.midpointXMomentum_alongZ * w2.midpointZMomentum_alongZ / w2.midpointHeightZ
 			    					) / dz;
 	
 	            // Damping
@@ -175,10 +187,11 @@ public class ShallowWater2D extends PApplet {
         	}
         }
 
-        reflectWater();
+        boundaryConditions();
     }
 
-    private void reflectWater(){
+    private void boundaryConditions(){
+    	// Reflecting at walls
     	for(int i=0;i<numColumns;i++){
     		WaterColumn w_i0 = waterColumns.get(i).get(0);
             WaterColumn w_i1 = waterColumns.get(i).get(1);
@@ -223,7 +236,9 @@ public class ShallowWater2D extends PApplet {
         // draw
         background(0);
         drawWater();
-        drawWaterTank();
+        if(textureOn) {
+        	drawWaterTank();
+        }
         long draw = millis();
 
         surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms");
@@ -232,6 +247,9 @@ public class ShallowWater2D extends PApplet {
     public void keyPressed() {
         if (key == 'u') {
             isPlaying = !isPlaying;
+        }
+        if (key == 't') {
+            textureOn = !textureOn;
         }
     }
 
