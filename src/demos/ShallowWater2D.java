@@ -24,7 +24,7 @@ public class ShallowWater2D extends PApplet {
     private float dz;
     private boolean isPlaying = true;
     private boolean textureOn = true;
-    private Vec3 perturbSource = Vec3.of(0, 60, 0);
+    private Vec3 perturbSource = Vec3.of(0, 65, 0);
     private float perturbSourceAmplitude = 0;
 
     public void settings() {
@@ -226,7 +226,7 @@ public class ShallowWater2D extends PApplet {
         pushMatrix();
         translate(perturbSource.x, perturbSource.y + random(-perturbSourceAmplitude, perturbSourceAmplitude), perturbSource.z);
         fill(255);
-        box(20);
+        box(10);
         popMatrix();
         perturbSourceAmplitude = perturbSourceAmplitude / 1.1f;
     }
@@ -286,7 +286,7 @@ public class ShallowWater2D extends PApplet {
                 }
             }
         }
-        perturbSourceAmplitude = 10;
+        perturbSourceAmplitude = 15;
     }
 
     public void keyPressed() {

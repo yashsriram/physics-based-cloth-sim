@@ -83,13 +83,13 @@ Integrator
 
 Water/Fluid Simulation
 - [x] (10) 1D Water surface, with shallow water equation
-- [ ] (10) 2D Water surface, with shallow water equation [cumulative over 1D]
+- [x] (10) 2D Water surface, with shallow water equation [cumulative over 1D]
 - [ ] (30) 2D Eulerian fluid simulation (e.g. Stam GDC ’03)
 - [ ] (50) 3D Eulerian fluid simulation
 
 2D Water/Fluid Performance Benchmarks (cumulative)
-- [ ] (5) 50x50 Shallow Water Sim. at 20 FPS
-- [ ] (5) 100x100 Shallow Water Sim. at 30 FPS
+- [x] (5) 50x50 Shallow Water Sim. at 20 FPS
+- [x] (5) 100x100 Shallow Water Sim. at 30 FPS
 - [ ] (5) 100x100 Eulerian Fluid at 20 FPS
 - [ ] (5) 200x200 Eulerian Fluid at 30 FPS
 If your water moves slowly you will get no credit for performance benchmarks
