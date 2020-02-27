@@ -15,13 +15,13 @@ public class BallsFallingOnCloth extends PApplet {
     private static class BallSystem {
         final PApplet parent;
         final List<Ball> balls = new ArrayList<>();
-        final Vec3 center;
+        final Vec3 source;
         final float radius;
         final float mass;
 
         public BallSystem(PApplet parent, Vec3 center, float radius, float mass) {
             this.parent = parent;
-            this.center = center;
+            this.source = center.plusAccumulate(Vec3.of(0, -20 * radius, 0));
             this.radius = radius;
             this.mass = mass;
             spawnBall(3);
@@ -61,6 +61,12 @@ public class BallsFallingOnCloth extends PApplet {
             for (Ball ball : balls) {
                 ball.draw();
             }
+            parent.pushMatrix();
+            parent.noFill();
+            parent.stroke(255);
+            parent.translate(source.x, source.y, source.z);
+            parent.box(10);
+            parent.popMatrix();
         }
 
         public void spawnBall(int n) {
@@ -70,12 +76,16 @@ public class BallsFallingOnCloth extends PApplet {
                                 parent,
                                 mass,
                                 radius,
-                                Vec3.of(center.x, center.y - 20 * radius + i * (2 * radius + 1), center.z),
+                                Vec3.of(source.x, source.y + i * (2 * radius + 1), source.z),
                                 Vec3.of(128).plusAccumulate(Vec3.sampleOnSphere(128)),
                                 false
                         )
                 );
             }
+        }
+
+        public void moveSource(Vec3 ds) {
+            source.plusAccumulate(ds);
         }
     }
 
@@ -128,6 +138,15 @@ public class BallsFallingOnCloth extends PApplet {
     }
 
     public void draw() {
+        if (keyPressed && keyCode == UP) {
+            ballSystem.moveSource(Vec3.of(1, 0, 0));
+        } else if (keyPressed && keyCode == DOWN) {
+            ballSystem.moveSource(Vec3.of(-1, 0, 0));
+        } else if (keyPressed && keyCode == LEFT) {
+            ballSystem.moveSource(Vec3.of(0, 0, -1));
+        } else if (keyPressed && keyCode == RIGHT) {
+            ballSystem.moveSource(Vec3.of(0, 0, 1));
+        }
 
         long start = millis();
         // update
