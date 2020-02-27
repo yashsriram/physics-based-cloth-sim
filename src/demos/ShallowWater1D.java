@@ -13,11 +13,11 @@ public class ShallowWater1D extends PApplet {
 
     private QueasyCam queasyCam;
 
-    ArrayList<WaterColumn> waterColumns = new ArrayList<>();
+    ArrayList<WaterColumn> waterColumns;
     private int numColumns = 60;
     float lengthX = 80, lengthY = 60, lengthZ = 200;
     private float dz;
-    private boolean isPlaying = false;
+    private boolean isPlaying = true;
 
     public void settings() {
         size(WIDTH, HEIGHT, P3D);
@@ -28,6 +28,11 @@ public class ShallowWater1D extends PApplet {
         queasyCam = new QueasyCam(this);
         queasyCam.sensitivity = 2f;
 
+        resetSystem();
+    }
+
+    private void resetSystem() {
+        waterColumns = new ArrayList<>();
         float columnHeight = 20;
         float momentum = 0;
         dz = lengthZ / numColumns;
@@ -106,7 +111,7 @@ public class ShallowWater1D extends PApplet {
     void updateLoop() {
         float dt = 0.01f;
         float g = 1f;
-        float damp = 0.05f;
+        float damp = 0.03f;
 
         // Half step
         for (int i = 0; i < numColumns - 1; i++) {
@@ -170,6 +175,7 @@ public class ShallowWater1D extends PApplet {
         long update = millis();
         // draw
         background(0);
+        directionalLight(255, 255, 255, 0, 1, 2);
         drawWater();
         drawWaterTank();
         long draw = millis();
@@ -180,6 +186,9 @@ public class ShallowWater1D extends PApplet {
     public void keyPressed() {
         if (key == 'u') {
             isPlaying = !isPlaying;
+        }
+        if (key == 'r') {
+            resetSystem();
         }
     }
 
