@@ -28,6 +28,7 @@ public class VolumeSpringPointMassSystem {
 
     final PImage texture1;
     final PImage texture2;
+    final PImage texture3;
 
     public static VolumeSpringPointMassSystem of(PApplet parent,
                                                  int m, int n, int o,
@@ -36,6 +37,7 @@ public class VolumeSpringPointMassSystem {
                                                  float extensionFactor, float offsetX, float offsetY, float offsetZ,
                                                  PImage texture1,
                                                  PImage texture2,
+                                                 PImage texture3,
                                                  FixedMassDecider fixedMassDecider) {
         return new VolumeSpringPointMassSystem(parent,
                 m, n, o,
@@ -43,7 +45,9 @@ public class VolumeSpringPointMassSystem {
                 restLength, forceConstant, dampConstant,
                 extensionFactor, offsetX, offsetY, offsetZ,
                 texture1,
-                texture2, fixedMassDecider);
+                texture2,
+                texture3,
+                fixedMassDecider);
     }
 
     public static VolumeSpringPointMassSystem of(PApplet parent,
@@ -59,7 +63,9 @@ public class VolumeSpringPointMassSystem {
                 restLength, forceConstant, dampConstant,
                 extensionFactor, offsetX, offsetY, offsetZ,
                 texture1,
-                texture1, fixedMassDecider);
+                texture1,
+                texture1,
+                fixedMassDecider);
     }
 
     private VolumeSpringPointMassSystem(PApplet parent,
@@ -69,6 +75,7 @@ public class VolumeSpringPointMassSystem {
                                         float extensionFactor, float offsetX, float offsetY, float offsetZ,
                                         PImage texture1,
                                         PImage texture2,
+                                        PImage texture3,
                                         FixedMassDecider fixedMassDecider) {
         this.parent = parent;
         this.m = m;
@@ -80,6 +87,7 @@ public class VolumeSpringPointMassSystem {
         this.dampConstant = dampConstant;
         this.texture1 = texture1;
         this.texture2 = texture2;
+        this.texture3 = texture3;
 
         for (int i = 0; i < m; ++i) {
             List<List<PointMass>> verticalSlice = new ArrayList<>();
@@ -228,7 +236,7 @@ public class VolumeSpringPointMassSystem {
 
         for (int i = 0; i < m - 1; ++i) {
             parent.beginShape(PConstants.TRIANGLE_STRIP);
-            parent.texture(texture2);
+            parent.texture(texture1);
             for (int j = 0; j < n; ++j) {
                 PointMass m1 = pointMasses.get(i).get(j).get(0);
                 PointMass m2 = pointMasses.get(i + 1).get(j).get(0);
@@ -236,7 +244,7 @@ public class VolumeSpringPointMassSystem {
                 if (m1.isBroken || m2.isBroken) {
                     parent.endShape();
                     parent.beginShape(PConstants.TRIANGLE_STRIP);
-                    parent.texture(texture2);
+                    parent.texture(texture1);
                     continue;
                 }
                 Vec3 pos1 = m1.position;
@@ -253,7 +261,7 @@ public class VolumeSpringPointMassSystem {
 
         for (int i = 0; i < m - 1; ++i) {
             parent.beginShape(PConstants.TRIANGLE_STRIP);
-            parent.texture(texture1);
+            parent.texture(texture3);
             for (int j = 0; j < n; ++j) {
                 PointMass m1 = pointMasses.get(i).get(j).get(o - 1);
                 PointMass m2 = pointMasses.get(i + 1).get(j).get(o - 1);
@@ -261,7 +269,7 @@ public class VolumeSpringPointMassSystem {
                 if (m1.isBroken || m2.isBroken) {
                     parent.endShape();
                     parent.beginShape(PConstants.TRIANGLE_STRIP);
-                    parent.texture(texture1);
+                    parent.texture(texture3);
                     continue;
                 }
                 Vec3 pos1 = m1.position;
