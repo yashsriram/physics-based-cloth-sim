@@ -2,12 +2,11 @@ package demos;
 
 import camera.QueasyCam;
 import math.Vec3;
-import physical.Air;
 import physical.Ball;
 import physical.GridThreadPointMassSystem;
 import processing.core.PApplet;
 
-public class ClothAirDrag extends PApplet {
+public class BasicCloth extends PApplet {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 800;
 
@@ -77,7 +76,7 @@ public class ClothAirDrag extends PApplet {
     }
 
     static public void main(String[] passedArgs) {
-        String[] appletArgs = new String[]{"demos.ClothAirDrag"};
+        String[] appletArgs = new String[]{"demos.BasicCloth"};
         if (passedArgs != null) {
             PApplet.main(concat(appletArgs, passedArgs));
         } else {
