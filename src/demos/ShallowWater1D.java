@@ -4,6 +4,7 @@ import camera.QueasyCam;
 import math.Vec3;
 import physical.WaterColumn;
 import processing.core.PApplet;
+import processing.core.PShape;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,7 @@ public class ShallowWater1D extends PApplet {
     float lengthX = 80, lengthY = 60, lengthZ = 200;
     private float dz;
     private boolean isPlaying = true;
+    PShape boat;
 
     public void settings() {
         size(WIDTH, HEIGHT, P3D);
@@ -27,7 +29,7 @@ public class ShallowWater1D extends PApplet {
         surface.setTitle("Processing");
         queasyCam = new QueasyCam(this);
         queasyCam.sensitivity = 2f;
-
+        boat = loadShape("LifeBoat_obj/LifeBoat.obj");
         resetSystem();
     }
 
@@ -176,6 +178,12 @@ public class ShallowWater1D extends PApplet {
         // draw
         background(0);
         directionalLight(255, 255, 255, 0, 1, 2);
+        pushMatrix();
+        translate(-125, 140 - waterColumns.get(numColumns / 2).height, -150);
+        rotateX(PI / 2);
+        scale(0.5f);
+        shape(boat);
+        popMatrix();
         drawWater();
         drawWaterTank();
         long draw = millis();
