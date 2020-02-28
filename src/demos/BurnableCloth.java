@@ -50,7 +50,7 @@ public class BurnableCloth extends PApplet {
         ball.update(Vec3.of(aim.x, aim.y, aim.z));
         try {
             for (int i = 0; i < 100; ++i) {
-                system.updateWithBurnCheck(ball, 0.006f);
+                system.updateWithBurnCheck(ball, 0.0065f);
             }
         } catch (Exception e) {
             e.printStackTrace();

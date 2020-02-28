@@ -23,73 +23,73 @@ threads is optional, they will make the simulation less stable, so only try it s
 
 Demo ideas
 - [x] Cloth
-    - [x] Ball falling on cloth
-    - [x] Balls falling on cloth
-    - [x] Circles falling on thread
-    - [x] Air drag vs no air drag
-    - [x] Wind tear (with and without skip nodes, with several fixed point configurations)
-    - [x] Cloth falling on ball
-    - [x] Skip nodes vs no skip nodes
-    - [x] Tear cloth by sword
-    - [x] Parachutes and burning cloth using sphere
-    - [x] Burnable cloth
-    - [x] Compare integrators
+    - [x][x] Ball falling on cloth
+    - [x][x] Balls falling on cloth
+    - [x][x] Circles falling on thread
+    - [x][x] Air drag vs no air drag
+    - [x][x] Wind tear (with and without skip nodes, with several fixed point configurations)
+    - [x][x] Cloth falling on ball
+    - [x][x] Skip nodes vs no skip nodes
+    - [x][x] Tear cloth by sword
+    - [x][x] Parachutes and burning cloth using sphere
+    - [x][x] Burnable cloth
+    - [x][x] Compare integrators
 
 Bugs
 - [x] separate acc calc and pos, vel updates in grid and series systems
 
 Strongly Suggested Features
- - [x] (5) Realtime rendering (must document framerate)
- - [x] (5) 3D rendering, with user-controlled camera (must support first-person style)
- - [x] (5) Real-time user interaction with system
+- [1][x] (5) Realtime rendering (must document framerate)
+- [1][x] (5) 3D rendering, with user-controlled camera (must support first-person style)
+- [x][x] (5) Real-time user interaction with system
 
 Cloth-Object Interaction (1-way coupling object-to-cloth) [up to 40 points]
- - [x] (10) 2D Mass-spring cloth simulation
- - [x] (10) 3D Mass-spring cloth simulation [cumulative over 2D]
- - [x] (10) Drag-terms (must include demo showing effect of drag)
- - [x] (10) 1-way cloth-object interaction (extra points for non-spherical objects)
+- [1][x] (10) 2D Mass-spring cloth simulation
+- [1][x] (10) 3D Mass-spring cloth simulation [cumulative over 2D]
+- [2][x] (10) Drag-terms (must include demo showing effect of drag)
+- [1][x] (10) 1-way cloth-object interaction (extra points for non-spherical objects)
 
 Cloth Performance Benchmarks (cumulative)
- - [x] (5) 15x15 Cloth with fast, smooth motion at 20 FPS
- - [x] (5) 20x20 Cloth with fast, smooth motion at 30 FPS
- - [x] (5) 30x30 Cloth with fast, smooth motion and obstacle interaction at 30 FPS
+- [1][x] (5) 15x15 Cloth with fast, smooth motion at 20 FPS
+- [1][x] (5) 20x20 Cloth with fast, smooth motion at 30 FPS
+- [1][x] (5) 30x30 Cloth with fast, smooth motion and obstacle interaction at 30 FPS
 If your cloth moves slowly you will get no credit for performance benchmarks
 
 General Features
 
 Rendering
-- [x] (10) Textured simulated objects (e.g., textured cloth)
+- [1][x] (10) Textured simulated objects (e.g., textured cloth)
 
 Additional Features
-- [x] (10) Two-way coupling object-simulation coupling (e.g., cloth moves a ball)
-- [x] (10) Integrate 2D rigid body sphere-sphere interactions for several spheres
-- [x] (20) Integrate 3D rigid body sphere-sphere interactions for several spheres
+- [3][x] (10) Two-way coupling object-simulation coupling (e.g., cloth moves a ball)
+- [4][x] (10) Integrate 2D rigid body sphere-sphere interactions for several spheres
+- [5][x] (20) Integrate 3D rigid body sphere-sphere interactions for several spheres
 
 Advanced Cloth
-- [x] (5) Billowing/blowing wind effect simulated with aerodynamic drag
-- [x] (5) Skip nodes spring/threads to stiffen cloth (must show comparison)
-- [x] (10) Tear-able cloth.
-- [x] (15) Burnable cloth (should have particle effects for full credit)
+- [2][x] (5) Billowing/blowing wind effect simulated with aerodynamic drag
+- [6][x] (5) Skip nodes spring/threads to stiffen cloth (must show comparison)
+- [s][x] (10) Tear-able cloth.
+- [7][x] (15) Burnable cloth (should have particle effects for full credit)
 
 Deformable Objects
-- [x] (20) 2D deformable objects (must show rotational effects)
-- [x] (10) 3D deformable objects (must show rotational effects) [cumulative over 2D]
+- [8][x] (20) 2D deformable objects (must show rotational effects)
+- [8][x] (10) 3D deformable objects (must show rotational effects) [cumulative over 2D]
 
 Integrator
-- [x] (5) Eulerian (1st order)
-- [x] (5) Higher-order Explicit (e.g., Midpoint, RK4, Lax–Wendroff)
-- [x] (5) Compare two or more integration methods in terms of speed & stability
+- [][x] (5) Eulerian (1st order)
+- [][x] (5) Higher-order Explicit (e.g., Midpoint, RK4, Lax–Wendroff)
+- [][x] (5) Compare two or more integration methods in terms of speed & stability
 - [ ] (10) Implicit Integrator
 
 Water/Fluid Simulation
-- [x] (10) 1D Water surface, with shallow water equation
-- [x] (10) 2D Water surface, with shallow water equation [cumulative over 1D]
+- [s][x] (10) 1D Water surface, with shallow water equation
+- [s][x] (10) 2D Water surface, with shallow water equation [cumulative over 1D]
 - [ ] (30) 2D Eulerian fluid simulation (e.g. Stam GDC ’03)
 - [ ] (50) 3D Eulerian fluid simulation
 
 2D Water/Fluid Performance Benchmarks (cumulative)
-- [x] (5) 50x50 Shallow Water Sim. at 20 FPS
-- [x] (5) 100x100 Shallow Water Sim. at 30 FPS
+- [s][x] (5) 50x50 Shallow Water Sim. at 20 FPS
+- [s][x] (5) 100x100 Shallow Water Sim. at 30 FPS
 - [ ] (5) 100x100 Eulerian Fluid at 20 FPS
 - [ ] (5) 200x200 Eulerian Fluid at 30 FPS
 If your water moves slowly you will get no credit for performance benchmarks

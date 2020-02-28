@@ -24,7 +24,7 @@ public class ClothAirDrag extends PApplet {
         surface.setTitle("Processing");
         queasyCam = new QueasyCam(this);
         queasyCam.sensitivity = 2f;
-        ball = new Ball(this, 1, 40, Vec3.of(50, 120, 0), Vec3.of(255, 255, 0), true);
+        ball = new Ball(this, 1, 40, Vec3.of(50, 100, 0), Vec3.of(255, 255, 0), true);
         resetSystem();
     }
 
@@ -40,7 +40,7 @@ public class ClothAirDrag extends PApplet {
 
 //        gridThreadPointMassSystem.addSkipNodes();
 
-//        gridThreadPointMassSystem.air = new Air(0f, 0.01f, Vec3.of(0, 0, 1), 0);
+        gridThreadPointMassSystem.air = new Air(0.06f, 0.02f, Vec3.of(0, 0, 1), 0);
     }
 
     public void draw() {
@@ -61,7 +61,7 @@ public class ClothAirDrag extends PApplet {
         ball.draw();
         long draw = millis();
 
-        surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms");
+        surface.setTitle("Processing - FPS: " + Math.round(frameRate) + " Update: " + (update - start) + "ms Draw " + (draw - update) + "ms" + " wind " + gridThreadPointMassSystem.air.windSpeed);
     }
 
     public void keyPressed() {
