@@ -57,19 +57,22 @@
 #### videos
 [![](http://img.youtube.com/vi/96CpGuKXJ-g/0.jpg)](https://www.youtube.com/watch?v=96CpGuKXJ-g)
 
-- 1-way cloth-object interaction.
-
 ### Air drag and wind effects
 #### videos
 [![](http://img.youtube.com/vi/XDbq-ENKS0E/0.jpg)](https://www.youtube.com/watch?v=XDbq-ENKS0E)
 
 - Billowing wind effect simulated with aerodynamic drag @ `0:53`.
 
-### Sphere falling on cloth (2-way interaction)
+### Rigid sphere falling on cloth (2-way interaction)
 #### videos
 [![](http://img.youtube.com/vi/J1tGb_0aIio/0.jpg)](https://www.youtube.com/watch?v=J1tGb_0aIio)
 
 - The cloth shoots the sphere like a slingshot when released @ `00:20`.
+
+#### images
+| | |
+| --- | --- |
+| ![](./github/ball_on_cloth/1.jpg) | ![](./github/ball_on_cloth/2.jpg) |
 
 ### Rigid circles falling on a thread (2-way interaction)
 #### videos
@@ -88,33 +91,67 @@
 | @ `00:33` (wind speed = 46) more elongated and tears off | @ `00:48` (wind speed = 46) less elongated and is intact. |
 
 ### Tearable cloth
-#### videos
 - The sword is attached to camera's position and locked to its orientation in  ground XZ plane
+#### videos
 
 [![](http://img.youtube.com/vi/N0447hrrQ8c/0.jpg)](https://www.youtube.com/watch?v=N0447hrrQ8c)
 
+#### images
+| | |
+| --- | --- |
+| ![](./github/tearable_cloth/1.jpg) | ![](./github/tearable_cloth/2.jpg) |
+| ![](./github/tearable_cloth/3.jpg) | ![](./github/tearable_cloth/4.jpg) |
+
 - Cloth tearing due to high speed winds @ `00:38`
+#### videos
 
 [![](http://img.youtube.com/vi/rDReMugxMj4/0.jpg)](https://www.youtube.com/watch?v=rDReMugxMj4)
+
+#### images
+| | | |
+| --- | --- | --- |
+| ![](./github/wind_tear/1.jpg) | ![](./github/wind_tear/2.jpg) | ![](./github/wind_tear/3.jpg)
 
 ### Burnable cloth
 - Hot ball starts fire on cloth at arbitrary points
 #### videos
 [![](http://img.youtube.com/vi/HhDb_luKqAY/0.jpg)](https://www.youtube.com/watch?v=HhDb_luKqAY)
 
+#### images
+| | | |
+| --- | --- | --- |
+| ![](./github/burning_cloth/1.jpg) | ![](./github/burning_cloth/2.jpg) | ![](./github/burning_cloth/3.jpg)
+| ![](./github/burning_cloth/4.jpg) | ![](./github/burning_cloth/5.jpg) | ![](./github/burning_cloth/6.jpg)
+| ![](./github/burning_cloth/7.jpg) | ![](./github/burning_cloth/8.jpg) | ![](./github/burning_cloth/9.jpg)
+| ![](./github/burning_cloth/10.jpg) | |
+
 ### Parachute shooting
 - Air drag slows down the sky diver.
 - A hot ball shot at parachute burns it down thus making her free fall.
+
 #### videos
 [![](http://img.youtube.com/vi/cl9NXG5Waa0/0.jpg)](https://www.youtube.com/watch?v=cl9NXG5Waa0)
 
+#### images
+| | |
+| --- | --- |
+| ![](./github/parachute/1.jpg) | ![](./github/parachute/2.jpg) |
+
 ### Deformable objects
-#### videos
 - Falling cat
+#### videos
 
 [![](http://img.youtube.com/vi/rD8QPUcVjRM/0.jpg)](https://www.youtube.com/watch?v=rD8QPUcVjRM)
 
+#### images
+| | | |
+| --- | --- | --- |
+| ![](./github/falling_cat/1.jpg) | ![](./github/falling_cat/2.jpg) | ![](./github/falling_cat/3.jpg)
+| ![](./github/falling_cat/4.jpg) | ![](./github/falling_cat/5.jpg) | ![](./github/falling_cat/6.jpg)
+| ![](./github/falling_cat/7.jpg) | ![](./github/falling_cat/8.jpg) | ![](./github/falling_cat/9.jpg)
+
 - Cutting jelly
+#### videos
 
 [![](http://img.youtube.com/vi/m2qMO76Vf7Y/0.jpg)](https://www.youtube.com/watch?v=m2qMO76Vf7Y)
 
@@ -129,13 +166,16 @@
 [![](http://img.youtube.com/vi/xNPCHXDTPGM/0.jpg)](https://www.youtube.com/watch?v=xNPCHXDTPGM)
 [![](http://img.youtube.com/vi/jCtxuBTTckk/0.jpg)](https://www.youtube.com/watch?v=jCtxuBTTckk)
 
+#### images
+| | | |
+| --- | --- | --- |
+| ![](./github/shallow_water/1.jpg) | ![](./github/shallow_water/2.jpg) | ![](./github/shallow_water/3.jpg)
+
 ### Comparing integrators, Eularian vs Higher-order
 - The integrator is toggled interactively (by pressing num 2) in this demo.
 - The integrator used for that instant is shown in the title bar.
 - Eularian integrator is faster, but less stable especially in high winds.
 - Higher order integrator is slower, but more stable even in high winds.
+- The better integrator is not exactly second order but a version in between first and second order. However we want to present it as it gives better stability in this animation.
 #### videos
 [![](http://img.youtube.com/vi/47O2DB-IKyQ/0.jpg)](https://www.youtube.com/watch?v=47O2DB-IKyQ)
-
-# Things used
-- https://stackoverflow.com/a/36425155/4031302 for distance from point to line segment
