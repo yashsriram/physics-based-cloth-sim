@@ -16,6 +16,7 @@
     - `data/` contains resources such as images, obj, mtl files.
 ## documentation
 - For most of the code, the documentation is itself.
+
 ## usage
 - Open a terminal at project root (the directory containing this file).
 - Use `javac -cp "jars/*" -d build/ $(find -name "*.java")` to compile and put all output class files under `build/`.
@@ -171,7 +172,7 @@
 | --- | --- | --- |
 | ![](./github/shallow_water/1.jpg) | ![](./github/shallow_water/2.jpg) | ![](./github/shallow_water/3.jpg)
 
-### Comparing integrators, Eularian vs Higher-order
+### Comparing integrators
 - The integrator is toggled interactively (by pressing num 2) in this demo.
 - The integrator used for that instant is shown in the title bar.
 - Eularian integrator is faster, but less stable especially in high winds.
@@ -179,3 +180,12 @@
 - The better integrator is not exactly second order but a version in between first and second order. However we want to present it as it gives better stability in this animation.
 #### videos
 [![](http://img.youtube.com/vi/47O2DB-IKyQ/0.jpg)](https://www.youtube.com/watch?v=47O2DB-IKyQ)
+
+## references
+- [Perpendicular distance of a given point from line segment.](https://stackoverflow.com/questions/4858264/find-the-distance-from-a-3d-point-to-a-line-segment/36425155#36425155)
+- [Method to apply texture to cloth.](https://www.youtube.com/watch?v=JunJzIe0hEo)
+- [2D shallow water simulation equations.](https://www.youtube.com/watch?v=TviBQrb74Xc)
+- [Water texture.](http://www.google.com/url?q=http%3A%2F%2Fseamless-pixels.blogspot.com%2F2012%2F10%2Ftileable-water-texture.html&sa=D&sntz=1&usg=AFQjCNHwL1JZi2-tC3kvSe1fl4y3ziekKw)
+- [Aladdin Magic Carpet texture.](https://www.google.com/url?q=https%3A%2F%2Fwww.pinterest.es%2Fpin%2F804948133380274506%2F&sa=D&sntz=1&usg=AFQjCNEjyoLbs-ab1ULplapMTYS0jgvf5Q)
+- [Mario (.obj) model.](https://www.turbosquid.com/3d-models/free-mario-bros-3d-model/621837)
+- Grumpy cat, parachute, jelly textures from google images.
