@@ -1,5 +1,7 @@
 # physical-system-simulation-algorithms
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6513032.svg)](https://doi.org/10.5281/zenodo.6513032)
+
 ## description
 - Simple physical system simulation algorithms for sytems like cloth, rigid and deformable objects, shallow water.
 - Cloth and deformable objects are simulated with a grid of point masses connected by springs.
